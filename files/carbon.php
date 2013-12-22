@@ -113,6 +113,11 @@ class Carbon{
 		 $this->updateRegistrationStatus(5);
 	 }
 	 
+	 function setupEnergy(){
+		 $myusername = $this->username;
+		 $this->connectDatabase();
+	 }
+	 
 	 
 //SOCIAL FUNCTIONS
 	function setFacebookAccessToken($user, $accesstoken){
