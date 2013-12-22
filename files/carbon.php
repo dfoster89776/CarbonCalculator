@@ -154,6 +154,33 @@ class Carbon{
 			return null;
 		}
 	}
+	
+	function getFacebookUserId(){	
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT userid FROM facebook WHERE username='$myusername'");
+		$rowcount=mysqli_num_rows($result);
+		if ($rowcount > 0){
+			$row = mysqli_fetch_row($result);
+			return $row[0];			
+		}
+		else{
+			return null;
+		}
+
+	}
+	
+	function getFacebookUserImage(){
+		
+		$user = $this->getFacebookUserId();
+		
+		if($user != null){
+			return "<img src='https://graph.facebook.com/".$user."/picture?type=large' class='img-thumbnail'>";
+		}
+		else{
+			return null;	
+		}	
+	}
 	 
 	 
 }

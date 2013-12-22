@@ -20,6 +20,11 @@
 		<div class="container" style="margin-top: 50px">			
 			<div class="row">
 			  <div class="col-sm-3">
+			  	  <div class="row">
+					  <div class="col-md-12" style='text-align: center;'>
+					  		<?php echo($carbon->getFacebookUserImage()); ?>					  			
+					  </div>
+				  </div>
 				  <div class="row">
 					  <div class="col-md-12" style='text-align: center;'>
 					  		<?php echo("<h3>".$_SESSION['name']."</h3>"); ?>					  			
