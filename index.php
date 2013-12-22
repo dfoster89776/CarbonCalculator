@@ -21,7 +21,7 @@
 		<div class="container">
   
 			<div class="jumbotron">
-			    <h1>St Andrews Carbon Calculator</h1>
+			    <h1>St. Andrews Carbon Calculator</h1>
 			    <p>Welcome to the St. Andrews Carbon Calculator. Cut your carbon emissions with this application, by allowing you to monitor you're ongoing carbon emissions, set goals and share your achievements with your friends. </p>
 			    <div class="row">
 				  <div class="col-md-3"><a class="btn btn-primary btn-lg" style="min-width: 100%" href="about.php">Find Out More</a></div>
