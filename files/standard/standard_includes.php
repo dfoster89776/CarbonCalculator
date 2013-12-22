@@ -2,10 +2,10 @@
 <script src="//code.jquery.com/jquery.js"></script>
 
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="http://drf8.host.cs.st-andrews.ac.uk/Carbon/files/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://drf8.host.cs.st-andrews.ac.uk/Carbon/files/bootstrap/css/bootstrap.css">
 
 <!-- Optional theme -->
-<link rel="stylesheet" href="http://drf8.host.cs.st-andrews.ac.uk/Carbon/files/bootstrap/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="http://drf8.host.cs.st-andrews.ac.uk/Carbon/files/bootstrap/css/bootstrap-theme.css">
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="http://drf8.host.cs.st-andrews.ac.uk/Carbon/files/bootstrap/js/bootstrap.min.js"></script>
