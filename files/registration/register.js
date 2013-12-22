@@ -178,8 +178,6 @@ function submitSetupTwo(){
 	
 	param = "residents="+ residents + "&gas_factor=" + gas_factor + "&elec_factor=" + elec_factor + "&walls=" + walls + "&roof=" + roof + "&windows_doors=" + windows_doors + "&draughts=" + draughts + "&hot_water=" + hot_water_tank  + "&boiler=" + boiler + "&thermostat=" + thermostat  + "&hours=" + hours;
 
-	alert(param);
-
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	{// code for IE7+, Firefox, Chrome, Opera, Safari

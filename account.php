@@ -5,7 +5,6 @@
 	require_once("files/carbon.php");
 	$carbon = new Carbon();
 	require_once("files/secure/check_login.php");
-	require_once("files/standard/standard_includes.php");
 ?>
 
 <html>
