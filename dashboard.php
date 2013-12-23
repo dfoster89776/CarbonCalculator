@@ -18,7 +18,6 @@
 	
 		<?php require_once("files/navigation/secure_nav.php"); 
 			
-			echo("<br/><br/><br/><br/>");
 			echo($_SESSION['username']);
 		?>
 	

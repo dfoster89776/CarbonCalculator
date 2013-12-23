@@ -41,7 +41,7 @@
 					  </div>
 				  </div>
 			  </div>
-			  <div class="col-sm-8 col-sm-offset-1" id="container"></div>
+			  <div class="col-sm-8 col-sm-offset-1 well" id="container"></div>
 			</div>
 			
 			
