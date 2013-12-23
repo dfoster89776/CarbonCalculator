@@ -20,7 +20,7 @@
 	
 		<div class="container" style="margin-top: 50px">			
 			<div class="row">
-			  <div class="col-sm-3">
+			  <div class="col-md-3">
 			  	  <div class="row">
 					  <div class="col-md-12" style='text-align: center;'>
 					  		<?php echo($carbon->getFacebookUserImage()); ?>					  			
@@ -34,14 +34,18 @@
 				  <div class="row">
 					  <div class="col-md-12" style="margin-top: 20px;">				  
 						  <ul class="nav nav-pills nav-stacked">
-							  <li id="nav_overview" class="active"><a>Home</a></li>
-							  <li id="nav_personal"><a>Personal Details</a></li>
-							  <li id="nav_connected"><a>Connected Accounts</a></li>
+							  <li id="nav_overview" class="active"><a onclick="displayOverview()">Overview</a></li>
+							  <li id="nav_personal"><a onclick="displayPersonal()">Personal Details</a></li>
+							  <li id="nav_connected"><a onclick="displayConnected()">Connected Accounts</a></li>
 						  </ul>
 					  </div>
 				  </div>
 			  </div>
-			  <div class="col-sm-8 col-sm-offset-1 well" id="container"></div>
+			  <div class="col-md-8 col-md-offset-1" id="container">
+				  
+				  		<?php include_once("files/account/overview.php");?>
+				  
+			  </div>
 			</div>
 			
 			
