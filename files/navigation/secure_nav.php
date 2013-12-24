@@ -24,7 +24,7 @@
       <b class='caret'></b>
     </a>
     <ul class='dropdown-menu navbar-right'>
-      <li><a href='account.php#home'>Account</a></li>
+      <li><a href='account.php'>Account</a></li>
       <li><a href='files/secure/logout.php'>Logout</a></li>
     </ul>
   </li>

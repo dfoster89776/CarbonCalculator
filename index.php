@@ -14,7 +14,7 @@
 		<?php 	require_once("files/standard/standard_includes.php"); ?>
 	</head>
 	
-	<body style="padding-top: 100px; background:url('files/images/green.jpg') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+	<body style="background:url('files/images/green.jpg') no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
 	
 		<?php require_once("files/navigation/unsecure_nav.php"); ?>
 	

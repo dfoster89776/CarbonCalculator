@@ -5,6 +5,12 @@
 	require_once("files/carbon.php");
 	$carbon = new Carbon();
 	require_once("files/secure/check_login.php");
+	$connected = false;
+	if (isset($_GET['tab'])){
+		if($_GET['tab'] == 'connected'){
+			$connected = true;
+		}
+	}
 ?>
 
 <html>
@@ -34,7 +40,7 @@
 				  <div class="row">
 					  <div class="col-md-12" style="margin-top: 20px;">				  
 						  <ul class="nav nav-pills nav-stacked">
-							  <li id="nav_overview" class="active"><a onclick="displayOverview()">Overview</a></li>
+							  <li id="nav_overview" <?php if(!$connected){echo("class='active'");}?>><a onclick="displayOverview()">Overview</a></li>
 							  <li id="nav_personal"><a onclick="displayPersonal()">Personal Details</a></li>
 							  <li id="nav_connected"><a onclick="displayConnected()">Connected Accounts</a></li>
 						  </ul>
@@ -42,8 +48,8 @@
 				  </div>
 			  </div>
 			  <div class="col-md-8 col-md-offset-1" id="container">
-				  
-				  		<?php include_once("files/account/overview.php");?>
+				 
+				  		<?php if($connected){include_once("files/account/connected_accounts.php");}else{include_once("files/account/overview.php");}?>
 				  
 			  </div>
 			</div>

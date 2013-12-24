@@ -147,8 +147,8 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "SELECT facebooktoken FROM facebook WHERE username='$myusername'");
 		$rowcount=mysqli_num_rows($result);
 		if ($rowcount > 0){
-			$row = mysqli_fetch_row($result);
-			return $row[0];			
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			return $row['facebooktoken'];			
 		}
 		else{
 			return null;
@@ -161,8 +161,8 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "SELECT userid FROM facebook WHERE username='$myusername'");
 		$rowcount=mysqli_num_rows($result);
 		if ($rowcount > 0){
-			$row = mysqli_fetch_row($result);
-			return $row[0];			
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			return $row['userid'];			
 		}
 		else{
 			return null;
@@ -181,8 +181,34 @@ class Carbon{
 			return null;	
 		}	
 	}
+
+//ACCOUNT FUNCTIONS
+	function removeFacebook(){
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "DELETE FROM facebook WHERE username='$myusername'");
+	}
 	 
 	 
+//SETUP FUNCTIONS
+	function getTransportData(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT car_co2 FROM basic_details WHERE username='$myusername'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		return $row;
+	} 
+	
+	function getEnergyData(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM basic_details WHERE username='$myusername'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		return $row;
+	}
+	
 }
 
 ?>
