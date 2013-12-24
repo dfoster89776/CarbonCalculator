@@ -22,6 +22,7 @@ function loadTransport(){
 	  }
 	xmlhttp.open("GET","files/setup/transport.php",true);
 	xmlhttp.send();
+	document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 	
 }
 
@@ -50,6 +51,7 @@ function loadEnergy(){
 	  }
 	xmlhttp.open("GET","files/setup/energy.php",true);
 	xmlhttp.send();
+	document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 	
 }
 
@@ -78,6 +80,7 @@ function loadLifestyle(){
 	  }
 	xmlhttp.open("GET","files/setup/lifestyle.php",true);
 	xmlhttp.send();
+	document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 	
 }
 

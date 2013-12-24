@@ -49,7 +49,7 @@
 						<div class='panel-heading'> Insulation </div>
 						<div class='panel-body'; role='form'>
 							<p> Please input the following details about your homes insulation statistics. </p>
-							<p> Use Use http://www.resurgence.org/education/heac.html to find existing insulation losses and possible potential energy savings in your room or house. You can fill in numbers for the whole house or just your room - perhaps a thicker curtain or a draft excluder! </p>
+							<p>Use http://www.resurgence.org/education/heac.html to find existing insulation losses and possible potential energy savings in your room or house. You can fill in numbers for the whole house or just your room - perhaps a thicker curtain or a draft excluder! </p>
 						</div>
 							<ul class='list-group'>
 								<li class='list-group-item'>  

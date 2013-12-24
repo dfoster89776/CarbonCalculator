@@ -71,7 +71,7 @@
 		
 		echo("<div class='col-md-12'>
 		 		 <h3> Not currently connected to Facebook. </h3>
-		 		 <a href=".$loginUrl.">Login with Facebook</a>
+		 		 <a href=".$loginUrl."><img src='files/images/fbconnect.png' style='max-width: 100%'></a>
 		 	  </div>");
 		
 	};
