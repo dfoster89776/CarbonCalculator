@@ -147,3 +147,11 @@
 								</li>
 							</ul>
 					</div>
+
+<div class="row" style="margin-top: 30px; margin-bottom: 30px">
+	<div  style='text-align: right'>
+		<div class='col-md-offset-0 col-md-12'>
+			<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='updateTransport()'>Save Changes</button>
+		</div>
+	</div>
+</div>

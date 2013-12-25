@@ -209,6 +209,20 @@ class Carbon{
 		return $row;
 	}
 	
+	function updateTransport($carco2){
+		 $myusername = $this->username;
+		 $this->connectDatabase();
+		 $result = mysqli_query($this->mysqli, "UPDATE basic_details SET car_co2 = '$carco2' WHERE username = '$myusername'");
+		 return $result;
+	 }
+	 
+	 function updateEnergy($residents, $elec_factor, $gas_factor, $walls, $roof, $windows, $draughts, $boiler, $thermostat, $hours, $hot_water){
+		 $myusername = $this->username;
+		 $this->connectDatabase();
+		 
+	 }
+
+	
 }
 
 ?>
