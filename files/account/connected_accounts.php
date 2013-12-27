@@ -58,24 +58,40 @@
 	  $statusUrl = $facebook->getLoginStatusUrl();
 	  $loginUrl = $facebook->getLoginUrl($params);
 	}
-
-	if ($user){
-					
-		echo("<div class='col-md-12'>
-		 		 <h3> Connected to Facebook as ".$user_profile['name']." </h3>
-		 		 <a onclick='removeFacebook()'> Remove Facebook Account </a>
-		 	  </div>");
-							
-	}
-	else{
+	?>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Facebook</h3>
+		</div>
+		<div class="panel-body">
+    
+		<?php
+		if ($user){
+										
+			echo("<div class='col-md-12'>
+				 		 <h3> Connected to Facebook as ".$user_profile['name']." </h3>
+				 		 <a onclick='removeFacebook()'> Remove Facebook Account </a>
+				 	  </div>");
+									
+			}
+			else{
+				
+				echo("<div class='col-md-12'>
+				 		 <h3> Not currently connected to Facebook. </h3>
+				 		 <a href=".$loginUrl."><img src='files/images/fbconnect.png' style='max-width: 100%'></a>
+				 	  </div>");
+				
+			};
 		
-		echo("<div class='col-md-12'>
-		 		 <h3> Not currently connected to Facebook. </h3>
-		 		 <a href=".$loginUrl."><img src='files/images/fbconnect.png' style='max-width: 100%'></a>
-		 	  </div>");
-		
-	};
-
+		?>
+	  </div>
+	</div>
 	
-	
-?>
+	<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Twitter</h3>
+  </div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>

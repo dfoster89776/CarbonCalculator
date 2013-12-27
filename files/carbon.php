@@ -89,7 +89,7 @@ class Carbon{
 	 
 	 function addUser($myusername, $mypassword, $myemail){
 		 $this->connectDatabase();
-		 $result = mysqli_query($this->mysqli, "INSERT INTO users (username, password, email) VALUES ('$myusername', '$mypassword', '$myemail')");
+		 $result = mysqli_query($this->mysqli, "INSERT INTO users (username, password, email, join_date) VALUES ('$myusername', '$mypassword', '$myemail', NOW())");
 	 }
 	 
 	 function addPersonalDetails($firstname, $surname){
@@ -216,9 +216,72 @@ class Carbon{
 		 return $result;
 	 }
 	 
-	 function updateEnergy($residents, $elec_factor, $gas_factor, $walls, $roof, $windows, $draughts, $boiler, $thermostat, $hours, $hot_water){
+	 function updateEnergy($json){
 		 $myusername = $this->username;
 		 $this->connectDatabase();
+		 
+		 $obj = json_decode($json, true);
+		 
+		 mysqli_autocommit($this->mysqli, FALSE);
+		 
+		 if ($obj['residents'] != ""){
+		 	 $residents = $obj['residents'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET occupants = '$residents' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['elec_factor'] != ""){
+		 	 $elec_factor = $obj['elec_factor'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET electricity_factor = '$elec_factor' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['gas_factor'] != ""){
+		 	 $gas_factor = $obj['gas_factor'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET gas_factor = '$gas_factor' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['walls'] != ""){
+		 	 $walls = $obj['walls'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET heat_loss_wall = '$walls' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['roof'] != ""){
+		 	 $roof = $obj['roof'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET heat_loss_roof = '$roof' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['windows_doors'] != ""){
+		 	 $windows_doors = $obj['windows_doors'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET heat_loss_window= '$windows_doors' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['draughts'] != ""){
+		 	 $draughts = $obj['draughts'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET heat_loss_draughts = '$draughts' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['hot_water_tank'] != ""){
+		 	 $hot_water_tank = $obj['hot_water_tank'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET heat_loss_water_tank = '$hot_water_tank' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['boiler'] != ""){
+		 	 $boiler = $obj['boiler'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET boiler_efficiency = '$boiler' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['thermostat'] != ""){
+		 	 $thermostat = $obj['thermostat'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET thermostat = '$thermostat' WHERE username = '$myusername'");
+		 }
+		 
+		 if ($obj['hours'] != ""){
+		 	 $hours = $obj['hours'];
+			 mysqli_query($this->mysqli, "UPDATE basic_details SET heating_hours = '$hours' WHERE username = '$myusername'");
+		 }
+		 
+		 mysqli_commit($this->mysqli); 
+		 
+		 return true;
 		 
 	 }
 

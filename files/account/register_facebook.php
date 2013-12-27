@@ -15,6 +15,16 @@ $user = $facebook->getUser();
 if ($user){
 	$accesstoken = $facebook->getAccessToken();	
 	$carbon->setFacebookAccessToken($user, $accesstoken);
+	
+	$ret_obj = $facebook->api('/me/feed', 'POST',
+                                    array(
+                                      'link' => 'drf8.host.cs.st-andrews.ac.uk/Carbon/',
+                                      'message' => 'has started using the St. Andrews Carbon Calculator.
+                                      Sign up now for free.',
+                                      'name' => 'St. Andrews Carbon Calculator',
+                                      'caption' => 'St. Andrews Carbon Calculator'
+									  
+                                 ));
 }
 
 header('location: ../../account.php?tab=connected');
