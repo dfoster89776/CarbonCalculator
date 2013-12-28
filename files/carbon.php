@@ -89,7 +89,7 @@ class Carbon{
 	 
 	 function addUser($myusername, $mypassword, $myemail){
 		 $this->connectDatabase();
-		 $result = mysqli_query($this->mysqli, "INSERT INTO users (username, password, email, join_date) VALUES ('$myusername', '$mypassword', '$myemail', NOW())");
+		 $result = mysqli_query($this->mysqli, "INSERT INTO users (username, password, email, join_date, last_login) VALUES ('$myusername', '$mypassword', '$myemail', NOW(), NOW())");
 	 }
 	 
 	 function addPersonalDetails($firstname, $surname){
@@ -187,6 +187,16 @@ class Carbon{
 		$myusername = $this->username;
 		$this->connectDatabase();
 		$result = mysqli_query($this->mysqli, "DELETE FROM facebook WHERE username='$myusername'");
+	}
+	
+	function getOverviewDetails(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM users WHERE username='$myusername'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		return $row;
+		
 	}
 	 
 	 

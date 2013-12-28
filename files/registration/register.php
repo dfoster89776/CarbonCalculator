@@ -19,7 +19,7 @@
 				
 				<br class='hidden-xs hidden-sm'/>
 				
-				<div class='form-horizontal; role='form'>
+				<div class='form-horizontal' role='form'>
 					<div class='form-group' id='inputUsernameDiv'>
 						<label for='inputUsername' class='col-md-offset-1 col-md-3 control-label'>Username</label>
 						<div class='col-md-6'>
