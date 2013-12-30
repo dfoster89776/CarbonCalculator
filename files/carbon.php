@@ -295,7 +295,16 @@ class Carbon{
 		 
 	 }
 
-	
-}
+//DATA ACCESS FUNCTIONS
 
+	function getDashboardData(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT initial_electricity, initial_gas FROM basic_details WHERE username = '$myusername'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		return $row;
+	}
+}
 ?>

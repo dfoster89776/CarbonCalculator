@@ -9,7 +9,7 @@
 	$energyData = $carbon->getEnergyData();	
 ?>
 
-<div class='panel panel-default' style="margin-top: 30px">
+					<div class='panel panel-default' style="margin-top: 30px">
 						<div class='panel-heading'> General </div>
 						<div class='panel-body'; role='form'>
 							<p> Please input the following details about your car's emissions. </p>
