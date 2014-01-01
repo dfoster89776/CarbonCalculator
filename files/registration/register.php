@@ -191,7 +191,7 @@
 					}
 					else{
 						
-						echo("<a href=".$loginUrl.">Login with Facebook</a>");
+						echo("<a href=".$loginUrl."><img src='files/images/fbconnect.png' style='max-width: 100%'></a>");
 						
 					};
 					
