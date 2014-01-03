@@ -9,29 +9,29 @@ function initialise(){
 
 function updateCategory(){
 
-	var main_category = document.getElementById("main_category").value;
-	var subcategory = document.getElementById("sub_category");
+	var main_category = document.getElementById("journeyMainCategory").value;
+	var subcategory = document.getElementById("journeySubCategory");
 	subcategory.innerHTML = "";
 	
 	switch(main_category){
 		
 		case "car":
-			document.getElementById("subCategory").style.display = "none";
+			document.getElementById("subCategoryDiv").style.display = "none";
 			conversion_rate = 0.3;
 			break;
 			
 		case "motorcycle":
-			document.getElementById("subCategory").style.display = "none";
+			document.getElementById("subCategoryDiv").style.display = "none";
 			conversion_rate = 0.14146;
 			break;
 			
 		case "taxi":
-			document.getElementById("subCategory").style.display = "none";
+			document.getElementById("subCategoryDiv").style.display = "none";
 			conversion_rate = 0.2121;
 			break;
 		
 		case "coach":
-			document.getElementById("subCategory").style.display = "none";
+			document.getElementById("subCategoryDiv").style.display = "none";
 			conversion_rate = 0.0306;
 			break;
 		
@@ -52,7 +52,7 @@ function updateCategory(){
 			subcategory.add(opt2,null);
 			subcategory.add(opt3,null);
 			subcategory.add(opt4,null);
-			document.getElementById("subCategory").style.display = "block";
+			document.getElementById("subCategoryDiv").style.display = "block";
 			break;
 		
 		case "plane":
@@ -68,7 +68,7 @@ function updateCategory(){
 			subcategory.add(opt1,null);
 			subcategory.add(opt2,null);
 			subcategory.add(opt3,null);
-			document.getElementById("subCategory").style.display = "block";
+			document.getElementById("subCategoryDiv").style.display = "block";
 			break;
 			
 		case "ferry":
@@ -80,12 +80,12 @@ function updateCategory(){
 			opt2.value = "car";
 			subcategory.add(opt1,null);
 			subcategory.add(opt2,null);
-			document.getElementById("subCategory").style.display = "block";
+			document.getElementById("subCategoryDiv").style.display = "block";
 			break;
 		
 	}
 	
-	document.getElementById("conversion_rate").innerHTML = conversion_rate;
+	document.getElementById("journeyConversionRate").innerHTML = conversion_rate;
 	updateSubCategory();
 	updateCarbon();
 	
@@ -94,7 +94,7 @@ function updateCategory(){
 
 function updateSubCategory(){
 	
-		var sub_category = document.getElementById("sub_category").value;
+		var sub_category = document.getElementById("journeySubCategory").value;
 
 		switch(sub_category){
 		
@@ -136,7 +136,7 @@ function updateSubCategory(){
 		
 		}
 		
-		document.getElementById("conversion_rate").innerHTML = conversion_rate;
+		document.getElementById("journeyConversionRate").innerHTML = conversion_rate;
 		updateCarbon();
 }
 
@@ -145,20 +145,104 @@ function updateCarbon(){
 	
 	var carbon = "-";
 	
-	var distance = document.getElementById("distance").value;
+	var distance = document.getElementById("journeyDistance").value;
 	
 	if (distance != ""){
 		
 		distance = parseFloat(distance);
 		carbon = distance * conversion_rate;
+		carbon=carbon.toFixed(2);
 		carbon = carbon + " kge CO2";
 	}
 	
-	
-	document.getElementById("carbon").innerHTML = carbon;
+	document.getElementById("journeyCarbon").innerHTML = carbon;
 	
 }
 
+
+function updateActivity(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("activity_container").innerHTML=xmlhttp.responseText;
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/activity.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+	document.getElementById("journey_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
+	
+}
+
+function submitJourney(){
+	
+	var data = new Object();
+	data.mainCategory = document.getElementById("journeyMainCategory").value;
+	data.subCategory = document.getElementById("journeySubCategory").value;
+	data.date = document.getElementById("journeyDate").value;
+	data.notes = document.getElementById("journeyNotes").value;
+	data.distance = document.getElementById("journeyDistance").value;
+
+	var json = "json=" + JSON.stringify(data);
+	alert(json);	
+		
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    updateActivity();
+	    document.getElementById("journey_body").innerHTML=xmlhttp.responseText;
+	    document.getElementById("journey_submit_button").style.display = "none";
+	  	}
+	  }
+	xmlhttp.open("POST","files/dashboard/submit_journey.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(json);
+	document.getElementById("journey_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
+
+}
+
+function resetJourneyModal(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("journey_body").innerHTML=xmlhttp.responseText;
+	    document.getElementById("journey_submit_button").style.display = "inline";
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/journey_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+}
 
 function chooseElectric(){
 	document.getElementById("previous_reading").innerHTML = data['initial_electricity'];
@@ -167,5 +251,4 @@ function chooseElectric(){
 function chooseGas(){
 	document.getElementById("previous_reading").innerHTML = data['initial_gas'];
 }
-
 

@@ -318,7 +318,6 @@ function checkUsername(){
 		  {
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		    {
-		    	
 		    	if(xmlhttp.responseText == "true"){
 			    	document.getElementById("inputUsernameDiv").className="form-group has-error";
 		    	}else{

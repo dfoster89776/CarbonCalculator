@@ -1,3 +1,11 @@
+<?php 
+	$incorrect = false;
+	
+	if (isset($_GET['invalid'])){
+		$incorrect = $_GET['invalid'];
+	}
+?>
+
 <nav class='navbar navbar-default navbar-inverse navbar-fixed-top' role='navigation'>
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class='navbar-header'>
@@ -17,10 +25,10 @@
       
     </ul>
     <form class='navbar-form navbar-right' role='search' action='files/secure/login.php' method='post'>
-      <div class='form-group'>
+      <div class='form-group <?php if($incorrect){echo('has-error');}?>'>
         <input type='text' name='username' class='form-control' placeholder='Username'>
       </div>
-      <div class='form-group'>
+      <div class='form-group <?php if($incorrect){echo('has-error');}?>'>
         <input type='password' name='password' class='form-control' placeholder='Password'>
       </div>
       <button type='submit' class='btn btn-primary'>Login</button>

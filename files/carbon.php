@@ -175,7 +175,7 @@ class Carbon{
 		$user = $this->getFacebookUserId();
 		
 		if($user != null){
-			return "<img src='https://graph.facebook.com/".$user."/picture?type=large' class='img-thumbnail'>";
+			return "https://graph.facebook.com/".$user."/picture?type=large";
 		}
 		else{
 			return null;	
@@ -295,8 +295,7 @@ class Carbon{
 		 
 	 }
 
-//DATA ACCESS FUNCTIONS
-
+//DATA ACCESS FUNCTIONS	
 	function getDashboardData(){
 		
 		$myusername = $this->username;
@@ -306,5 +305,64 @@ class Carbon{
 		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 		return $row;
 	}
+	
+	function getLatestActivity(){
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE username = '$myusername' ORDER BY id DESC LIMIT 0, 5 ");
+		
+		while($row = $result->fetch_array(MYSQL_ASSOC)) {
+            $myArray[] = $row;
+		}
+		
+		return $myArray;
+	}
+
+
+//POST CARBON ACTIVITY FUNCTIONS
+
+	function getConversionRate($mainCategory, $subCategory){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		if ($mainCategory == "car"){
+			$result = mysqli_query($this->mysqli, "SELECT car_co2 FROM basic_details WHERE username = '$myusername'");
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			return $row['car_co2'];	
+
+		}else{
+			$result = mysqli_query($this->mysqli, "SELECT rate FROM conversion_rates WHERE main_category = '$mainCategory' AND sub_category = '$subCategory'");
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			return $row['rate'];	
+		}
+	}
+	
+	
+	function postJourney($json){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$obj = json_decode($json, true);
+		$timestamp = strtotime($obj['date']);
+		$date = date("Y-m-d", $timestamp);
+		$mainCategory = $obj['mainCategory'];
+		$subCategory = $obj['subCategory'];
+		$distance = $obj['distance'];
+		$details = $obj['notes'];
+		
+		$conversionRate = $this->getConversionRate($mainCategory, $subCategory);	
+		$carbonTotal = $conversionRate * $distance;
+				
+		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total, conversion_rate) VALUES ('$myusername', '$date', 'journey', '$carbonTotal', '$conversionRate')");
+		$id = mysqli_insert_id($this->mysqli); 
+		$result = mysqli_query($this->mysqli, "INSERT INTO journeys VALUES ('$id', '$date', '$mainCategory', '$subCategory', '$distance', '$details')");
+		 
+		return true;
+		
+	}
+	
 }
 ?>

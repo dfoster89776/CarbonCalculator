@@ -29,7 +29,7 @@
 			  <div class="col-md-3">
 			  	  <div class="row">
 					  <div class="col-md-12" style='text-align: center;'>
-					  		<?php echo($carbon->getFacebookUserImage()); ?>					  			
+					  		<img src='<?php echo($carbon->getFacebookUserImage()); ?>' class='img-thumbnail'>					  			
 					  </div>
 				  </div>
 				  <div class="row">
