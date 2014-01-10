@@ -47,7 +47,7 @@
 	}
 	
 	$params = array(
-	  'scope' => 'read_stream, friends_likes, publish_actions',
+	  'scope' => 'read_stream, friends_likes, publish_actions, email',
 	  'redirect_uri' => 'http://drf8.host.cs.st-andrews.ac.uk/Carbon/files/account/register_facebook.php'
 	);
 	

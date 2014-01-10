@@ -17,7 +17,7 @@
 	
 		//If type is journey
 		if ($value['type'] == "journey"){
-		
+			date_default_timezone_set('UTC'); 
 			$oDate = new DateTime($value['date_added']);
 			$sDate = $oDate->format("d/m/Y");
 		

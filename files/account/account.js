@@ -19,6 +19,7 @@ function displayOverview(){
 		    document.getElementById("nav_overview").className = "active";
 			document.getElementById("nav_personal").className = "";
 			document.getElementById("nav_connected").className = "";
+			document.getElementById("nav_class").className = "";
 			document.getElementById("container").innerHTML = xmlhttp.responseText;
 			current = "overview";
 		    }
@@ -48,6 +49,7 @@ function displayPersonal(){
 		    document.getElementById("nav_overview").className = "";
 			document.getElementById("nav_personal").className = "active";
 			document.getElementById("nav_connected").className = "";
+			document.getElementById("nav_class").className = "";
 			document.getElementById("container").innerHTML = xmlhttp.responseText;
 			current = "personal";
 		    }
@@ -77,6 +79,7 @@ function displayConnected(){
 		    document.getElementById("nav_overview").className = "";
 			document.getElementById("nav_personal").className = "";
 			document.getElementById("nav_connected").className = "active";
+			document.getElementById("nav_class").className = "";
 			document.getElementById("container").innerHTML = xmlhttp.responseText;
 			current = "connected";
 		    }
@@ -88,6 +91,40 @@ function displayConnected(){
 	}
 
 }
+
+
+function displayClass(){
+	
+	if (current != "class"){
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		  }
+		else
+		  {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+		xmlhttp.onreadystatechange=function()
+		  {
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		    {
+		    document.getElementById("nav_overview").className = "";
+			document.getElementById("nav_personal").className = "";
+			document.getElementById("nav_connected").className = "";
+			document.getElementById("nav_class").className = "active";
+			document.getElementById("container").innerHTML = xmlhttp.responseText;
+			current = "class";
+		    }
+		  }
+		xmlhttp.open("GET","files/account/class.php",true);
+		xmlhttp.send();
+		
+		document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
+	}
+
+}
+
 
 function removeFacebook(){
 	
@@ -111,4 +148,67 @@ function removeFacebook(){
 	xmlhttp.send();
 	
 	document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
+}
+
+function checkClassValidity(){
+	
+	var param = "classcode=" + document.getElementById("inputClassCode").value;
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+			var obj = JSON.parse(xmlhttp.responseText);
+			if (obj['valid'] == true){
+				document.getElementById("classAlert").style.visibility = "hidden";
+				document.getElementById("module_code").innerHTML = obj['class_data']['module_number'];
+				document.getElementById("module_teacher").innerHTML = obj['class_data']['coordinator_name'];
+				document.getElementById("module_session").innerHTML = obj['class_data']['session'];
+			}else{
+				document.getElementById("classAlert").style.visibility = "visible";
+				document.getElementById("module_code").innerHTML = " - ";
+				document.getElementById("module_teacher").innerHTML = " - ";
+				document.getElementById("module_session").innerHTML = " - ";
+			}
+			
+	    }
+	  }
+	xmlhttp.open("POST","files/account/checkClassValidity.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);	
+}
+
+function joinClass(){
+	
+	var param = "classcode=" + document.getElementById("inputClassCode").value;
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+			document.getElementById("class_modal_body").innerHTML = xmlhttp.responseText;
+			
+			
+	    }
+	  }
+	xmlhttp.open("POST","files/account/addClass.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
+	document.getElementById("class_modal_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 }

@@ -23,7 +23,8 @@
 	<div class='form-group'>
 		<label for='journeyDate' class='col-md-offset-1 col-md-3 control-label'>Date</label>
 		<div class='col-md-6'>
-			<input type='email' class='form-control' id='journeyDate' value='<?php echo date('d-m-Y'); ?>'>
+			<input type='email' class='form-control' id='journeyDate' value='<?php date_default_timezone_set('UTC'); 
+echo date('d-m-Y'); ?>'>
 		</div>
 	</div>
 	<div class='form-group'>
@@ -45,7 +46,7 @@
 		</div>
 	</div>
 	<div class='form-group'>
-		<label for='journeyCarbon' class='col-md-offset-1 col-md-3 control-label'>Carbon</label>
+		<label for='journeyCarbon' class='col-md-offset-1 col-md-3 control-label'>Carbon Output</label>
 		<div class='col-md-6'>
 			<p class='form-control-static' id='journeyCarbon'> 0.0 </p>
 		</div>

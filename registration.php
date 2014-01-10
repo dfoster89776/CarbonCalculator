@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-
 <?php
 	session_start();
 	require_once("files/carbon.php");
@@ -7,6 +5,7 @@
 	require_once("files/standard/standard_includes.php");
 	
 ?>
+<!DOCTYPE html>
 
 <html>
 	<head>

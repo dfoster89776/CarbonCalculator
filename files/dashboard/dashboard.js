@@ -1,9 +1,37 @@
 var conversion_rate = 0.0;
+var previousReading = null;
+var selected;
+var data;
 
 function initialise(){
 		
 	updateCategory();
+	updateData();
 	
+}
+
+function updateData(){
+
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    data = JSON.parse(xmlhttp.responseText);
+	    alert(xmlhttp.responseText);
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/dashboardData.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();	
 }
 
 
@@ -180,7 +208,6 @@ function updateActivity(){
 	xmlhttp.open("GET","files/dashboard/activity.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send();
-	document.getElementById("journey_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 	
 }
 
@@ -194,7 +221,6 @@ function submitJourney(){
 	data.distance = document.getElementById("journeyDistance").value;
 
 	var json = "json=" + JSON.stringify(data);
-	alert(json);	
 		
 	var xmlhttp;
 	if (window.XMLHttpRequest)
@@ -211,13 +237,14 @@ function submitJourney(){
 	    {
 	    updateActivity();
 	    document.getElementById("journey_body").innerHTML=xmlhttp.responseText;
-	    document.getElementById("journey_submit_button").style.display = "none";
+	    updateData();
 	  	}
 	  }
 	xmlhttp.open("POST","files/dashboard/submit_journey.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(json);
 	document.getElementById("journey_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
+	document.getElementById("journey_submit_button").style.display = "none";
 
 }
 
@@ -244,11 +271,118 @@ function resetJourneyModal(){
 	xmlhttp.send();
 }
 
+function submitMeter(){
+	
+	var data = new Object();
+	data.type = selected;
+	data.newReading = document.getElementById("meterInputReading").value;
+
+	if (data.newReading > previousReading){
+
+		var json = "json=" + JSON.stringify(data);
+			
+		var xmlhttp;
+		if (window.XMLHttpRequest)
+		  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		  }
+		else
+		  {// code for IE6, IE5
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+		xmlhttp.onreadystatechange=function()
+		  {
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		    {
+		    updateActivity();
+		    document.getElementById("meter_body").innerHTML=xmlhttp.responseText;
+		    updateData();
+		  	}
+		  }
+		xmlhttp.open("POST","files/dashboard/submit_meter.php",true);
+		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xmlhttp.send(json);
+		document.getElementById("meter_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
+		document.getElementById("meter_submit_button").style.display = "none";
+	}
+}
+
+
+function resetMeterModal(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("meter_body").innerHTML=xmlhttp.responseText;
+	    document.getElementById("meter_submit_button").style.display = "inline";
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/meter_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+	selected = null;
+	previousReading = null;
+}
+
+function updateMeterModal(){
+	
+	newReading = document.getElementById("meterInputReading").value;
+	difference = newReading - previousReading;
+	
+	
+	if(previousReading == null || newReading == ""){
+		document.getElementById("meterUsedAmount").innerHTML = " - ";
+		document.getElementById("meterCarbon").innerHTML = " - ";
+	}
+	else{
+	
+		if (newReading <= previousReading){
+			document.getElementById("alerts").innerHTML = "<div class='alert alert-danger'>New Reading must be greater than previous reading.</div>";
+			document.getElementById("inputReadingDiv").className = "form-group has-error";
+			document.getElementById("meterCarbon").innerHTML = " - ";
+			document.getElementById("meterUsedAmount").innerHTML = " - ";
+		}
+		else{
+			document.getElementById("alerts").innerHTML = "";
+			document.getElementById("inputReadingDiv").className = "form-group"
+			document.getElementById("meterUsedAmount").innerHTML = difference;
+			if(selected == 'electricity'){
+				carbon = difference * data['meterConversionRates']['electricity_factor'];
+				document.getElementById('meterCarbon').innerHTML = carbon + " kge CO2";
+				
+			}	
+			else if(selected == 'gas'){
+				carbon = difference * data['meterConversionRates']['gas_factor'];
+				document.getElementById('meterCarbon').innerHTML = carbon + " kge CO2";
+			}
+			
+		}
+	}
+	
+}
+
 function chooseElectric(){
-	document.getElementById("previous_reading").innerHTML = data['initial_electricity'];
+	previousReading = data['meterData']['electricity'];
+	document.getElementById("meterPrevious").innerHTML = previousReading;
+	selected = "electricity";
+	document.getElementById('meterInputReading').disabled = false;
+	updateMeterModal();
 }
 
 function chooseGas(){
-	document.getElementById("previous_reading").innerHTML = data['initial_gas'];
+	previousReading = data['meterData']['gas'];
+	document.getElementById("meterPrevious").innerHTML = previousReading;
+	selected = "gas";
+	document.getElementById('meterInputReading').disabled = false;
+	updateMeterModal();
 }
 

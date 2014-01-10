@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-
 <?php
 	session_start();
 	require_once("files/carbon.php");
@@ -13,6 +11,7 @@
 	}
 ?>
 
+<!DOCTYPE html>
 <html>
 	<head>
 		<title> Account</title>
@@ -43,6 +42,7 @@
 							  <li id="nav_overview" <?php if(!$connected){echo("class='active'");}?>><a onclick="displayOverview()">Overview</a></li>
 							  <li id="nav_personal"><a onclick="displayPersonal()">Personal Details</a></li>
 							  <li id="nav_connected"><a onclick="displayConnected()">Connected Accounts</a></li>
+							  <li id="nav_class"><a onclick="displayClass()">Class</a></li>
 						  </ul>
 					  </div>
 				  </div>

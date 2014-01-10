@@ -4,12 +4,15 @@ class Carbon{
 
 	private $username = NULL;
 	private $mysqli;
+	private $facebook = NULL;
 		
 	 function __construct() {
      	      	   
 		if(isset($_SESSION['username'])){
 			$this->username = $_SESSION['username'];
 		}
+		date_default_timezone_set('UTC'); 
+
 	 }
 	
 //GENERAL FUNCTIONS 
@@ -126,6 +129,31 @@ class Carbon{
 	 
 	 
 //SOCIAL FUNCTIONS
+	function initiateFacebook(){
+		
+		if ($this->facebook == NULL){
+					
+			if(file_exists("../../facebook/facebook.php")){
+				require_once("../../facebook/facebook.php");
+			}else{
+				require_once("facebook/facebook.php");
+			}
+		
+			$this->facebook = new Facebook(array(
+			  'appId'  => '1426418514240505',
+			  'secret' => 'dc7b489953aef866c2a4a0bbc3657d17',
+			));
+			
+			$user = null;
+			$accesstoken = $this->getFacebookAccessToken();
+			
+			if($accesstoken != null){
+				$this->facebook->setAccessToken($accesstoken);
+				$user = $this->facebook->getUser();
+			}
+		}
+	}
+
 	function setFacebookAccessToken($user, $accesstoken){
 		
 		$myusername = $this->username;
@@ -181,7 +209,146 @@ class Carbon{
 			return null;	
 		}	
 	}
+	
+	function getOtherFacebookUserImageFromUserId($userid){
+		return "https://graph.facebook.com/".$userid."/picture?height=300&width=300";
+	}
+	
+	function getFacebookId($friend){
+		
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT userid FROM facebook WHERE username = '$friend'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		return $row['userid'];
 
+	}
+	
+	function loadUserProfile($userid){
+		$this->initiateFacebook();
+		return $this->facebook->api("/".$userid);
+	}
+	
+	function friendsWhoUseApps(){
+	
+	$this->initiateFacebook();	
+	
+	$myusername = $this->username;
+	$this->connectDatabase();
+	
+	$this->initiateFacebook();
+	
+	if ($this-> facebook != NULL){
+		
+		$friends = $this->facebook->api(array('method' => 'friends.getAppUsers'));
+		
+		$result = mysqli_query($this->mysqli, "SELECT facebook2.userid FROM drf8_db.facebook, drf8_db.facebook AS facebook2, drf8_db.friends WHERE drf8_db.facebook.username = drf8_db.friends.username AND drf8_db.friends.username = '$myusername' AND facebook2.username = drf8_db.friends.friend_username;");
+		
+		
+		$count = mysqli_num_rows($result);
+				
+		if($count){
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+			
+			$rows[] = $row['userid'];
+			}
+		}
+		
+		if (!isset($rows)){
+			return $friends;
+		}else{
+			$result = array_diff($friends, $rows);	
+		}
+		
+		return $result;
+	}
+	return null;
+	}
+	
+	function submitFriendRequest($friend_id){
+		
+		$myusername = $this->username;
+		
+		//Get user ID for friend
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT username FROM facebook WHERE userid='$friend_id'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$username = $row['username'];
+				
+		//Insert request in request table
+		$result = mysqli_query($this->mysqli, "INSERT INTO friend_requests VALUES ('$myusername', '$username', 'false')");
+		
+		return true;
+	}
+	
+	function getOutstandingRequests(){
+		
+		$myusername = $this->username;
+		
+		//Get user ID for friend
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT initiating_user FROM friend_requests WHERE requested_user='$myusername' AND ignored = 'false'");		
+		$count = mysqli_num_rows($result);
+		if ($count){
+			
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+			
+			$rows[] = $row['initiating_user'];
+			}
+			
+			return $rows;
+		
+			
+		}else{
+			return null;
+		}
+	}
+	
+	function confirmFriendRequest($friend){
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "DELETE FROM friend_requests WHERE initiating_user = '$friend' AND requested_user = '$myusername'");
+		$result = mysqli_query($this->mysqli, "INSERT INTO friends VALUES ('$myusername', '$friend')");
+		$result = mysqli_query($this->mysqli, "INSERT INTO friends VALUES ('$friend', '$myusername')");
+		
+		return true;
+	}
+	
+	function ignoreFriendRequest($friend){
+		echo ($friend);
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "UPDATE friend_requests SET ignored = 'true' WHERE initiating_user = '$friend' AND requested_user = '$myusername'");
+		
+		return true;
+	}
+	
+	function getFriendsList(){
+		
+		$myusername = $this->username;
+		
+		//Get user ID for friend
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT firstname, surname, friend_username, userid FROM users, friends, facebook WHERE friends.username='$myusername' AND facebook.username = friends.friend_username AND users.username = friends.friend_username;");	
+		
+		$count = mysqli_num_rows($result);
+		if ($count){
+			
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+			
+			$rows[] = $row;
+			}
+			
+			return $rows;
+		
+			
+		}else{
+			return null;
+		}
+
+		
+	}
+	
 //ACCOUNT FUNCTIONS
 	function removeFacebook(){
 		$myusername = $this->username;
@@ -198,7 +365,65 @@ class Carbon{
 		return $row;
 		
 	}
-	 
+	
+	function getClassDetails($class_code){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT classes.*, CONCAT(users.firstname, ' ', users.surname) AS coordinator_name FROM classes, users WHERE class_number='$class_code' AND users.username = classes.coordinator");
+		
+		$count = mysqli_num_rows($result);
+		
+		if ($count){
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			$data = array("valid" => true, "class_data" => $row);
+		}else{
+			$data = array("valid" => false);
+		}
+		
+		return $data;
+	} 
+	
+	function joinClass($class_code){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+
+		$result = mysqli_query($this->mysqli, "SELECT * FROM classes WHERE class_number='$class_code'");		
+		$count = mysqli_num_rows($result);
+
+		if ($count){
+			echo("HERE");
+			$result = mysqli_query($this->mysqli, "INSERT INTO student_classes (username, class_id) VALUES ('$myusername', '$class_code')");
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
+	function getSubscribedClasses(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT * FROM classes, student_classes WHERE username='$myusername' AND class_id = class_number");		
+		$count = mysqli_num_rows($result);
+		if ($count){
+			
+			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+			
+			$rows[] = $row;
+			}
+			
+			return $rows;
+		
+			
+		}else{
+			return null;
+		}
+		
+	}
 	 
 //SETUP FUNCTIONS
 	function getTransportData(){
@@ -295,30 +520,25 @@ class Carbon{
 		 
 	 }
 
-//DATA ACCESS FUNCTIONS	
-	function getDashboardData(){
-		
-		$myusername = $this->username;
-		$this->connectDatabase();
-		
-		$result = mysqli_query($this->mysqli, "SELECT initial_electricity, initial_gas FROM basic_details WHERE username = '$myusername'");
-		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-		return $row;
-	}
+//DATA ACCESS FUNCTIONS		
 	
 	function getLatestActivity(){
 		$myusername = $this->username;
 		$this->connectDatabase();
-		
-		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE username = '$myusername' ORDER BY id DESC LIMIT 0, 5 ");
-		
+		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE username = '$myusername' ORDER BY id DESC LIMIT 0, 5 ");		
 		while($row = $result->fetch_array(MYSQL_ASSOC)) {
             $myArray[] = $row;
 		}
-		
 		return $myArray;
 	}
 
+	function getDashboardData(){
+		
+		$data = array();
+		$data["meterData"] = $this->getMeterData();
+		$data["meterConversionRates"] = $this->getMeterConversionRates();
+		return $data;
+	}
 
 //POST CARBON ACTIVITY FUNCTIONS
 
@@ -339,7 +559,55 @@ class Carbon{
 		}
 	}
 	
+	function getMeterConversionRates(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT electricity_factor, gas_factor FROM basic_details WHERE username = '$myusername'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		return $row;
+	}
 	
+	function getMeterData(){
+		
+		$electricity = null;
+		$gas = null;
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT reading, reading_end FROM carbon_item, meter_readings WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND meter_type = 'electricity' ORDER BY reading DESC LIMIT 1");
+		
+		 if(mysqli_num_rows($result)){
+			 $row = $result->fetch_array(MYSQL_ASSOC);
+			 $electricity = $row['reading'];
+			 $electricityDate = $row['reading_end'];
+		 }
+		 
+		 $result = mysqli_query($this->mysqli, "SELECT reading, reading_end FROM carbon_item, meter_readings WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND meter_type = 'gas' ORDER BY reading DESC LIMIT 1");
+		
+		 if(mysqli_num_rows($result)){
+			 $row = $result->fetch_array(MYSQL_ASSOC);
+			 $gas = $row['reading'];
+			 $gasDate = $row['reading_end'];
+		 }
+		 
+		 if (($electricity == null) || ($gas == null)){
+			 $result = mysqli_query($this->mysqli, "SELECT initial_electricity, initial_gas, initial_reading_date FROM basic_details WHERE username = '$myusername'");
+			 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			 if ($electricity == null){
+				 $electricity = $row['initial_electricity'];
+				 $electricityDate = $row['initial_reading_date'];
+			 }
+			 if ($gas == null){
+				 $gas = $row['initial_gas'];
+				 $gasDate = $row['initial_reading_date'];
+			 }
+		 }
+		
+		$data = array('electricity' => $electricity, 'gas' => $gas, 'electricity_date' => $electricityDate, 'gas_date' => $gasDate);
+		return $data;
+	}
+
 	function postJourney($json){
 		
 		$myusername = $this->username;
@@ -356,10 +624,60 @@ class Carbon{
 		$conversionRate = $this->getConversionRate($mainCategory, $subCategory);	
 		$carbonTotal = $conversionRate * $distance;
 				
-		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total, conversion_rate) VALUES ('$myusername', '$date', 'journey', '$carbonTotal', '$conversionRate')");
+		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total, conversion_rate) VALUES ('$myusername', NOW(), 'journey', '$carbonTotal', '$conversionRate')");
 		$id = mysqli_insert_id($this->mysqli); 
 		$result = mysqli_query($this->mysqli, "INSERT INTO journeys VALUES ('$id', '$date', '$mainCategory', '$subCategory', '$distance', '$details')");
 		 
+		return true;
+		
+	}
+	
+	function postMeter($json){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		date_default_timezone_set('UTC');
+		
+		$meterData = $this->getMeterData();
+		$conversionData = $this->getMeterConversionRates();
+		$obj = json_decode($json, true);
+		$type = $obj['type'];
+		$newReading = $obj['newReading'];
+		$startDate = null;
+		$endDate = new DateTime();
+		
+		//Calculate amounts	
+		$amount = $newReading - $meterData[$type];
+		$conversionRate = null;
+		
+		if ($amount > 0){
+			if ($type == "electricity"){
+			 	$startDate = date_create($meterData['electricity_date']);
+			 	$conversionRate = $conversionData['electricity_factor'];
+			}else if($type == "gas"){
+				$startDate = date_create($meterData['gas_date']);
+				$conversionRate = $conversionData['gas_factor'];
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+
+		date_add($startDate, date_interval_create_from_date_string('1 days'));		
+		$interval = date_diff($startDate, $endDate);
+		$days = $interval->days;
+		$carbonOutput = $amount * $conversionRate;
+		$carbonOutputPerDay = $carbonOutput / $days;
+		
+		$sqlStartDate = date ("Y-m-d H:i:s", $startDate);
+		$sqlEndDate = date ("Y-m-d H:i:s", $endDate);
+		
+		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total, conversion_rate) VALUES ('$myusername', NOW(), 'meter_reading', '$carbonOutput', '$conversionRate')");
+		$id = mysqli_insert_id($this->mysqli);
+		$result = mysqli_query($this->mysqli, "INSERT INTO meter_readings VALUES ('$id', '$newReading', '$type', '$sqlStartDate', '$sqlEndDate', '$carbonOutputPerDay')");
+
+		
 		return true;
 		
 	}
