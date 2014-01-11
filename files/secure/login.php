@@ -11,7 +11,9 @@
 	if($carbon->verifyUser($myusername, $mypassword)){
 		$_SESSION['username'] = $myusername;
 		$_SESSION['name']= $carbon->getUsersName();
-				
+		
+		$carbon->updateLoginDate();
+		
 		if($carbon->getRegistrationStatus() == 10){
 			header("location: ../../dashboard.php");
 		}

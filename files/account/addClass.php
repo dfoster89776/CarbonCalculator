@@ -10,8 +10,19 @@
 		
 	if($data == true){
 		
+		$html = "<div class='alert alert-success'><strong>Success!</strong> You have enrolled in the class.</div>";
+		
+		$returnData = array("success" => true, "html" => $html);
+				
 	}
 	else{
 		
+		$html = "<div class='alert alert-success'><strong>Error!</strong>An error occurred, please try again.</div>";
+		
+		$returnData = array("success" => false, "html" => $html);
+				
 	}
+	
+	echo json_encode($returnData);
+
 ?>

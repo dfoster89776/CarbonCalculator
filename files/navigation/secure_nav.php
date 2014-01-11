@@ -1,3 +1,9 @@
+<?php
+	if (!isset($_SESSION['teacher'])){
+		$_SESSION['teacher'] = $carbon->getTeacherStatus();
+	}
+?>
+
 <nav class='navbar navbar-default navbar-inverse navbar-fixed-top' role='navigation'>
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class='navbar-header'>
@@ -16,6 +22,9 @@
       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/dashboard.php'>Profile</a></li>
       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/social.php'>Social</a></li>
       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/setup.php'>Setup</a></li>
+      <?php if ($_SESSION['teacher']){
+	      echo ("<li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/teaching.php'>Teaching</a></li>");
+      }?>
     </ul>
 	<ul class='nav navbar-nav navbar-right' >
 		<li class='dropdown'>

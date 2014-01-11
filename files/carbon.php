@@ -68,6 +68,23 @@ class Carbon{
 		return $row[0]." ".$row[1];		 
 	 }
 	 
+	 function updateLoginDate(){
+		 
+		 $myusername = $this->username;
+		 $this->connectDatabase();
+		 $result = mysqli_query($this->mysqli, "UPDATE users SET last_login = NOW() WHERE username = '$myusername'");
+
+	 }
+	 
+	 function getTeacherStatus(){
+		 
+		$username = $this->username;
+		$this->connectDatabase();	 
+		$result = mysqli_query($this->mysqli,"SELECT teacher FROM users WHERE username='$username'");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		return $row['teacher'];
+	 }
+	 
 	 
 	 
 //REGISTRATION FUNCTIONS
@@ -389,17 +406,22 @@ class Carbon{
 		$myusername = $this->username;
 		$this->connectDatabase();
 
-		$result = mysqli_query($this->mysqli, "SELECT * FROM classes WHERE class_number='$class_code'");		
-		$count = mysqli_num_rows($result);
+		if ($result = mysqli_query($this->mysqli, "SELECT * FROM classes WHERE class_number='$class_code'")){
+			$count = mysqli_num_rows($result);
 
-		if ($count){
-			echo("HERE");
-			$result = mysqli_query($this->mysqli, "INSERT INTO student_classes (username, class_id) VALUES ('$myusername', '$class_code')");
-			return true;
-		}else{
-			return false;
+			if ($count){
+				$result = mysqli_query($this->mysqli, "INSERT INTO student_classes (username, class_id) VALUES ('$myusername', '$class_code')");
+				if($result){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
 		}
-		
 	}
 	
 	function getSubscribedClasses(){
@@ -408,12 +430,12 @@ class Carbon{
 		$this->connectDatabase();
 		
 		$result = mysqli_query($this->mysqli, "SELECT * FROM classes, student_classes WHERE username='$myusername' AND class_id = class_number");		
+		
 		$count = mysqli_num_rows($result);
 		if ($count){
 			
 			while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-			
-			$rows[] = $row;
+				$rows[] = $row;
 			}
 			
 			return $rows;
@@ -423,6 +445,18 @@ class Carbon{
 			return null;
 		}
 		
+	}
+	
+	function removeClass($class_code){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+				
+		if($result = mysqli_query($this->mysqli, "DELETE FROM student_classes WHERE class_id='$class_code' AND username = '$myusername'")){
+			return true;
+		} else{
+			return false;
+		}
 	}
 	 
 //SETUP FUNCTIONS
