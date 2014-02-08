@@ -3,15 +3,15 @@ var previousReading = null;
 var selected;
 var data;
 
+updateData();
+
+
 function initialise(){
-		
+	updateMonthlyCarbonTotal();
 	updateCategory();
-	updateData();
-	
 }
 
 function updateData(){
-
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -26,7 +26,6 @@ function updateData(){
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
 	    data = JSON.parse(xmlhttp.responseText);
-	    alert(xmlhttp.responseText);
 	    }
 	  }
 	xmlhttp.open("GET","files/dashboard/dashboardData.php",true);
@@ -34,6 +33,52 @@ function updateData(){
 	xmlhttp.send();	
 }
 
+function updateActivity(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("activity_container").innerHTML=xmlhttp.responseText;
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/activity.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+	
+}
+
+function openJourneyModal(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("addJourneyModal").innerHTML=xmlhttp.responseText;
+	    updateCategory();
+	    $('#addJourney').modal('show')
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/journey_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+}
 
 function updateCategory(){
 
@@ -45,7 +90,7 @@ function updateCategory(){
 		
 		case "car":
 			document.getElementById("subCategoryDiv").style.display = "none";
-			conversion_rate = 0.3;
+			conversion_rate = data['journeyConversionRates']['userspecific']['car_co2'];
 			break;
 			
 		case "motorcycle":
@@ -119,7 +164,6 @@ function updateCategory(){
 	
 }
 
-
 function updateSubCategory(){
 	
 		var sub_category = document.getElementById("journeySubCategory").value;
@@ -168,7 +212,6 @@ function updateSubCategory(){
 		updateCarbon();
 }
 
-
 function updateCarbon(){
 	
 	var carbon = "-";
@@ -184,30 +227,6 @@ function updateCarbon(){
 	}
 	
 	document.getElementById("journeyCarbon").innerHTML = carbon;
-	
-}
-
-
-function updateActivity(){
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	  }
-	else
-	  {// code for IE6, IE5
-	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-	xmlhttp.onreadystatechange=function()
-	  {
-	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	    {
-	    document.getElementById("activity_container").innerHTML=xmlhttp.responseText;
-	    }
-	  }
-	xmlhttp.open("GET","files/dashboard/activity.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send();
 	
 }
 
@@ -238,6 +257,7 @@ function submitJourney(){
 	    updateActivity();
 	    document.getElementById("journey_body").innerHTML=xmlhttp.responseText;
 	    updateData();
+	    updateMonthlyCarbonTotal();
 	  	}
 	  }
 	xmlhttp.open("POST","files/dashboard/submit_journey.php",true);
@@ -246,29 +266,6 @@ function submitJourney(){
 	document.getElementById("journey_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 	document.getElementById("journey_submit_button").style.display = "none";
 
-}
-
-function resetJourneyModal(){
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	  }
-	else
-	  {// code for IE6, IE5
-	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-	xmlhttp.onreadystatechange=function()
-	  {
-	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	    {
-	    document.getElementById("journey_body").innerHTML=xmlhttp.responseText;
-	    document.getElementById("journey_submit_button").style.display = "inline";
-	    }
-	  }
-	xmlhttp.open("GET","files/dashboard/journey_modal.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send();
 }
 
 function submitMeter(){
@@ -297,6 +294,7 @@ function submitMeter(){
 		    updateActivity();
 		    document.getElementById("meter_body").innerHTML=xmlhttp.responseText;
 		    updateData();
+		    updateMonthlyCarbonTotal();
 		  	}
 		  }
 		xmlhttp.open("POST","files/dashboard/submit_meter.php",true);
@@ -306,7 +304,6 @@ function submitMeter(){
 		document.getElementById("meter_submit_button").style.display = "none";
 	}
 }
-
 
 function resetMeterModal(){
 	var xmlhttp;
@@ -386,3 +383,37 @@ function chooseGas(){
 	updateMeterModal();
 }
 
+function updateMonthlyCarbonTotal(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	monthlyCarbonTotal = JSON.parse(xmlhttp.responseText);
+			document.getElementById("carbonTotalThisMonth").innerHTML = monthlyCarbonTotal['current'];
+			document.getElementById("carbonTotalLastMonth").innerHTML = monthlyCarbonTotal['previous'];
+			if (monthlyCarbonTotal['current'] > monthlyCarbonTotal['previous']){
+				document.getElementById("carbonTotalThisMonth").style.color = "red";
+			}
+			else if(monthlyCarbonTotal['current'] < monthlyCarbonTotal['previous']){
+				document.getElementById("carbonTotalThisMonth").style.color = "green";
+			}
+			else{
+				document.getElementById("carbonTotalThisMonth").style.color = "black";
+			}
+			
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/carbon_total.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+
+}

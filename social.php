@@ -44,7 +44,7 @@
 									echo("<div class='caption'>");
 									echo("<h3>".$friend['firstname']." ".$friend['surname']."</h3>");
 									echo("<p> </p>");
-									echo("<p><a href='#' class='btn btn-primary' role='button'>Button</a> <a href='#' class='btn btn-default' role='button'>Button</a></p>");
+									echo("<p><a href='#' class='btn btn-primary' role='button'>Profile</a> <a href='#' class='btn btn-default' role='button'>Compare</a></p>");
 									echo("</div>");
 									echo("</div>");
 									echo("</div>");

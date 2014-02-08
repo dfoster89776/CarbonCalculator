@@ -8,15 +8,15 @@
 
 	if($nonFriends != null){
 	
-		echo("<div class='row'><h4> Find Friends </h4></div>");
-		
-		foreach ($nonFriends as &$friend) {
-			echo("<div class='row'>");
-			echo ("<div class='col-xs-2'><img src='".$carbon->getOtherFacebookUserImageFromUserId($friend)."' height='40px' width='40px'></div>");
+		echo("<h3> Find Friends </h3>");
+		foreach ($nonFriends as &$friend){
 		    $response = $carbon->loadUserProfile($friend);
-		    echo ("<div class='col-xs-5'><strong>".$response['name']."</strong></div>");
-		    echo "<div class='col-xs-5'><button id='add_".$friend."' onclick='addFriend(".$friend.")' class='btn btn-primary'> Add Friend </button></div>";
-		    echo("</div>");
+			echo("<div class='media'>");
+			echo("<a class='pull-left' href='#'><img class='media-object' src='".$carbon->getOtherFacebookUserImageFromUserId($friend)."' width='64' height='64' alt='User Image'></a>");
+			echo(" <div class='media-body'><h4 class='media-heading'>".$response['name']."</h4>
+   <button id='add_".$friend."' onclick='addFriend(".$friend.")' class='btn btn-primary'> Add Friend </button>
+  </div>");
+  			echo("</div>");
 		}
-	}						
+	}
 ?>

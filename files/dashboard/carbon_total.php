@@ -6,7 +6,10 @@
 	
 	require_once("../carbon.php");
 	$carbon = new Carbon();	
-	$data = $carbon->getDashboardData();
 
+	$data['current'] = $carbon->carbonThisMonth();
+	$data['previous'] = $carbon->carbonLastMonth();
+	
 	echo json_encode($data);
+
 ?>

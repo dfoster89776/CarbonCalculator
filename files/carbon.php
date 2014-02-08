@@ -247,18 +247,18 @@ class Carbon{
 	
 	function friendsWhoUseApps(){
 	
-	$this->initiateFacebook();	
-	
-	$myusername = $this->username;
-	$this->connectDatabase();
-	
-	$this->initiateFacebook();
-	
-	if ($this-> facebook != NULL){
+		$this->initiateFacebook();	
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$this->initiateFacebook();
+		
+		if ($this-> facebook != NULL){
 		
 		$friends = $this->facebook->api(array('method' => 'friends.getAppUsers'));
 		
-		$result = mysqli_query($this->mysqli, "SELECT facebook2.userid FROM drf8_db.facebook, drf8_db.facebook AS facebook2, drf8_db.friends WHERE drf8_db.facebook.username = drf8_db.friends.username AND drf8_db.friends.username = '$myusername' AND facebook2.username = drf8_db.friends.friend_username;");
+		$result = mysqli_query($this->mysqli, "SELECT facebook2.userid FROM drf8_db.facebook, drf8_db.facebook AS facebook2, drf8_db.friends WHERE drf8_db.facebook.username = drf8_db.friends.username AND drf8_db.friends.username = '$myusername' AND facebook2.username = drf8_db.friends.friend_username UNION SELECT userid FROM friend_requests, facebook WHERE requested_user = '$myusername' AND initiating_user = username UNION SELECT userid FROM friend_requests, facebook WHERE initiating_user = '$myusername' AND requested_user = username;");
 		
 		
 		$count = mysqli_num_rows($result);
@@ -278,7 +278,7 @@ class Carbon{
 		
 		return $result;
 	}
-	return null;
+		return null;
 	}
 	
 	function submitFriendRequest($friend_id){
@@ -332,12 +332,15 @@ class Carbon{
 	}
 	
 	function ignoreFriendRequest($friend){
-		echo ($friend);
 		$myusername = $this->username;
 		$this->connectDatabase();
 		$result = mysqli_query($this->mysqli, "UPDATE friend_requests SET ignored = 'true' WHERE initiating_user = '$friend' AND requested_user = '$myusername'");
 		
-		return true;
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	function getFriendsList(){
@@ -559,11 +562,18 @@ class Carbon{
 	function getLatestActivity(){
 		$myusername = $this->username;
 		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE username = '$myusername' ORDER BY id DESC LIMIT 0, 5 ");		
-		while($row = $result->fetch_array(MYSQL_ASSOC)) {
-            $myArray[] = $row;
-		}
-		return $myArray;
+		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE username = '$myusername' ORDER BY id DESC");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+				
+			}
+		}		
+		return null;
 	}
 
 	function getDashboardData(){
@@ -571,7 +581,37 @@ class Carbon{
 		$data = array();
 		$data["meterData"] = $this->getMeterData();
 		$data["meterConversionRates"] = $this->getMeterConversionRates();
+		$data["journeyConversionRates"] = $this->getJourneyConversionRates();
 		return $data;
+	}
+	
+//DASHBOARD FUNCTIONS
+	function carbonThisMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW())AND MONTH(journey_date) = MONTH(NOW());");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return null;
+		}
+		
+	}
+	
+	function carbonLastMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(journey_date) = MONTH(NOW() - INTERVAL 1 MONTH);");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return null;
+		}
+		
 	}
 
 //POST CARBON ACTIVITY FUNCTIONS
@@ -591,6 +631,28 @@ class Carbon{
 			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 			return $row['rate'];	
 		}
+	}
+	
+	function getJourneyConversionRates(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$data = array();
+		
+		$result = mysqli_query($this->mysqli, "SELECT car_co2 FROM basic_details WHERE username = '$myusername'");
+		$data['userspecific'] = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+		$result = mysqli_query($this->mysqli, "SELECT * FROM conversion_rates");
+		if ($result){	
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+					$data['standard'][] = $row;
+				}
+			}
+		}
+		return $data;
 	}
 	
 	function getMeterConversionRates(){
@@ -698,14 +760,14 @@ class Carbon{
 			return false;
 		}
 
-		date_add($startDate, date_interval_create_from_date_string('1 days'));		
 		$interval = date_diff($startDate, $endDate);
 		$days = $interval->days;
+		date_add($startDate, date_interval_create_from_date_string('1 days'));		
 		$carbonOutput = $amount * $conversionRate;
 		$carbonOutputPerDay = $carbonOutput / $days;
 		
-		$sqlStartDate = date ("Y-m-d H:i:s", $startDate);
-		$sqlEndDate = date ("Y-m-d H:i:s", $endDate);
+		$sqlStartDate = date_format($startDate, 'Y-m-d H:i:s');;
+		$sqlEndDate = date_format($endDate, 'Y-m-d H:i:s');;
 		
 		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total, conversion_rate) VALUES ('$myusername', NOW(), 'meter_reading', '$carbonOutput', '$conversionRate')");
 		$id = mysqli_insert_id($this->mysqli);
@@ -716,5 +778,118 @@ class Carbon{
 		
 	}
 	
+//TEACHER FUNCTIONS
+	function getClassesTaught(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT class_number, coordinator, module_number, session, count(student_classes.username) AS no_students FROM classes LEFT JOIN student_classes ON classes.class_number = student_classes.class_id WHERE classes.coordinator = '$myusername' GROUP BY classes.class_number");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+		
+	}
+	
+	function getClassStudentDetails($class_code){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM users, student_classes WHERE users.username = student_classes.username AND student_classes.class_id = '$class_code'");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+
+		
+	}
+	
+	function registerNewClass($moduleNumber, $session){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$string;
+		$found = false;
+		//Find blank class code
+		do {
+			$string = randomString(15);
+	
+			//Check if string exists
+			$result = mysqli_query($this->mysqli, "SELECT * FROM classes WHERE class_number = '$string'");
+			
+			if($result){
+				$count = mysqli_num_rows($result);
+				if ($count == 0){
+					$found = true;
+				}
+			}
+		} while ($found == false);
+		
+		$result = mysqli_query($this->mysqli, "INSERT INTO classes VALUES ('$string', '$myusername', '$moduleNumber', '$session')");
+		
+		if($result){
+			$data = array("class_number" => $string, "module_number" => $moduleNumber, "session" => $session);
+			return $data;
+		}else{
+			return null;
+		}
+	}
+	
+	function deleteClass($class_code){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+
+		$result = mysqli_query($this->mysqli, "DELETE FROM classes WHERE class_number = '$class_code'");
+		
+		if($result){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
+
+function randomString($length){
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	    $randomString = '';
+	    for ($i = 0; $i < $length; $i++) {
+	        $randomString .= $characters[rand(0, strlen($characters) - 1)];
+	    }
+	    return $randomString;
+	}
 ?>

@@ -23,15 +23,15 @@
 	
 		<?php require_once("files/navigation/secure_nav.php");?>
 	
-		<div class="container" style="margin-top: 50px">			
+		<div class="container">			
 			<div class="row">
-			  <div class="col-md-3">
-			  	  <div class="row">
+			  <div class="col-md-3" style="margin-bottom: 20px">
+			  	  <div class="row hidden-xs">
 					  <div class="col-md-12" style='text-align: center;'>
 					  		<img src='<?php echo($carbon->getFacebookUserImage()); ?>' class='img-thumbnail'>					  			
 					  </div>
 				  </div>
-				  <div class="row">
+				  <div class="row hidden-xs">
 					  <div class="col-md-12" style='text-align: center;'>
 					  		<?php echo("<h2>".$_SESSION['name']."</h2>"); ?>					  			
 					  </div>

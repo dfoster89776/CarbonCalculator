@@ -25,15 +25,7 @@
 			<div class="row">
 				
 				<div class="col-md-3 col-md-push-9">
-					<div>
 					
-						<h2> Carbon Total </h2>
-						
-						<h4> This Month: </h4>
-						<div id="carbonTotalThisMonth">...</div>
-						<h4> Last Month: </h4>
-						<div id="carbonTotalLastMonth">...</div>
-					</div>
 					<br/>
 					<p><button class="btn btn-primary btn-lg" style="width: 100%;" onclick="openJourneyModal()">
 					  Add Journey
@@ -44,6 +36,18 @@
 				</div>
 				
 				<div class="col-md-8 col-md-pull-3">
+					<div class="well">
+						<div class="row">
+							<div class="col-sm-6">
+							<h4> Last Month: </h4>
+						<div id="carbonTotalLastMonth" style="font-size: 80px">...</div>
+							</div>
+							<div class="col-sm-6">
+							<h4> This Month: </h4>
+						<div id="carbonTotalThisMonth" style="font-size: 80px">...</div>
+							</div>
+						</div>
+					</div>
 					<div>
 					<?php include_once("files/dashboard/dashboardGraph.php"); ?>
 					</div>

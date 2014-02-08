@@ -1,4 +1,9 @@
-<div class='form-horizontal' role='form'>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">Add Journey</h4>
+  </div>
+  <div class="modal-body" id="journey_body">
+  	<div class='form-horizontal' role='form'>
 	<div class='form-group' id='inputJourneyTypeDiv'>
 		<label for='journeyMainCategory' class='col-md-offset-1 col-md-3 control-label'>Category</label>
 		<div class='col-md-6'>
@@ -52,3 +57,8 @@ echo date('d-m-Y'); ?>'>
 		</div>
 	</div>
 </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="submitJourney()" id="journey_submit_button">Submit</button>
+  </div>
