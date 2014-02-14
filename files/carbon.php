@@ -133,10 +133,11 @@ class Carbon{
 		 $this->updateRegistrationStatus(5);
 	 }
 	 
-	 function setupEnergy($residents, $elec_factor, $gas_factor, $walls, $roof, $windows, $draughts, $boiler, $thermostat, $hours, $hot_water){
+	 function setupEnergy($residents, $electricity, $gas, $walls, $roof, $windows, $draughts, $boiler, $thermostat, $hours, $hot_water){
 		 $myusername = $this->username;
 		 $this->connectDatabase();
-		 $result = mysqli_query($this->mysqli, "UPDATE basic_details SET occupants = '$residents', electricity_factor = '$elec_factor', gas_factor = '$gas_factor', heat_loss_wall = '$walls', heat_loss_roof = '$roof', heat_loss_window = '$windows', heat_loss_draughts = '$draughts', boiler_efficiency = '$boiler', thermostat = '$thermostat', heating_hours = '$hours', heat_loss_water_tank = '$hot_water' WHERE username='$myusername'");
+		 $result = mysqli_query($this->mysqli, "UPDATE basic_details SET occupants = '$residents', heat_loss_wall = '$walls', heat_loss_roof = '$roof', heat_loss_window = '$windows', heat_loss_draughts = '$draughts', boiler_efficiency = '$boiler', thermostat = '$thermostat', heating_hours = '$hours', heat_loss_water_tank = '$hot_water', initial_electricity = '$electricity', initial_gas = '$gas', initial_reading_date = NOW() WHERE username='$myusername'");
+		 echo $result;
 		 $this->updateRegistrationStatus(6);
 	 }
 	 
@@ -765,6 +766,7 @@ class Carbon{
 		$obj = json_decode($json, true);
 		$type = $obj['type'];
 		$newReading = $obj['newReading'];
+		$occupants = $obj['occupants'];
 		$startDate = null;
 		$endDate = new DateTime();
 		
@@ -789,7 +791,7 @@ class Carbon{
 		$interval = date_diff($startDate, $endDate);
 		$days = $interval->days;
 		date_add($startDate, date_interval_create_from_date_string('1 days'));		
-		$carbonOutput = $amount * $conversionRate;
+		$carbonOutput = $amount * $conversionRate / $occupants;
 		$carbonOutputPerDay = $carbonOutput / $days;
 		
 		$sqlStartDate = date_format($startDate, 'Y-m-d H:i:s');;
@@ -799,7 +801,6 @@ class Carbon{
 		$id = mysqli_insert_id($this->mysqli);
 		$result = mysqli_query($this->mysqli, "INSERT INTO meter_readings VALUES ('$id', '$newReading', '$type', '$sqlStartDate', '$sqlEndDate', '$carbonOutputPerDay')");
 
-		
 		return true;
 		
 	}

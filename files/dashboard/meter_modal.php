@@ -39,12 +39,24 @@
 			<label for='inputUsername' class='col-md-offset-1 col-md-3 control-label'>Utility</label>
 			<div class='col-md-6'>
 				<div class="btn-group" data-toggle="buttons">
+				
+				<?php 
+					if(date('Ymd') != date('Ymd', strtotime($data['electricity_date']))){
+				?>
+				
 				  <label class="btn btn-primary" onclick="chooseElectric()">
 				    <input type="radio" name="options" id="electricity"> Electricity
 				  </label>
+				  
+				 <?php
+				 	}
+				 	if (date('Ymd') != date('Ymd', strtotime($data['gas_date']))){
+				 ?>
 				  <label class="btn btn-primary" onclick="chooseGas()">
 				    <input type="radio" name="options" id="gas"> Gas
 				  </label>
+				  
+				  <?php } ?>
 				</div>
 			</div>
 		</div>
