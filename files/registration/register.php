@@ -330,9 +330,27 @@
 								<li class='list-group-item'>  
 									<div class='form-horizontal' role='form'>
 										<div class='form-group'>
-										<label for='kgeCO2' class='col-lg-offset-1 col-lg-2 control-label'>Number of people in residence</label>
+										<label for='residents' class='col-lg-offset-1 col-lg-2 control-label'>Number of people in residence</label>
 										<div class='col-lg-6'>
 											<input type='text' class='form-control' id='residents' placeholder='Number of residents'>
+										</div>
+									</div>
+								</li>
+								<li class='list-group-item'>  
+									<div class='form-horizontal' role='form'>
+										<div class='form-group'>
+										<label for='electricity_meter' class='col-lg-offset-1 col-lg-2 control-label'>Initial Electricity Meter Reading</label>
+										<div class='col-lg-6'>
+											<input type='text' class='form-control' id='electricity_meter' placeholder='Electricity Meter Reading'>
+										</div>
+									</div>
+								</li>
+								<li class='list-group-item'>  
+									<div class='form-horizontal' role='form'>
+										<div class='form-group'>
+										<label for='gas_meter' class='col-lg-offset-1 col-lg-2 control-label'>Initial Gas Meter Reading</label>
+										<div class='col-lg-6'>
+											<input type='text' class='form-control' id='gas_meter' placeholder='Gas Meter Reading'>
 										</div>
 									</div>
 								</li>

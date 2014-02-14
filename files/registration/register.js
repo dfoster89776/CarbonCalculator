@@ -172,8 +172,8 @@ function submitSetupTwo(){
 
 	
 	residents = document.getElementById('residents').value;
-	elec_factor = document.getElementById('elec_factor').value;
-	gas_factor = document.getElementById('gas_factor').value;
+	electricity = document.getElementById('electricity_meter').value;
+	gas = document.getElementById('gas_meter').value;
 	walls = document.getElementById('walls').value;
 	roof = document.getElementById('roof').value;
 	windows_doors = document.getElementById('windows_doors').value;
@@ -183,7 +183,7 @@ function submitSetupTwo(){
 	thermostat = document.getElementById('thermostat').value;
 	hours = document.getElementById('hours').value;
 	
-	param = "residents="+ residents + "&gas_factor=" + gas_factor + "&elec_factor=" + elec_factor + "&walls=" + walls + "&roof=" + roof + "&windows_doors=" + windows_doors + "&draughts=" + draughts + "&hot_water=" + hot_water_tank  + "&boiler=" + boiler + "&thermostat=" + thermostat  + "&hours=" + hours;
+	param = "residents="+ residents + "&electricity=" + electricity + "&gas=" + gas + "&walls=" + walls + "&roof=" + roof + "&windows_doors=" + windows_doors + "&draughts=" + draughts + "&hot_water=" + hot_water_tank  + "&boiler=" + boiler + "&thermostat=" + thermostat  + "&hours=" + hours;
 
 	var xmlhttp;
 	if (window.XMLHttpRequest)
