@@ -765,6 +765,7 @@ class Carbon{
 		$obj = json_decode($json, true);
 		$type = $obj['type'];
 		$newReading = $obj['newReading'];
+		$occupants = $obj['occupants'];
 		$startDate = null;
 		$endDate = new DateTime();
 		
@@ -789,7 +790,7 @@ class Carbon{
 		$interval = date_diff($startDate, $endDate);
 		$days = $interval->days;
 		date_add($startDate, date_interval_create_from_date_string('1 days'));		
-		$carbonOutput = $amount * $conversionRate;
+		$carbonOutput = $amount * $conversionRate / $occupants;
 		$carbonOutputPerDay = $carbonOutput / $days;
 		
 		$sqlStartDate = date_format($startDate, 'Y-m-d H:i:s');;
@@ -799,7 +800,6 @@ class Carbon{
 		$id = mysqli_insert_id($this->mysqli);
 		$result = mysqli_query($this->mysqli, "INSERT INTO meter_readings VALUES ('$id', '$newReading', '$type', '$sqlStartDate', '$sqlEndDate', '$carbonOutputPerDay')");
 
-		
 		return true;
 		
 	}
