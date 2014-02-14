@@ -33,28 +33,14 @@
 					<p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addMeterReading" style="width: 100%;">
 					  Add Meter Reading
 					</button></p>
+					<div id="activity_container"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'/></div>
+					</div>
+					
 				</div>
 				
 				<div class="col-md-8 col-md-pull-3">
-					<div class="well">
-						<div class="row">
-							<div class="col-sm-6">
-							<h4> Last Month: </h4>
-						<div id="carbonTotalLastMonth" style="font-size: 80px">...</div>
-							</div>
-							<div class="col-sm-6">
-							<h4> This Month: </h4>
-						<div id="carbonTotalThisMonth" style="font-size: 80px">...</div>
-							</div>
-						</div>
-					</div>
-					<div>
-					<?php include_once("files/dashboard/dashboardGraph.php"); ?>
-					</div>
-					<div id="activity_container">
-					
-					<?php include_once("files/dashboard/activity.php"); ?>
-					</div>
+					<h1 class="page-header">Dashboard</h1>
+					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'/></div></div>
 				</div>
 			
 			</div>

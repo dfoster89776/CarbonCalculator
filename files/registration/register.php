@@ -261,16 +261,32 @@
 					<div class='panel panel-default'>
 						<div class='panel-heading'> Car </div>
 						<div class='panel-body'; role='form'>
-							<p> Please input the following details about your car's emissions. </p>
-							<p> If you do not own a car you may continue and leave the field blank </p>
+							<p> Please input details on your cars emissions. You can select either a preset average value or use the <a href='https://www.taxdisc.direct.gov.uk/EvlPortalApp/app/enquiry?execution=e3s2' target='_blank'> DVLA Vehicle Enquiry Site </a> to determine your vehicles exact emissions. The CO2 Emission values are given as g/km, so if 139 g/km, input as 0.139</p>
+							<p> If you do not own a car, select 'No Car' in the dropdown.</p>
 						</div>
 							<ul class='list-group'>
 								<li class='list-group-item'>  
 									<div class='form-horizontal' role='form'>
 										<div class='form-group'>
-										<label for='kgeCO2' class='col-lg-offset-1 col-lg-2 control-label'>CO2 Emissions for Vehicle in kg</label>
-										<div class='col-lg-6'>
-											<input type='text' class='form-control' id='kgeCO2' placeholder='Kg C02'>
+											<label for='kgeCO2' class='col-lg-offset-1 col-lg-2 control-label'>Car type</label>
+											<div class='col-lg-6'>
+												<select class='form-control' id='car_type' onchange='changeCarType()'>
+												  <option>No Car</option>
+												  <option>Petrol - Small, up to 1.4 litre</option>
+												  <option>Petrol - Medium, 1.4 to 2.0 litre</option>
+												  <option>Petrol - Large, over 2.0 litre</option>
+												  <option>Diesel - Small, up to 1.7 litre</option>
+												  <option>Diesel - Medium, 1.7 to 2.0 litre</option>
+												  <option>Diesel - Large, over 2.0 litre</option>
+												  <option>Custom</option>
+												</select>
+											</div>
+										</div>
+										<div class='form-group'>
+											<label for='kgeCO2' class='col-lg-offset-1 col-lg-2 control-label'>CO2 Emissions for Vehicle in kg</label>
+											<div class='col-lg-6'>
+												<input type='text' class='form-control' id='car_carbon'></input>
+											</div>
 										</div>
 									</div>
 								</li>
@@ -317,24 +333,6 @@
 										<label for='kgeCO2' class='col-lg-offset-1 col-lg-2 control-label'>Number of people in residence</label>
 										<div class='col-lg-6'>
 											<input type='text' class='form-control' id='residents' placeholder='Number of residents'>
-										</div>
-									</div>
-								</li>
-								<li class='list-group-item'>  
-									<div class='form-horizontal' role='form'>
-										<div class='form-group'>
-										<label for='kgeCO2' class='col-lg-offset-1 col-lg-2 control-label'>Electricity footprint conversion factor</label>
-										<div class='col-lg-6'>
-											<input type='text' class='form-control' id='elec_factor' placeholder='Electricity Conversion Factor'>
-										</div>
-									</div>
-								</li>
-								<li class='list-group-item'>  
-									<div class='form-horizontal' role='form'>
-										<div class='form-group'>
-										<label for='kgeCO2' class='col-lg-offset-1 col-lg-2 control-label'>Gas footprint conversion factor</label>
-										<div class='col-lg-6'>
-											<input type='text' class='form-control' id='gas_factor' placeholder='Gas Conversion Factor'>
 										</div>
 									</div>
 								</li>

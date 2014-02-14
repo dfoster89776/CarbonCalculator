@@ -1,5 +1,12 @@
-
 var formValidity = true;
+
+var carbon_values = new Array();
+carbon_values[1] = 0.16192;
+carbon_values[2] = 0.2049;
+carbon_values[3] = 0.29678;
+carbon_values[4] = 0.14048;
+carbon_values[5] = 0.17475;
+carbon_values[6] = 0.22941;
 
 function loadContent(){
 	
@@ -136,7 +143,7 @@ function submitSetupInfo(){
 
 function submitSetupOne(){
 
-	carco2 = document.getElementById('kgeCO2').value;
+	carco2 = document.getElementById('car_carbon').value;
 	
 	param = "carco2="+ carco2;
 
@@ -381,4 +388,23 @@ function checkPasswordMatch(){
 	}
 
 	
+}
+
+function changeCarType(){
+	
+	var index = document.getElementById("car_type").selectedIndex;
+	
+	if (index > 0 && index < 7){
+		document.getElementById("car_carbon").value = carbon_values[index];
+		document.getElementById("car_carbon").readOnly = true;
+	}
+	else if(index == 0){
+		document.getElementById("car_carbon").value = "";
+		document.getElementById("car_carbon").readOnly = true;
+	}
+	else if(index == 7){
+		document.getElementById("car_carbon").value = "";
+		document.getElementById("car_carbon").readOnly = false;
+	}
+		
 }

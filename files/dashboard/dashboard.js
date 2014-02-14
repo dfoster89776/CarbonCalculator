@@ -5,9 +5,9 @@ var data;
 
 updateData();
 
-
 function initialise(){
-	updateMonthlyCarbonTotal();
+	updateStatistics();
+	updateActivity();
 	updateCategory();
 }
 
@@ -257,7 +257,8 @@ function submitJourney(){
 	    updateActivity();
 	    document.getElementById("journey_body").innerHTML=xmlhttp.responseText;
 	    updateData();
-	    updateMonthlyCarbonTotal();
+	    updateStatistics();
+
 	  	}
 	  }
 	xmlhttp.open("POST","files/dashboard/submit_journey.php",true);
@@ -294,7 +295,8 @@ function submitMeter(){
 		    updateActivity();
 		    document.getElementById("meter_body").innerHTML=xmlhttp.responseText;
 		    updateData();
-		    updateMonthlyCarbonTotal();
+		    updateStatistics();
+
 		  	}
 		  }
 		xmlhttp.open("POST","files/dashboard/submit_meter.php",true);
@@ -383,7 +385,8 @@ function chooseGas(){
 	updateMeterModal();
 }
 
-function updateMonthlyCarbonTotal(){
+function updateStatistics(){
+	
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -397,23 +400,16 @@ function updateMonthlyCarbonTotal(){
 	  {
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
-	    	monthlyCarbonTotal = JSON.parse(xmlhttp.responseText);
-			document.getElementById("carbonTotalThisMonth").innerHTML = monthlyCarbonTotal['current'];
-			document.getElementById("carbonTotalLastMonth").innerHTML = monthlyCarbonTotal['previous'];
-			if (monthlyCarbonTotal['current'] > monthlyCarbonTotal['previous']){
-				document.getElementById("carbonTotalThisMonth").style.color = "red";
-			}
-			else if(monthlyCarbonTotal['current'] < monthlyCarbonTotal['previous']){
-				document.getElementById("carbonTotalThisMonth").style.color = "green";
-			}
-			else{
-				document.getElementById("carbonTotalThisMonth").style.color = "black";
-			}
-			
+	    	document.getElementById("statistics").innerHTML = xmlhttp.responseText;
 	    }
 	  }
-	xmlhttp.open("GET","files/dashboard/carbon_total.php",true);
+	xmlhttp.open("GET","files/dashboard/statistics.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send();
 
+	
+}
+
+function updateMonthlyCarbonTotal(){
+	
 }

@@ -586,7 +586,7 @@ class Carbon{
 	}
 	
 //DASHBOARD FUNCTIONS
-	function carbonThisMonth(){
+	function transportCarbonThisMonth(){
 		
 		$myusername = $this->username;
 		$this->connectDatabase();
@@ -600,7 +600,7 @@ class Carbon{
 		
 	}
 	
-	function carbonLastMonth(){
+	function transportCarbonLastMonth(){
 		
 		$myusername = $this->username;
 		$this->connectDatabase();
@@ -612,6 +612,32 @@ class Carbon{
 			return null;
 		}
 		
+	}
+	
+	function energyCarbonThisMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = 'dfoster89776' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW())AND MONTH(date) = MONTH(NOW())");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon']);
+		}else{
+			return null;
+		}
+	}
+	
+	function energyCarbonLastMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = 'dfoster89776' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(date) = MONTH(NOW() - INTERVAL 1 MONTH)");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon']);
+		}else{
+			return null;
+		}
 	}
 
 //POST CARBON ACTIVITY FUNCTIONS

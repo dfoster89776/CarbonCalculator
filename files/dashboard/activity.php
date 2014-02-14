@@ -8,12 +8,15 @@
 		$carbon = new Carbon();	
 	}
 	
-	echo("<h2> Latest Activity </h2>");
+	echo("<div>");
+	echo("<h3 class='page-header'>Your Latest Activity</h3>");
 	
 
 	$activity = $carbon->getLatestActivity();
 					
 	if ($activity){
+							
+		$count = 1;
 							
 		foreach ($activity as $value) {
 		
@@ -47,8 +50,12 @@
 						</div>");
 
 			}
+			
+			$count++;
+			if($count > 5){ break; }
 	   	}
 	}else{
 		echo("<h4> No activity to display </h4>");
 	}			
+	echo("</div>");
 ?>
