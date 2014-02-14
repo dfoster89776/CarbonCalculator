@@ -56,6 +56,32 @@ function updateActivity(){
 	
 }
 
+function openMeterModal(){
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("addMeterModal").innerHTML=xmlhttp.responseText;
+	    $('#addMeterReading').modal('show');
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/meter_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+
+	
+}
+
 function openJourneyModal(){
 	var xmlhttp;
 	if (window.XMLHttpRequest)
@@ -72,7 +98,7 @@ function openJourneyModal(){
 	    {
 	    document.getElementById("addJourneyModal").innerHTML=xmlhttp.responseText;
 	    updateCategory();
-	    $('#addJourney').modal('show')
+	    $('#addJourney').modal('show');
 	    }
 	  }
 	xmlhttp.open("GET","files/dashboard/journey_modal.php",true);
@@ -274,6 +300,7 @@ function submitMeter(){
 	var data = new Object();
 	data.type = selected;
 	data.newReading = document.getElementById("meterInputReading").value;
+	data.occupants = document.getElementById("occupants").value;
 
 	if (data.newReading > previousReading){
 
@@ -307,36 +334,12 @@ function submitMeter(){
 	}
 }
 
-function resetMeterModal(){
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	  }
-	else
-	  {// code for IE6, IE5
-	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-	xmlhttp.onreadystatechange=function()
-	  {
-	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	    {
-	    document.getElementById("meter_body").innerHTML=xmlhttp.responseText;
-	    document.getElementById("meter_submit_button").style.display = "inline";
-	    }
-	  }
-	xmlhttp.open("GET","files/dashboard/meter_modal.php",true);
-	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send();
-	selected = null;
-	previousReading = null;
-}
-
 function updateMeterModal(){
 	
 	newReading = document.getElementById("meterInputReading").value;
 	difference = newReading - previousReading;
 	
+	occupants = document.getElementById('occupants').value;
 	
 	if(previousReading == null || newReading == ""){
 		document.getElementById("meterUsedAmount").innerHTML = " - ";
@@ -356,17 +359,16 @@ function updateMeterModal(){
 			document.getElementById("meterUsedAmount").innerHTML = difference;
 			if(selected == 'electricity'){
 				carbon = difference * data['meterConversionRates']['electricity_factor'];
-				document.getElementById('meterCarbon').innerHTML = carbon + " kge CO2";
 				
 			}	
 			else if(selected == 'gas'){
 				carbon = difference * data['meterConversionRates']['gas_factor'];
-				document.getElementById('meterCarbon').innerHTML = carbon + " kge CO2";
 			}
-			
+			carbonPerson = carbon/occupants;
+			document.getElementById('meterCarbon').innerHTML = carbon.toFixed(2) + " kge CO2";
+			document.getElementById('meterCarbonPerson').innerHTML = carbonPerson.toFixed(2) + " kge CO2";
 		}
 	}
-	
 }
 
 function chooseElectric(){
