@@ -257,7 +257,7 @@ function updateCarbon(){
 }
 
 function submitJourney(){
-	
+		
 	var data = new Object();
 	data.mainCategory = document.getElementById("journeyMainCategory").value;
 	data.subCategory = document.getElementById("journeySubCategory").value;
@@ -413,5 +413,61 @@ function updateStatistics(){
 }
 
 function updateMonthlyCarbonTotal(){
+	
+}
+
+function openActivityModal(id){
+	
+	var param = "id=" + id;
+		
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("activityModalContent").innerHTML= xmlhttp.responseText;
+	    $('#activityModal').modal('show');
+	    }
+	  }
+	xmlhttp.open("POST","files/dashboard/activity_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
+	
+}
+
+function deleteActivity(id){
+	
+	var param = "id=" + id;
+		
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("activityModalContent").innerHTML= xmlhttp.responseText;
+	    $('#activityModal').modal('show');
+	    updateActivity();
+	    updateStatistics();
+	    }
+	  }
+	xmlhttp.open("POST","files/dashboard/deleteActivity.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
 	
 }

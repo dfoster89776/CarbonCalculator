@@ -563,7 +563,7 @@ class Carbon{
 	function getLatestActivity(){
 		$myusername = $this->username;
 		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE username = '$myusername' ORDER BY id DESC");
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT carbon_item.*, journeys.main_category, journeys.sub_category FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername' ORDER BY carbon_item.id DESC LIMIT 5) AS newTable");
 		if($result){
 			if(mysqli_num_rows($result)){
 				
@@ -586,17 +586,60 @@ class Carbon{
 		return $data;
 	}
 	
+	function getActivityData($id){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$data;
+			
+		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE id = '$id'");
+		
+		if ($result){
+			
+			if(mysqli_num_rows($result)){
+			
+				$data['carbon'] = mysqli_fetch_array($result, MYSQLI_ASSOC);
+				
+				if ($data['carbon']['type'] == "journey"){
+					$result = mysqli_query($this->mysqli, "SELECT * FROM journeys WHERE id = '$id'");
+					$data['journey'] = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+				} elseif ($data['carbon']['type'] == "meter_reading"){
+					$result = mysqli_query($this->mysqli, "SELECT * FROM meter_readings WHERE id = '$id'");
+					$data['meter_reading'] = mysqli_fetch_array($result, MYSQLI_ASSOC);
+				}
+				
+				return $data;		
+			}
+		}
+		return null;	
+	}
+	
+	function deleteActivity($id){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "DELETE FROM carbon_item WHERE id = '$id'");
+		
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 //DASHBOARD FUNCTIONS
 	function transportCarbonThisMonth(){
 		
 		$myusername = $this->username;
 		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW())AND MONTH(journey_date) = MONTH(NOW());");
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW())AND MONTH(journey_date) = MONTH(NOW()) AND username = '$myusername';");
 		if($result){
 			$row = $result->fetch_array(MYSQL_ASSOC);
 			return round($row['carbon_total']);
 		}else{
-			return null;
+			return 0;
 		}
 		
 	}
@@ -605,12 +648,12 @@ class Carbon{
 		
 		$myusername = $this->username;
 		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(journey_date) = MONTH(NOW() - INTERVAL 1 MONTH);");
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(journey_date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username = '$myusername';");
 		if($result){
 			$row = $result->fetch_array(MYSQL_ASSOC);
 			return round($row['carbon_total']);
 		}else{
-			return null;
+			return 0;
 		}
 		
 	}
@@ -619,12 +662,12 @@ class Carbon{
 		
 		$myusername = $this->username;
 		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = 'dfoster89776' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW())AND MONTH(date) = MONTH(NOW())");
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW())AND MONTH(date) = MONTH(NOW())");
 		if($result){
 			$row = $result->fetch_array(MYSQL_ASSOC);
 			return round($row['carbon']);
 		}else{
-			return null;
+			return 0;
 		}
 	}
 	
@@ -632,12 +675,12 @@ class Carbon{
 		
 		$myusername = $this->username;
 		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = 'dfoste	r89776' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(date) = MONTH(NOW() - INTERVAL 1 MONTH)");
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(date) = MONTH(NOW() - INTERVAL 1 MONTH)");
 		if($result){
 			$row = $result->fetch_array(MYSQL_ASSOC);
 			return round($row['carbon']);
 		}else{
-			return null;
+			return 0;
 		}
 	}
 
@@ -743,7 +786,7 @@ class Carbon{
 		$subCategory = $obj['subCategory'];
 		$distance = $obj['distance'];
 		$details = $obj['notes'];
-		
+				
 		$conversionRate = $this->getConversionRate($mainCategory, $subCategory);	
 		$carbonTotal = $conversionRate * $distance;
 				

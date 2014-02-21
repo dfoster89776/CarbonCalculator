@@ -3,3 +3,15 @@ body{
 	padding-bottom: 20px;
 	overflow-x: hidden;
 }
+
+div.activity_item{
+	
+	margin-bottom: 20px; 
+	color: black;
+	
+}
+
+div.activity_item:hover{
+	
+	color: #1881c0;
+}
