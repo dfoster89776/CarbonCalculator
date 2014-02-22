@@ -238,7 +238,6 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "SELECT userid FROM facebook WHERE username = '$friend'");
 		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 		return $row['userid'];
-
 	}
 	
 	function loadUserProfile($userid){
@@ -369,6 +368,105 @@ class Carbon{
 
 		
 	}
+	
+	function validateFriend($friend){
+	
+		$myusername = $this->username;
+		$friendUsername = $friend;
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT * FROM drf8_db.friends WHERE username = '$myusername' AND friend_username = '$friendUsername'");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			
+			if ($count == 1){
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	function getFriendsName($friend){
+		
+		$friendUsername = $friend;
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT firstname, surname FROM drf8_db.users WHERE username = '$friendUsername'");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			
+			if ($count == 1){
+				
+				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+				
+				$name = $row['firstname']." ".$row['surname'];
+				return $name;
+			}
+			
+		}
+		return null;
+	}
+	
+	function friendsTransportCarbonThisMonth($profile){
+		
+		$myusername = $profile;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW())AND MONTH(journey_date) = MONTH(NOW()) AND username = '$myusername';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+		
+	}
+	
+		function friendsTransportCarbonLastMonth($profile){
+		
+		$myusername = $profile;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(journey_date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username = '$myusername';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+		
+	}
+	
+	function friendsEnergyCarbonThisMonth($profile){
+		
+		$myusername = $profile;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW())AND MONTH(date) = MONTH(NOW())");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function friendsEnergyCarbonLastMonth($profile){
+		
+		$myusername = $profile;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(date) = MONTH(NOW() - INTERVAL 1 MONTH)");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon']);
+		}else{
+			return 0;
+		}
+	}
+
+
 	
 //ACCOUNT FUNCTIONS
 	function removeFacebook(){
@@ -561,20 +659,9 @@ class Carbon{
 //DATA ACCESS FUNCTIONS		
 	
 	function getLatestActivity(){
+		
 		$myusername = $this->username;
-		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT carbon_item.*, journeys.main_category, journeys.sub_category FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername' ORDER BY carbon_item.id DESC LIMIT 5) AS newTable");
-		if($result){
-			if(mysqli_num_rows($result)){
-				
-				while($row = $result->fetch_array(MYSQL_ASSOC)) {
-					$myArray[] = $row;
-				}
-				return $myArray;
-				
-			}
-		}		
-		return null;
+		return $this->getLatestUserActivity($myusername);
 	}
 
 	function getDashboardData(){
@@ -616,6 +703,23 @@ class Carbon{
 		return null;	
 	}
 	
+	function getLatestUserActivity($profile){
+		
+		$friendUsername = $profile;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT carbon_item.*, journeys.main_category, journeys.sub_category FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$friendUsername' ORDER BY carbon_item.id DESC LIMIT 5) AS newTable");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+				
+			}
+		}	
+	}
+	
 	function deleteActivity($id){
 		
 		$myusername = $this->username;
@@ -629,7 +733,41 @@ class Carbon{
 		}
 	}
 	
+	function getActivityTotal($profile){
+		
+		$friendUsername = $profile;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM carbon_item WHERE username = '$friendUsername'");
+		
+		if($result){
+			return mysqli_num_rows($result);
+		}else{
+			return 0;
+		}
+	}
+	
+	function getUserActivity($profile, $start){
+		
+		$friendUsername = $profile;
+		$this->connectDatabase();
+		$start = $start;
+		$end = $start + 5;
+		
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT carbon_item.*, journeys.main_category, journeys.sub_category FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$friendUsername' ORDER BY carbon_item.id DESC LIMIT $start, $end) AS newTable");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+			}
+		}
+		return null;
+	}
+	
 //DASHBOARD FUNCTIONS
+
 	function transportCarbonThisMonth(){
 		
 		$myusername = $this->username;

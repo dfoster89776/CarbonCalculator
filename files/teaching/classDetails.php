@@ -30,7 +30,7 @@
 			echo("<td>".$student['join_date']."</td>");
 			echo("<td>".$student['last_login']."</td>");
 			echo("<td><button type='button' class='btn btn-primary' onclick='openStudentModal(\"".$student['username']."\")'>View Activity</button></td>");
-			echo("<td><a href='profile.php?username=".$student['username']."'><button type='button' class='btn btn-primary'>View Profile</button></a></td>");
+			echo("<td><a href='profile.php?profile=".$student['username']."'><button type='button' class='btn btn-primary' >View Profile</button></a></td>");
 			echo("</tr>");
 			
 		}

@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <?php
 	session_start();
 	require_once("files/carbon.php");
@@ -5,7 +7,6 @@
 	require_once("files/secure/check_login.php");
 	require_once("files/standard/standard_includes.php");
 ?>
-<!DOCTYPE html>
 
 <html>
 	<head>
@@ -34,18 +35,15 @@
 					</button></p>
 					<div id="activity_container"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'/></div>
 					</div>
-					
 				</div>
 				
 				<div class="col-md-8 col-md-pull-3">
 					<h1 class="page-header">Dashboard</h1>
-					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'/></div></div>
+					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div>
+					<h1 class="page-header" style='margin-top: 100px;'>History</h1>
+					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div>
 				</div>
 				
-				<div class="col-md-8 col-md-pull-3" style="margin-top: 50px;">
-					<h1 class="page-header">History</h1>
-					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'/></div></div>
-				</div>
 			
 			</div>
 		
