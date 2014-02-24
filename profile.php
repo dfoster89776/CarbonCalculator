@@ -31,7 +31,7 @@
 		?>
 			<div class="container">
 		
-				<div id="profile_header">
+				<div id="profile_header" class="profileHeader">
 					<div class="row">
 						<div class="col-sm-3">
 							<?php echo("<img src='".$carbon->getOtherFacebookUserImageFromUserId($carbon->getFacebookId($profile)))."' width='80%' class='img-thumbnail'>"; ?>
@@ -44,6 +44,7 @@
 							  <li id="overviewPill" class="active" onclick="loadProfileDashboard()"><a href="#">Overview</a></li>
 							  <li id="statisticsPill"><a>History</a></li>
 							  <li id="activityPill"><a onclick="loadActivityTab()">Activity</a></li>
+							   <li id="comparisonPill"><a >Compare Carbon Output</a></li>
 							</ul>
 						</div>
 					</div>

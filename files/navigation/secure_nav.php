@@ -21,7 +21,7 @@
     <ul class='nav navbar-nav'>
       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/dashboard.php'>Dashboard</a></li>
       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/social.php'>Social</a></li>
-      <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/setup.php'>Setup</a></li>
+      <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/setup.php'>Plan Savings</a></li>
       <?php if ($_SESSION['teacher']){
 	      echo ("<li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/teaching.php'>Teaching</a></li>");
       }?>
