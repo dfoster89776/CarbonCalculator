@@ -5,6 +5,10 @@ var data;
 
 updateData();
 
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(drawChart);
+     
+
 function initialise(){
 	updateStatistics();
 	updateActivity();
@@ -33,6 +37,24 @@ function updateData(){
 	xmlhttp.send();	
 }
 
+function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Energy', 'Transport'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}},
+          vAxis: {title: 'Carbon Output', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+
 function updateActivity(){
 	var xmlhttp;
 	if (window.XMLHttpRequest)
@@ -55,6 +77,8 @@ function updateActivity(){
 	xmlhttp.send();
 	
 }
+
+
 
 function openMeterModal(){
 	
@@ -161,9 +185,9 @@ function updateCategory(){
 			opt1.text = "Domestic";
 			opt1.value = "domestic";
 			opt2.text = "European / Short Haul";
-			opt2.value = "shortHaul";
+			opt2.value = "shorthaul";
 			opt3.text = "Transatlantic / Long Haul";
-			opt3.value = "longHaul";
+			opt3.value = "longhaul";
 			subcategory.add(opt1,null);
 			subcategory.add(opt2,null);
 			subcategory.add(opt3,null);
@@ -216,11 +240,11 @@ function updateSubCategory(){
 				conversion_rate = 0.1648;
 				break; 
 				
-			case "shortHaul":
+			case "shorthaul":
 				conversion_rate = 0.09684;
 				break; 
 				
-			case "longHaul":
+			case "longhaul":
 				conversion_rate = 0.1115;
 				break; 
 				

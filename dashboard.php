@@ -12,8 +12,8 @@
 	<head>
 		<title> Carbon Calculator Dashboard</title>
 		<?php 	require_once("files/standard/standard_includes.php"); ?>
-		<script src="files/dashboard/dashboard.js"></script>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="files/dashboard/dashboard.js"></script>
 
 	</head>
 	
@@ -41,7 +41,32 @@
 					<h1 class="page-header">Dashboard</h1>
 					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div>
 					<h1 class="page-header" style='margin-top: 100px;'>History</h1>
-					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div>
+					<div>
+					<div class="btn-group" data-toggle="buttons">
+					  <label class="btn btn-primary active">
+					    <input type="checkbox" checked> Energy
+					  </label>
+					  <label class="btn btn-primary active">
+					    <input type="checkbox" checked> Transport
+					  </label>
+					</div>
+					
+					<div class="btn-group pull-right" data-toggle="buttons">
+					  <label class="btn btn-primary">
+					    <input type="radio" name="options" id="option1"> 1 Week
+					  </label>
+					  <label class="btn btn-primary">
+					    <input type="radio" name="options" id="option2"> 1 Month
+					  </label>
+					  <label class="btn btn-primary active">
+					    <input type="radio" name="options" id="option3" checked> 1 Year
+					  </label>
+					  <label class="btn btn-primary">
+					    <input type="radio" name="options" id="option3"> 5 Year
+					  </label>
+					</div>
+					
+					<div id="chart_div" style="height: 500px"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div></div>
 				</div>
 				
 			

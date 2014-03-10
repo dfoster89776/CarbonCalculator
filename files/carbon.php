@@ -924,7 +924,9 @@ class Carbon{
 		$subCategory = $obj['subCategory'];
 		$distance = $obj['distance'];
 		$details = $obj['notes'];
-				
+		
+		
+		echo $subCategory;
 		$conversionRate = $this->getConversionRate($mainCategory, $subCategory);	
 		$carbonTotal = $conversionRate * $distance;
 				
