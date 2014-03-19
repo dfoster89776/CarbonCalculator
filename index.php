@@ -44,23 +44,39 @@
 		
 		
 		<div class="index_cont front" id="sect_1">
-			<div class="container">
-				<h2>Track Carbon Footprint </h2>
+			<div class=" row">
+				<div class="col-sm-4 col-sm-offset-2">
+					<h2>Track Carbon Footprint </h2>
+				</div>
+				<div class="col-sm-4">
+				</div>
 			</div>
 		</div>
 		<div class="index_cont front visible-xs" id="sect_2">
-			<div class="container">
-				<h2>Monitor History </h2>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-2">
+					<h2>Monitor your long term carbon footprint</h2>
+				</div>
+				<div class="col-sm-4" style="text-align: center;">
+					<img src="files/images/chart.png" class="image">
+				</div>
 			</div>
 		</div>
 		<div class="index_cont front visible-xs" id="sect_3">
-			<div class="container">
-				<h2>Plan to reduce carbon</h2>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-2">
+					<h2>Plan to reduce your footprint</h2>
+				</div>
 			</div>
 		</div>
 		<div class="index_cont front visible-xs" id="sect_4">
-			<div class="container">
-				<h2>Share and Compare with friends</h2>
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-2">
+					<h2>Share and Compare with your friends.</h2>
+				</div>
+				<div class="col-sm-4">
+					<img src="files/images/social.jpg" class="image">
+				</div>
 			</div>
 		</div>
 		

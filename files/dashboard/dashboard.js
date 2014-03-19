@@ -6,7 +6,7 @@ var data;
 updateData();
 
 google.load("visualization", "1", {packages:["corechart"]});
-google.setOnLoadCallback(drawChart);
+google.setOnLoadCallback(updateGraph);
      
 
 function initialise(){
@@ -37,23 +37,7 @@ function updateData(){
 	xmlhttp.send();	
 }
 
-function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Energy', 'Transport'],
-          ['2004',  1000,      400],
-          ['2005',  1170,      460],
-          ['2006',  660,       1120],
-          ['2007',  1030,      540]
-        ]);
 
-        var options = {
-          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}},
-          vAxis: {title: 'Carbon Output', titleTextStyle: {color: 'red'}}
-        };
-
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
 
 function updateActivity(){
 	var xmlhttp;
@@ -513,18 +497,12 @@ function updateGraph(){
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
 	    
-	    	alert(xmlhttp.responseText);
+	    	returnData = JSON.parse(xmlhttp.responseText);
 	    
-	    	var data = google.visualization.arrayToDataTable([
-	          ['Day', 'Energy', 'Transport'],
-	          ['Mon',  700,      400],
-	          ['Tue',  2170,      760],
-	          ['Wed',  360,       720],
-	          ['Thu',  430,      740]
-	        ]);
+	    	var data = google.visualization.arrayToDataTable(returnData);
 
 			var options = {
-	          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}},
+	          hAxis: {title: returnData[0][0], titleTextStyle: {color: 'red'}},
 	          vAxis: {title: 'Carbon Output', titleTextStyle: {color: 'red'}}
 	        };
 

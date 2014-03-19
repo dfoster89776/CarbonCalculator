@@ -170,5 +170,5 @@
 </div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-danger" onclick="deleteActivity(<?php echo($_POST['id'])?>)" id="journey_submit_button">Delete</button>
-	<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
 </div>

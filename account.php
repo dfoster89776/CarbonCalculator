@@ -23,7 +23,7 @@
 	
 		<?php require_once("files/navigation/secure_nav.php");?>
 	
-		<div class="container">			
+		<div class="container" style="padding-top: 30px;">			
 			<div class="row">
 			  <div class="col-md-3" style="margin-bottom: 20px">
 			  	  <div class="row hidden-xs">

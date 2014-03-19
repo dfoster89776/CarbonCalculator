@@ -5,7 +5,7 @@
 </div>
 
 <!-- Button trigger modal -->
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#classModal" style="width: 100%">
+<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#classModal" style="width: 100%">
   Add New Class
 </button>
 

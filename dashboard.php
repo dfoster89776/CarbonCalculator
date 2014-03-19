@@ -43,22 +43,22 @@
 					<h1 class="page-header" style='margin-top: 100px;'>History</h1>
 					<div>
 					<div class="btn-group" data-toggle="buttons">
-					  <label class="btn btn-primary active">
+					  <label class="btn btn-success active">
 					    <input id="energyCheck" type="checkbox" onchange="updateGraph()" checked> Energy
 					  </label>
-					  <label class="btn btn-primary active">
+					  <label class="btn btn-success active">
 					    <input id="transportCheck" type="checkbox" onchange="updateGraph()" checked> Transport
 					  </label>
 					</div>
 					
 					<div class="btn-group pull-right" data-toggle="buttons">
-					  <label class="btn btn-primary">
+					  <label class="btn btn-success">
 					    <input type="radio" name="options" id="option1" value="week" onchange="updateGraph()"> 1 Week
 					  </label>
-					  <label class="btn btn-primary">
+					  <label class="btn btn-success">
 					    <input type="radio" name="options" id="option2" value="month" onchange="updateGraph()"> 1 Month
 					  </label>
-					  <label class="btn btn-primary active">
+					  <label class="btn btn-success active">
 					    <input type="radio" name="options" id="option3" value="year" onchange="updateGraph()" checked> 1 Year
 					  </label>
 					</div>
