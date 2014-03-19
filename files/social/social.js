@@ -1,11 +1,48 @@
+var currentlyLoaded = 0;
+var loading = false;
+var activity;
+
+$(window).scroll(function() {
+    if($(window).scrollTop() == $(document).height() - $(window).height() && !loading && (currentlyLoaded < activity)){
+		loading = true;
+		loadFriendsActivity();
+    }
+});
 function initialise(){
 	
+	loadActivityCount();
+	loadFriendsActivity();
 	loadOutstandingRequests();
-	loadFindFriendsPanel();
+	loadFriendsList();
+}
+
+function loadActivityCount(){
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	activity = xmlhttp.responseText;
+	    
+	  	}
+	  }
+	xmlhttp.open("POST","files/social/friendsActivityCount.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+	
 }
 
 function loadOutstandingRequests(){
-	
+		
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -29,8 +66,10 @@ function loadOutstandingRequests(){
 	
 }
 
-function loadFindFriendsPanel(){
-	
+function loadFriendsActivity(){
+	document.getElementById("loading_indicator").style.visibility = "visible";
+	param = "loaded=" + currentlyLoaded;
+ 	
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -44,14 +83,20 @@ function loadFindFriendsPanel(){
 	  {
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
-	    	document.getElementById("find_friends_container").innerHTML = xmlhttp.responseText;
-	    
-	  	}
+	    document.getElementById("loading_indicator").style.visibility = "hidden";
+	    document.getElementById("activity_container").innerHTML += xmlhttp.responseText;
+	    activityTab = true;
+	    currentlyLoaded += 5;
+	    if (currentlyLoaded >= activity){
+	    	document.getElementById("activity_container").innerHTML += "<div class='alert alert-success' style='margin-top: 50px;'>No more activities to load.</div>";
+	    }
+	    loading = false;
+	    }
 	  }
-	xmlhttp.open("POST","files/social/findFriendsPanel.php",true);
+	xmlhttp.open("POST","files/social/friendsActivity.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send();
-	
+	xmlhttp.send(param);
+
 }
 
 function addFriend(friend_id){
@@ -170,3 +215,76 @@ function ignoreFriend(friend_id){
 	xmlhttp.send(param);
 }
 
+function openFindFriendModal(){
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	document.getElementById("findFriendsModalContent").innerHTML = xmlhttp.responseText;
+	  	}
+	  }
+	xmlhttp.open("POST","files/social/findFriendsPanel.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+	$('#friendsModal').modal('show');
+}
+
+function loadFriendsList(){
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	document.getElementById("friends_list").innerHTML = xmlhttp.responseText;
+	  	}
+	  }
+	xmlhttp.open("POST","files/social/friendsList.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+}
+
+function openActivityModal(id){
+	
+	var param = "id=" + id;
+		
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("activityModalContent").innerHTML= xmlhttp.responseText;
+	    $('#activityModal').modal('show');
+	    }
+	  }
+	xmlhttp.open("POST","files/profile/activity_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
+	
+}

@@ -31,7 +31,7 @@
 				$sDate = $oDate->format("d/m/Y");
 			
 				echo("
-					<div class='col-sm-3'>
+					<div class='col-xs-3'>
 					");
 					
 				if ($value['main_category'] == "car"){
@@ -59,7 +59,7 @@
 					
 					
 				echo("</div>
-					<div class='col-sm-9'>
+					<div class='col-xs-9'>
 					<h4 class='media-heading'>");
 					
 				if ($value['main_category'] == "car"){

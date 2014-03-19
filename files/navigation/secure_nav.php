@@ -4,7 +4,7 @@
 	}
 ?>
 
-<nav class='navbar navbar-default navbar-inverse navbar-fixed-top' role='navigation'>
+<nav class='navbar navbar-fixed-top navigation_bar_secure'  role='navigation'>
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class='navbar-header'>
     <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-ex1-collapse'>
@@ -20,8 +20,9 @@
   <div class='collapse navbar-collapse navbar-ex1-collapse '>
     <ul class='nav navbar-nav'>
       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/dashboard.php'>Dashboard</a></li>
-      <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/social.php'>Social</a></li>
+       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/dashboard.php'>History</a></li>
       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/setup.php'>Plan Savings</a></li>
+       <li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/social.php'>Social</a></li>
       <?php if ($_SESSION['teacher']){
 	      echo ("<li><a href='http://drf8.host.cs.st-andrews.ac.uk/Carbon/teaching.php'>Teaching</a></li>");
       }?>

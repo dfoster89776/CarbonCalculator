@@ -19,7 +19,7 @@
 
 	</head>
 	
-	<body onload="initialise()">
+	<body onload="initialise()" style="padding-top: 30px;">
 	
 		<?php require_once("files/navigation/secure_nav.php");?>
 	
@@ -34,7 +34,7 @@
 				<div id="profile_header" class="profileHeader">
 					<div class="row">
 						<div class="col-sm-3">
-							<?php echo("<img src='".$carbon->getOtherFacebookUserImageFromUserId($carbon->getFacebookId($profile)))."' width='80%' class='img-thumbnail'>"; ?>
+							<?php echo("<img src='".$carbon->getOtherFacebookUserImageFromUserId($carbon->getFacebookId($profile))."' width='80%' class='img-thumbnail'>"); ?>
 						</div>
 						<div class="col-sm-9">
 							<h1> <?php echo $carbon->getFriendsName($profile); ?> </h1>

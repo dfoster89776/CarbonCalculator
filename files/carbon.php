@@ -73,7 +73,7 @@ class Carbon{
 		 $myusername = $this->username;
 		 $this->connectDatabase();
 		 $result = mysqli_query($this->mysqli, "UPDATE users SET last_login = NOW() WHERE username = '$myusername'");
-
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, timestamp) VALUES ('$myusername', 'login', NOW())");
 	 }
 	 
 	 function getTeacherStatus(){
@@ -110,20 +110,27 @@ class Carbon{
 	 function addUser($myusername, $mypassword, $myemail){
 		 $this->connectDatabase();
 		 $result = mysqli_query($this->mysqli, "INSERT INTO users (username, password, email, join_date, last_login) VALUES ('$myusername', '$mypassword', '$myemail', NOW(), NOW())");
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, timestamp) VALUES ('$myusername', 'account_created', NOW())");
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP1', NOW())");
 	 }
 	 
 	 function addPersonalDetails($firstname, $surname){
 		 $myusername = $this->username;
 		 $this->connectDatabase();
 		 $result = mysqli_query($this->mysqli, "UPDATE users SET firstname = '$firstname', surname = '$surname', registration = '2' WHERE username='$myusername'");
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP2', NOW())");
 	 }
 	 
 	 function completeSocial(){
+	 	$this->connectDatabase();
 		 $this->updateRegistrationStatus(3);
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP3', NOW())");
 	 }
 	 
 	 function completeSetupAdvice(){
+	 	$this->connectDatabase();
 		$this->updateRegistrationStatus(4);
+		$result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP4', NOW())");
 	 }
 	 
 	 function setupTransport($carco2){
@@ -131,18 +138,20 @@ class Carbon{
 		 $this->connectDatabase();
 		 $result = mysqli_query($this->mysqli, "INSERT INTO basic_details (username, car_co2) VALUES ('$myusername', '$carco2')");
 		 $this->updateRegistrationStatus(5);
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP5', NOW())");
 	 }
 	 
 	 function setupEnergy($residents, $electricity, $gas, $walls, $roof, $windows, $draughts, $boiler, $thermostat, $hours, $hot_water){
 		 $myusername = $this->username;
 		 $this->connectDatabase();
 		 $result = mysqli_query($this->mysqli, "UPDATE basic_details SET occupants = '$residents', heat_loss_wall = '$walls', heat_loss_roof = '$roof', heat_loss_window = '$windows', heat_loss_draughts = '$draughts', boiler_efficiency = '$boiler', thermostat = '$thermostat', heating_hours = '$hours', heat_loss_water_tank = '$hot_water', initial_electricity = '$electricity', initial_gas = '$gas', initial_reading_date = NOW() WHERE username='$myusername'");
-		 echo $result;
-		 $this->updateRegistrationStatus(6);
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP6', NOW())");
+		 $this->updateRegistrationStatus(10);
 	 }
 	 
 	 function setupLifestyle(){
 		 $this->updateRegistrationStatus(10);
+		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP7', NOW())");
 	 }
 	 
 	 
@@ -426,7 +435,7 @@ class Carbon{
 		
 	}
 	
-		function friendsTransportCarbonLastMonth($profile){
+	function friendsTransportCarbonLastMonth($profile){
 		
 		$myusername = $profile;
 		$this->connectDatabase();
@@ -766,6 +775,45 @@ class Carbon{
 		return null;
 	}
 	
+		
+	function getFriendsActivity($start){
+	
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$start = $start;
+		$end = $start + 5;
+		
+		$result = mysqli_query($this->mysqli, "SELECT carbon_items.id, username, date_added, carbon_total, type, conversion_rate, journey_date, main_category, sub_category, distance, details FROM (SELECT carbon_item.id, carbon_item.username, date_added, type, carbon_total, conversion_rate FROM carbon_item, friends WHERE carbon_item.username = friends.friend_username AND friends.username = '$myusername' ORDER BY carbon_item.id DESC LIMIT $start, $end) AS carbon_items LEFT JOIN journeys ON carbon_items.id = journeys.id;");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+			}
+		}
+		return null;
+	
+	}
+
+	function getFriendsActivityCount(){
+	
+		$myusername = $this->username;
+		$this->connectDatabase();
+	
+		$result = mysqli_query($this->mysqli, "SELECT count(carbon_items.id) AS count FROM (SELECT id, carbon_item.username, date_added, type, carbon_total, conversion_rate FROM carbon_item, friends WHERE carbon_item.username = friends.friend_username AND friends.username = '$myusername' ORDER BY carbon_item.id DESC) AS carbon_items LEFT JOIN journeys ON carbon_items.id = journeys.id;");
+		if($result){
+			$result = $result->fetch_array(MYSQL_ASSOC);
+			return $result["count"];
+		}
+		return null;
+	
+	}
+
+
+	
+	
 //DASHBOARD FUNCTIONS
 
 	function transportCarbonThisMonth(){
@@ -933,7 +981,7 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total, conversion_rate) VALUES ('$myusername', NOW(), 'journey', '$carbonTotal', '$conversionRate')");
 		$id = mysqli_insert_id($this->mysqli); 
 		$result = mysqli_query($this->mysqli, "INSERT INTO journeys VALUES ('$id', '$date', '$mainCategory', '$subCategory', '$distance', '$details')");
-		 
+		$result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'carbon_activity', '$id', NOW())");
 		return true;
 		
 	}
@@ -983,6 +1031,7 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total, conversion_rate) VALUES ('$myusername', NOW(), 'meter_reading', '$carbonOutput', '$conversionRate')");
 		$id = mysqli_insert_id($this->mysqli);
 		$result = mysqli_query($this->mysqli, "INSERT INTO meter_readings VALUES ('$id', '$newReading', '$type', '$sqlStartDate', '$sqlEndDate', '$carbonOutputPerDay')");
+		$result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'carbon_activity', '$id', NOW())");
 
 		return true;
 		
@@ -1072,6 +1121,7 @@ class Carbon{
 		
 		if($result){
 			$data = array("class_number" => $string, "module_number" => $moduleNumber, "session" => $session);
+			$result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'created_class', '$string', NOW())");
 			return $data;
 		}else{
 			return null;
@@ -1086,6 +1136,7 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "DELETE FROM classes WHERE class_number = '$class_code'");
 		
 		if($result){
+			$result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'deleted_class', '$class_code', NOW())");
 			return true;
 		}
 		else{

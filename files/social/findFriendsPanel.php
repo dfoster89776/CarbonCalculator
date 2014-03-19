@@ -8,7 +8,6 @@
 
 	if($nonFriends != null){
 	
-		echo("<h3> Find Friends </h3>");
 		foreach ($nonFriends as &$friend){
 		    $response = $carbon->loadUserProfile($friend);
 			echo("<div class='media'>");
@@ -18,5 +17,9 @@
   </div>");
   			echo("</div>");
 		}
+	}else{
+		
+		echo("<div class='alert alert-warning'>You have no friends on Facebook available to add as a friend.</div>");
+		
 	}
 ?>

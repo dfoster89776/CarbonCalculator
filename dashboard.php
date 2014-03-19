@@ -27,10 +27,10 @@
 				
 				<div class="col-md-3 col-md-push-9">
 					<br/>
-					<p><button class="btn btn-primary btn-lg" style="width: 100%;" onclick="openJourneyModal()">
+					<p><button class="btn btn-success btn-lg" style="width: 100%;" onclick="openJourneyModal()">
 					  Add Journey
 					</button></p>
-					<p><button class="btn btn-primary btn-lg" data-toggle="modal" onclick="openMeterModal()" style="width: 100%;">
+					<p><button class="btn btn-success btn-lg" data-toggle="modal" onclick="openMeterModal()" style="width: 100%;">
 					  Add Meter Reading
 					</button></p>
 					<div id="activity_container"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'/></div>
@@ -44,31 +44,27 @@
 					<div>
 					<div class="btn-group" data-toggle="buttons">
 					  <label class="btn btn-primary active">
-					    <input type="checkbox" checked> Energy
+					    <input id="energyCheck" type="checkbox" onchange="updateGraph()" checked> Energy
 					  </label>
 					  <label class="btn btn-primary active">
-					    <input type="checkbox" checked> Transport
+					    <input id="transportCheck" type="checkbox" onchange="updateGraph()" checked> Transport
 					  </label>
 					</div>
 					
 					<div class="btn-group pull-right" data-toggle="buttons">
 					  <label class="btn btn-primary">
-					    <input type="radio" name="options" id="option1"> 1 Week
+					    <input type="radio" name="options" id="option1" value="week" onchange="updateGraph()"> 1 Week
 					  </label>
 					  <label class="btn btn-primary">
-					    <input type="radio" name="options" id="option2"> 1 Month
+					    <input type="radio" name="options" id="option2" value="month" onchange="updateGraph()"> 1 Month
 					  </label>
 					  <label class="btn btn-primary active">
-					    <input type="radio" name="options" id="option3" checked> 1 Year
-					  </label>
-					  <label class="btn btn-primary">
-					    <input type="radio" name="options" id="option3"> 5 Year
+					    <input type="radio" name="options" id="option3" value="year" onchange="updateGraph()" checked> 1 Year
 					  </label>
 					</div>
 					
 					<div id="chart_div" style="height: 500px"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div></div>
 				</div>
-				
 			
 			</div>
 		

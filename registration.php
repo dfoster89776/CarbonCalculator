@@ -16,7 +16,7 @@
 	
 	<body>
 		
-	<nav class='navbar navbar-default navbar-inverse navbar-fixed-top' role='navigation'>
+	<nav class='navbar navbar-fixed-top navigation_bar_secure' role='navigation'>
 		  <!-- Brand and toggle get grouped for better mobile display -->
 		  <div class='navbar-header'>
 		    <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-ex1-collapse'>

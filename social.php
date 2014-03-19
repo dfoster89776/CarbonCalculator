@@ -1,3 +1,5 @@
+<!DOCTYPE HTML>
+
 <?php
 	session_start();
 	require_once("files/carbon.php");
@@ -9,8 +11,6 @@
 	$friends = $carbon->getFriendsList();
 	
 ?>
-<!DOCTYPE html>
-
 <html>
 	<head>
 		<title> Carbon Calculator Social</title>
@@ -23,55 +23,64 @@
 	
 		<?php require_once("files/navigation/secure_nav.php");?>
 	
-		<div class="container">
+		<div class="container" style="padding-top: 50px;">
 		
 			<div class="row">
 			
-				<div class="col-md-8" id="activity_container">
+				<div class="col-md-8">
 					
-					<h1> Friends </h1>
-									
-					<div class="row">
-					
-						<?php
-						
-							if ($friends != null){
-								foreach ($friends as &$friend){
-																	
-									echo ("<div class='col-sm-6 col-md-4'>");
-									echo ("<div class='thumbnail'>");
-									echo ("<img src='".$carbon->getOtherFacebookUserImageFromUserId($friend['userid'])."' alt='user image' width='80%' style='margin-top: 20px;'>");
-									echo("<div class='caption'>");
-									echo("<h3>".$friend['firstname']." ".$friend['surname']."</h3>");
-									echo("<p> </p>");
-									echo("<p><a href='profile.php?profile=".$friend['friend_username']."' class='btn btn-primary' role='button'>Profile</a> <a href='#' class='btn btn-default' role='button'>Compare</a></p>");
-									echo("</div>");
-									echo("</div>");
-									echo("</div>");
-								}
-							}
-						?>
-					  
-					</div>
+					<h1> Friends Latest Activity </h1>
+								
+					<div id="activity_container"></div>
+					<div style="text-align: center; padding-top: 100px;" id="loading_indicator"><img src='files/images/loading.gif'></div>
 								
 				</div>
 				
 				<div class="col-md-3 col-md-offset-1">
 				
+					<div class="row" style="max-height: 50%; overflow: hidden;">
+						<div class="col-xs-12" style="padding-left: 0px; padding-right: 0px;" id="friends_list"> 
+						</div>
+					</div>
 					<div class="row" style="max-height: 40%; overflow: scroll;">
 						<div class="col-xs-12" id="outstanding_requests_container"> 
 						</div>
 					</div>
-					<div class="row" style="max-height: 40%; overflow: scroll;">
-						<div class="col-xs-12" id="find_friends_container"> 
-						</div>
+					<div class="row" style="padding-top: 25px;">
+						<button class="btn btn-success btn-lg" data-toggle="modal" onclick="openFindFriendModal()" style="width: 100%;">
+							Find New Friends
+						</button>
 					</div>
-					
 				</div>
 			
 			</div>
 
 
 		</div>
+		
+		<div class="modal fade" id="friendsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content" style="padding: 15px;">
+		    		<div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					        <h4 class="modal-title">Find Friends</h4>
+					 </div>
+					<div class="modal-body" id="findFriendsModalContent">
+						<div style="text-align: center; padding-top: 100px; padding-bottom: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->	
 
+
+		<!-- ACTIVITY MODAL -->
+			<div class="modal fade" id="activityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content" id="activityModalContent">
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->	
 	</body>

@@ -433,11 +433,6 @@ function updateStatistics(){
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send();
 
-	
-}
-
-function updateMonthlyCarbonTotal(){
-	
 }
 
 function openActivityModal(id){
@@ -491,6 +486,53 @@ function deleteActivity(id){
 	    }
 	  }
 	xmlhttp.open("POST","files/dashboard/deleteActivity.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
+	
+}
+
+function updateGraph(){
+	
+	var period = document.querySelector('input[name="options"]:checked').value;	
+	var transport = document.getElementById("transportCheck").checked;
+	var energy = document.getElementById("energyCheck").checked;
+		
+	var param = "transport=" + transport + "&energy=" + energy + "&period=" + period;
+		
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    
+	    	alert(xmlhttp.responseText);
+	    
+	    	var data = google.visualization.arrayToDataTable([
+	          ['Day', 'Energy', 'Transport'],
+	          ['Mon',  700,      400],
+	          ['Tue',  2170,      760],
+	          ['Wed',  360,       720],
+	          ['Thu',  430,      740]
+	        ]);
+
+			var options = {
+	          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}},
+	          vAxis: {title: 'Carbon Output', titleTextStyle: {color: 'red'}}
+	        };
+
+			var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+			chart.draw(data, options);
+	    }
+	  }
+	xmlhttp.open("POST","files/dashboard/graphData.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(param);
 	

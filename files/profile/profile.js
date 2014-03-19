@@ -1,5 +1,5 @@
 var activity;
-var currentlyLoaded = 5;
+var currentlyLoaded = 0;
 var activityTab = false;
 var loading = false;
 
@@ -7,6 +7,7 @@ $(window).scroll(function() {
     if($(window).scrollTop() == $(document).height() - $(window).height() && activityTab && !loading && (currentlyLoaded < activity)){
 		loading = true;
         loadMoreActivity();
+        alert("loading");
     }
 });
 
@@ -161,6 +162,7 @@ function openActivityModal(id){
 
 function loadMoreActivity(){
 	
+	loading = true;
 	param = "loaded=" + currentlyLoaded;
  	
 	var xmlhttp;
@@ -184,11 +186,10 @@ function loadMoreActivity(){
 	    }
 	    
 	    }
+	    	loading = false;
+
 	  }
 	xmlhttp.open("POST","files/profile/loadMoreActivity.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send(param);
-
-	loading = false;
-	
+	xmlhttp.send(param);	
 }
