@@ -7,7 +7,6 @@ $(window).scroll(function() {
     if($(window).scrollTop() == $(document).height() - $(window).height() && activityTab && !loading && (currentlyLoaded < activity)){
 		loading = true;
         loadMoreActivity();
-        alert("loading");
     }
 });
 

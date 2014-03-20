@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 	session_start();
 	require_once("files/carbon.php");
@@ -6,7 +7,7 @@
 	require_once("files/standard/standard_includes.php");
 	$classes  = $carbon->getClassesTaught();
 ?>
-<!DOCTYPE html>
+
 <html>
 	<head>
 		<title> Carbon Calculator Teaching </title>
@@ -18,14 +19,14 @@
 	
 		<?php require_once("files/navigation/secure_nav.php"); ?>
 	
-		<div class="container">
+		<div class="container" style="padding-top: 30px;">
   
 			<div class="row">
 			
 				<div class="col-md-3" id="classes_container">
 					
 					<div>
-						<button type="button" class="btn btn-primary btn-block btn-lg" onclick="openAddClassModal()">Add Class</button>
+						<button type="button" class="btn btn-success btn-block btn-lg" onclick="openAddClassModal()">Add Class</button>
 					</div>
 					<br/>
 					

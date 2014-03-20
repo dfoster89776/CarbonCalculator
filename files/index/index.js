@@ -1,3 +1,4 @@
+
 var formValidity = true;
 
 var current = "sect_1";

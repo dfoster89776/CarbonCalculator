@@ -24,7 +24,7 @@
 		<?php require_once("files/navigation/secure_nav.php");?>
 	
 		<?php 
-		if ($carbon->validateFriend($profile)){
+		if ($carbon->validateViewProfilePermission($profile)){
 		
 		
 		

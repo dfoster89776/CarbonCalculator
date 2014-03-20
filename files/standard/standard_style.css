@@ -1,3 +1,9 @@
+
+.image{
+	margin-top: 60px;
+	height: 400px;
+}
+
 body{
 	margin-top:50px;
 	overflow-x: hidden;
@@ -37,6 +43,7 @@ div.activity_item:hover{
 
 .nav-pills > li > a {
 	color: #35a631;	
+	border-radius: 0;
 }
 
 
@@ -46,7 +53,8 @@ div.activity_item:hover{
 	background-color: #35a631;
 	color: white;
 	a:link {color: white;}
-	
+	font-weight: lighter;
+
 }
 
 .navigation_bar_secure .navbar-header > a {
@@ -58,21 +66,27 @@ div.activity_item:hover{
 }
 
 .navigation_bar_secure .nav > li > a {
-	font-weight: lighter;
     float: none;
     line-height: 21px;
     text-decoration: none;
     text-shadow: 0 0 0 rgba(0, 0, 0, 0);
     color: white;
     font-size: 130%;
+    font-weight: lighter;
+
+    
 }
 
 .navigation_bar_secure .nav > li > a:hover {
     color: #35a631;
+    	font-weight: lighter;
+
 }
 
 .navigation_bar_secure .nav > li > a:active {
     color: #35a631;
+    	font-weight: lighter;
+
 }
 
 
@@ -114,7 +128,7 @@ div.activity_item:hover{
 
 div.index_container{
 	
-	height: 80%;
+	height: 600px;
 	width: 100%;
 	background: blue;
 	background:url('../images/green.jpg') no-repeat left top fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;
@@ -168,11 +182,11 @@ div.green_container{
 
 div.dark_green_container{
 	color: white;
-	background: #195217;
-	height: 250px;
+	background: rgba(33,33,33,0.83);
+	height: 150px;
 }
 
-h2{
+h2.green{
 	color: #35a631;
 }
 
@@ -181,12 +195,70 @@ h1.index_header{
 	color: white;
 	font-size: 300%;
 	z-index: 0;
+	position: relative;
+	top: 0px;
 }
 	
 .white{
 	color: white;
 }
 
-.image{
-	height: 90%;
+.list-group > a.active{
+	
+	background: #35a631;
+	
+}
+
+.list-group > a.active {
+	
+	background: #35a631;
+	
+}
+
+.list-group > a.active > p {
+	color: white;
+	text-shadow: none;
+}
+
+.list-group > a.active:hover{
+	
+	background: #35a631;
+	
+}
+
+.list-group .list-group-item{
+	border-radius: 0px;
+}
+
+.btn{
+	
+		border-radius: 0;
+		border-style: none;
+		text-shadow: none;
+		box-shadow: none;
+	
+}
+
+.btn-success{
+	background: #35a631;
+}
+
+.modal-content{
+	
+	border-radius: 0;
+	border-style: none;
+	box-shadow: 0px 0px 0px grey;
+	
+}
+
+.alert{
+	border-radius: 0;
+}
+
+.panel{
+	border-radius: 0;
+}
+
+input.form-control{
+	border-radius: 0;
 }

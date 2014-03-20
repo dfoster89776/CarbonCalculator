@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 	session_start();
 	require_once("files/carbon.php");
@@ -6,7 +7,7 @@
 	require_once("files/standard/standard_includes.php")
 	
 ?>
-<!DOCTYPE html>
+
 <html>
 	<head>
 		<title> Carbon Calculator</title>
@@ -18,9 +19,9 @@
 	
 		<?php require_once("files/navigation/unsecure_nav.php"); ?>
 	
-		<div class="index_container container" >
+		<div class="index_container" >
 		
-			  <h1 class="index_header">St Andrews <br/> Carbon Calculator</h1>
+			  <h1 class="index_header" id="index_heading">St Andrews <br/> Carbon Calculator</h1>
 		
 		</div>
 		
@@ -44,38 +45,42 @@
 		
 		
 		<div class="index_cont front" id="sect_1">
-			<div class=" row">
+			<div class=" row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
-					<h2>Track Carbon Footprint </h2>
+					<h2 class="green">Track Carbon Footprint </h2>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-4 hidden-xs" style="text-align: center;">
+					<image src="files/images/chart.png" class="image">
 				</div>
 			</div>
 		</div>
 		<div class="index_cont front visible-xs" id="sect_2">
-			<div class="row">
+			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
-					<h2>Monitor your long term carbon footprint</h2>
+					<h2 class="green">Monitor your long term carbon footprint</h2>
 				</div>
-				<div class="col-sm-4" style="text-align: center;">
-					<img src="files/images/chart.png" class="image">
+				<div class="col-sm-4 hidden-xs" style="text-align: center;">
+					<image src="files/images/chart.png" class="image">
 				</div>
 			</div>
 		</div>
 		<div class="index_cont front visible-xs" id="sect_3">
-			<div class="row">
+			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
-					<h2>Plan to reduce your footprint</h2>
+					<h2 class="green">Plan to reduce your footprint</h2>
+				</div>
+				<div class="col-sm-4 hidden-xs" style="text-align: center;">
+					<image src="files/images/chart.png" class="image">
 				</div>
 			</div>
 		</div>
 		<div class="index_cont front visible-xs" id="sect_4">
-			<div class="row">
+			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
-					<h2>Share and Compare with your friends.</h2>
+					<h2 class="green">Share and Compare with your friends.</h2>
 				</div>
-				<div class="col-sm-4">
-					<img src="files/images/social.jpg" class="image">
+				<div class="col-sm-4 hidden-xs">
+					<image src="files/images/social.jpg" class="image">
 				</div>
 			</div>
 		</div>
@@ -83,7 +88,7 @@
 		
 		<div class="green_container front">
 			<div class="container white">
-				<div class="row">
+				<div class="row" style="margin: 0px;">
 					<div class="col-sm-offset-1 col-sm-4">
 					<h1>Register Now </h1>
 						<p style="font-size: 170%"> Register now to start tracking your carbon output, monitor your carbon history and plan for the future. Registering is easy and free.</p>

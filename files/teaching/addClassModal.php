@@ -27,5 +27,5 @@
 </div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-primary" id="classModalSubmit" onclick="submitNewClass()">Save changes</button>
+	<button type="button" class="btn btn-success" id="classModalSubmit" onclick="submitNewClass()">Save changes</button>
 </div>

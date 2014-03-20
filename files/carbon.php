@@ -85,6 +85,38 @@ class Carbon{
 		return $row['teacher'];
 	 }
 	 
+	 function validateViewProfilePermission($friend){
+	
+		$myusername = $this->username;
+		$friendUsername = $friend;
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT * FROM drf8_db.friends WHERE username = '$myusername' AND friend_username = '$friendUsername'");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			
+			if ($count == 1){
+				return true;
+			}
+			
+		}
+		
+		$result = mysqli_query($this->mysqli, "SELECT * FROM drf8_db.classes, drf8_db.student_classes WHERE classes.class_number = student_classes.class_id AND classes.coordinator = '$myusername' AND student_classes.username = '$friendUsername'");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			
+			if ($count > 0){
+				return true;
+			}
+			
+		}
+		
+		return false;
+	}
 	 
 	 
 //REGISTRATION FUNCTIONS
@@ -376,26 +408,6 @@ class Carbon{
 		}
 
 		
-	}
-	
-	function validateFriend($friend){
-	
-		$myusername = $this->username;
-		$friendUsername = $friend;
-		$this->connectDatabase();
-		
-		$result = mysqli_query($this->mysqli, "SELECT * FROM drf8_db.friends WHERE username = '$myusername' AND friend_username = '$friendUsername'");
-		
-		if ($result){
-			
-			$count = mysqli_num_rows($result);
-			
-			if ($count == 1){
-				return true;
-			}
-			
-		}
-		return false;
 	}
 	
 	function getFriendsName($friend){

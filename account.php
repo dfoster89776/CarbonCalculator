@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <?php
 	session_start();
 	require_once("files/carbon.php");
@@ -10,8 +12,6 @@
 		}
 	}
 ?>
-
-<!DOCTYPE html>
 <html>
 	<head>
 		<title> Account</title>
