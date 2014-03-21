@@ -33,7 +33,7 @@
 </div>
 <div class="row">
 	<div class="col-xs-4 col-sm-3">
-		<h4> Energy <small>(kge CO2)</small></h4>
+		<h4> Energy <small>kge CO2</small></h4>
 	</div>
 	<div class="col-xs-4" style="text-align: center; font-size: 20px;">
 		<h4 style="font-weight: normal;"><?php echo $data['previousEnergy']; ?></h4>

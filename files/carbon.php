@@ -823,10 +823,13 @@ class Carbon{
 	
 	}
 	
-	function getUsersJourneysLastWeek(){
+	function getUsersJourneysLastWeek($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
 		
 		$this->connectDatabase();
-		$myusername = $this->username;
 		$data;
 			
 		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT sum(carbon_total) AS carbon_total, journey_date FROM carbon_item, journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND journey_date > (NOW() - INTERVAL 7 DAY) AND carbon_item.username = '$myusername' GROUP BY journey_date) AS journey_table RIGHT JOIN (SELECT * FROM dates WHERE dates.date > (NOW() - INTERVAL 7 DAY) AND dates.date < NOW()) AS newtable2 ON journey_date = newtable2.date;");
@@ -857,10 +860,13 @@ class Carbon{
 	}
 
 
-	function getUsersEnergyLastWeek(){
+	function getUsersEnergyLastWeek($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
 		
 		$this->connectDatabase();
-		$myusername = $this->username;
 		$data;
 			
 		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT sum(carbon) as carbon_total, carbon_date FROM (SELECT date as carbon_date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS newtable WHERE carbon_date > (NOW() - INTERVAL 7 DAY)  GROUP BY carbon_date) as subtable RIGHT JOIN (SELECT * FROM dates WHERE dates.date > (NOW() - INTERVAL 7 DAY) AND dates.date < NOW()) AS newtable2 ON newtable2.date = subtable.carbon_date ");
@@ -891,13 +897,16 @@ class Carbon{
 	}
 
 
-	function getUsersJourneysLastMonth(){
+	function getUsersJourneysLastMonth($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
 		
 		$this->connectDatabase();
-		$myusername = $this->username;
 		$data;
 			
-		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.week FROM (SELECT sum(carbon_total) AS carbon_total, week(journey_date) AS week FROM carbon_item, journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND journey_date > (NOW() - INTERVAL 6 WEEK) AND carbon_item.username = '$myusername' GROUP BY week) AS journey_table RIGHT JOIN (SELECT WEEK(dates.date) AS week FROM dates WHERE dates.date > (NOW() - INTERVAL 6 WEEK) AND dates.date < NOW() GROUP BY week) AS newtable2 ON journey_table.week = newtable2.week;");
+		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.week FROM (SELECT sum(carbon_total) AS carbon_total, week(journey_date) AS week FROM carbon_item, journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND journey_date > (NOW() - INTERVAL 4 WEEK) AND carbon_item.username = '$myusername' GROUP BY week) AS journey_table RIGHT JOIN (SELECT WEEK(dates.date) AS week FROM dates WHERE dates.date > (NOW() - INTERVAL 4 WEEK) AND dates.date < NOW() GROUP BY week) AS newtable2 ON journey_table.week = newtable2.week;");
 		
 		if ($result){
 			
@@ -925,13 +934,16 @@ class Carbon{
 	}
 	
 	
-	function getUsersEnergyLastMonth(){
+	function getUsersEnergyLastMonth($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
 		
 		$this->connectDatabase();
-		$myusername = $this->username;
 		$data;
 			
-		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.week FROM (SELECT sum(carbon) as carbon_total, week FROM (SELECT date as carbon_date, sum(carbon_per_day) AS carbon, week(date) as week FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end AND date > (NOW() - INTERVAL 6 WEEK) GROUP BY carbon_date ORDER BY carbon_date ASC) as dailyEnergyCarbon GROUP BY week) as energy RIGHT JOIN (SELECT WEEK(dates.date) AS week FROM dates WHERE dates.date > (NOW() - INTERVAL 6 WEEK) AND dates.date < NOW() GROUP BY week) AS newtable2 ON energy.week = newtable2.week; ");
+		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.week FROM (SELECT sum(carbon) as carbon_total, week FROM (SELECT date as carbon_date, sum(carbon_per_day) AS carbon, week(date) as week FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end AND date > (NOW() - INTERVAL 4 WEEK) GROUP BY carbon_date ORDER BY carbon_date ASC) as dailyEnergyCarbon GROUP BY week) as energy RIGHT JOIN (SELECT WEEK(dates.date) AS week FROM dates WHERE dates.date > (NOW() - INTERVAL 4 WEEK) AND dates.date < NOW() GROUP BY week) AS newtable2 ON energy.week = newtable2.week; ");
 		
 		if ($result){
 			
@@ -959,13 +971,52 @@ class Carbon{
 	}
 	
 	
-	function getUsersJourneysLastYear(){
+	function getUsersJourneysLastYear($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
 		
 		$this->connectDatabase();
-		$myusername = $this->username;
 		$data;
 			
-		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.mon, newtable2.yr FROM (SELECT sum(carbon_total) AS carbon_total, month(journey_date) AS mon, year(journey_date) as yr FROM carbon_item, journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND journey_date > (NOW() - INTERVAL 11 MONTH) AND carbon_item.username = 'dfoster89776' GROUP BY mon, yr) AS journey_table RIGHT JOIN (SELECT MONTH(dates.date) AS mon, YEAR(dates.date) AS yr FROM dates WHERE dates.date > (NOW() - INTERVAL 11 MONTH) AND dates.date < NOW() GROUP BY mon, yr) AS newtable2 ON journey_table.mon = newtable2.mon AND journey_table.yr = newtable2.yr ORDER BY yr, mon;");
+		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.mon, newtable2.yr FROM (SELECT sum(carbon_total) AS carbon_total, month(journey_date) AS mon, year(journey_date) as yr FROM carbon_item, journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND journey_date > (NOW() - INTERVAL 5 MONTH) AND carbon_item.username = 'dfoster89776' GROUP BY mon, yr) AS journey_table RIGHT JOIN (SELECT MONTH(dates.date) AS mon, YEAR(dates.date) AS yr FROM dates WHERE dates.date > (NOW() - INTERVAL 5 MONTH) AND dates.date < NOW() GROUP BY mon, yr) AS newtable2 ON journey_table.mon = newtable2.mon AND journey_table.yr = newtable2.yr ORDER BY yr, mon;");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+
+
+		return null;
+		
+	}
+	
+	function getUsersEnergyLastYear($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
+		
+		$this->connectDatabase();
+		$data;
+			
+		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.mnth, newtable2.yr FROM (SELECT sum(carbon) as carbon_total, mnth, yr FROM (SELECT date as carbon_date, sum(carbon_per_day) AS carbon, month(date) as mnth, year(date) as yr FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end AND date > (NOW() - INTERVAL 5 MONTH) GROUP BY carbon_date ORDER BY carbon_date ASC) as dailyEnergyCarbon GROUP BY mnth, yr) as energy RIGHT JOIN (SELECT MONTH(dates.date) AS mnth, YEAR(dates.date) as yr FROM dates WHERE dates.date > (NOW() - INTERVAL 5 MONTH) AND dates.date < NOW() GROUP BY mnth) AS newtable2 ON energy.mnth = newtable2.mnth AND energy.yr = newtable2.yr ORDER BY yr, mnth;");
 		
 		if ($result){
 			

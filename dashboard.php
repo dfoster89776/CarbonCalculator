@@ -53,13 +53,13 @@
 					
 					<div class="btn-group pull-right" data-toggle="buttons">
 					  <label class="btn btn-success">
-					    <input type="radio" name="options" id="option1" value="week" onchange="updateGraph()"> 1 Week
+					    <input type="radio" name="options" id="option1" value="7days" onchange="updateGraph()"> 7 Days
 					  </label>
 					  <label class="btn btn-success">
-					    <input type="radio" name="options" id="option2" value="month" onchange="updateGraph()"> 1 Month
+					    <input type="radio" name="options" id="option2" value="5weeks" onchange="updateGraph()"> 1 Month
 					  </label>
 					  <label class="btn btn-success active">
-					    <input type="radio" name="options" id="option3" value="year" onchange="updateGraph()" checked> 1 Year
+					    <input type="radio" name="options" id="option3" value="6months" onchange="updateGraph()" checked> 6 Months
 					  </label>
 					</div>
 					

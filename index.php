@@ -47,7 +47,8 @@
 		<div class="index_cont front" id="sect_1">
 			<div class=" row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
-					<h2 class="green">Track Carbon Footprint </h2>
+					<h2 class="green">Record Carbon Activities</h2>
+					<p class="index-text"> The Carbon Calculator allows you to record the activities in your life that contribute towards your carbon footprint. Input your latest home meter readings, or the journeys you make, and we will automatically calculate their footprint. </p>
 				</div>
 				<div class="col-sm-4 hidden-xs" style="text-align: center;">
 					<image src="files/images/chart.png" class="image">
@@ -58,6 +59,7 @@
 			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
 					<h2 class="green">Monitor your long term carbon footprint</h2>
+					<p class="index-text"> The Carbon Calculator allows you to view your entire carbon history from the day you join. Visualise the make up of your carbon footprint, and track the changes over time as you work to reduce your footprint.</p>
 				</div>
 				<div class="col-sm-4 hidden-xs" style="text-align: center;">
 					<image src="files/images/chart.png" class="image">
@@ -78,6 +80,7 @@
 			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
 					<h2 class="green">Share and Compare with your friends.</h2>
+					<p class="index-text"> The Carbon Calculator connects with Facebook, to allow you to view your friends profiles and carbon statistics, and compare against each other as you try to better each others footprint.</p>
 				</div>
 				<div class="col-sm-4 hidden-xs">
 					<image src="files/images/social.jpg" class="image">
