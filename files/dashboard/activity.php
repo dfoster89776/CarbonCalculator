@@ -16,7 +16,7 @@
 					
 	if ($activity){
 						
-		echo("<ul class='media-list'>");
+		echo("<ul class='media-list '>");
 							
 		$count = 1;
 							

@@ -496,7 +496,7 @@ function updateGraph(){
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
 	    
-	    	alert(xmlhttp.responseText);
+	    	//alert(xmlhttp.responseText);
 	    	returnData = JSON.parse(xmlhttp.responseText);
 	    
 	    	var data = google.visualization.arrayToDataTable(returnData);

@@ -1,5 +1,9 @@
 <?php
 
+/**
+	Return graph data in format 2D array
+*/
+
 	if(!isset($_SESSION)){
 		session_start();
 	}
@@ -15,6 +19,7 @@
 	
 	$data = array();
 	
+	//Determine period
 	if($period == "week"){
 		$data[0][0] = "Day";
 	}
@@ -24,6 +29,7 @@
 	elseif($period == "year"){
 		$data[0][0] = "Month";
 	}
+	
 	
 	if($energy == "true"){
 		
@@ -62,7 +68,7 @@
 	if($period == "year"){
 		
 		for ($i = 1; $i <= 12; $i++) {
-			$data[$i][0] = date("F", strtotime( '-'.(13-$i).' months' ) );
+			$data[$i][0] = date("F", strtotime( '-'.(12-$i).' months' ) );
 		}	
 	}
 	
@@ -98,7 +104,7 @@
 			
 		}
 		else{
-			for ($i = 1; $i <= 7; $i++) {
+			for ($i = 1; $i <= 12; $i++) {
 				$data[$i][$energyArray] = 649;
 			}
 		}
@@ -133,7 +139,17 @@
 			
 		}
 		elseif($period == "year"){
+			$results = $carbon->getUsersJourneysLastYear();
 			
+			for ($i = 1; $i <= 12; $i++) {
+				$value;
+				if($results[$i-1]['carbon_total']){
+					$value = $results[$i-1]['carbon_total'];
+				}else{
+					$value = 0;
+				}
+			    $data[$i][$transportArray] = round($value, 2);
+			}	
 		}
 	}
 
