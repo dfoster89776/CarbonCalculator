@@ -17,7 +17,7 @@ function displayOverview(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		    {
 		    document.getElementById("nav_overview").className = "active";
-			document.getElementById("nav_personal").className = "";
+			//document.getElementById("nav_personal").className = "";
 			document.getElementById("nav_connected").className = "";
 			document.getElementById("nav_class").className = "";
 			document.getElementById("container").innerHTML = xmlhttp.responseText;
@@ -30,7 +30,7 @@ function displayOverview(){
 	}
 }
 
-function displayPersonal(){
+/**function displayPersonal(){
 	
 	if (current != "personal"){
 		var xmlhttp;
@@ -58,7 +58,7 @@ function displayPersonal(){
 		xmlhttp.send();
 		document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 	}
-}
+}*/
 
 function displayConnected(){
 	
@@ -77,7 +77,7 @@ function displayConnected(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		    {
 		    document.getElementById("nav_overview").className = "";
-			document.getElementById("nav_personal").className = "";
+			//document.getElementById("nav_personal").className = "";
 			document.getElementById("nav_connected").className = "active";
 			document.getElementById("nav_class").className = "";
 			document.getElementById("container").innerHTML = xmlhttp.responseText;
@@ -110,7 +110,7 @@ function displayClass(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		    {
 		    document.getElementById("nav_overview").className = "";
-			document.getElementById("nav_personal").className = "";
+			//document.getElementById("nav_personal").className = "";
 			document.getElementById("nav_connected").className = "";
 			document.getElementById("nav_class").className = "active";
 			document.getElementById("container").innerHTML = xmlhttp.responseText;

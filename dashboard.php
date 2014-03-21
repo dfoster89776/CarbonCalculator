@@ -25,7 +25,7 @@
 		
 			<div class="row">
 				
-				<div class="col-md-3 col-md-push-9">
+				<div class="col-md-3 col-md-push-9" style="margin-top: 40px;">
 					<br/>
 					<p><button class="btn btn-success btn-lg" style="width: 100%;" onclick="openJourneyModal()">
 					  Add Journey
@@ -38,10 +38,10 @@
 				</div>
 				
 				<div class="col-md-8 col-md-pull-3">
-					<h1 class="page-header">Dashboard</h1>
-					<div id="statistics"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div>
-					<h1 class="page-header" style='margin-top: 100px;'>History</h1>
-					<div>
+					<h1 class="page-header">Overview</h1>
+					<div id="statistics" class="well"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div>
+					<h1 class="page-header" style='margin-top: 50px;'>History</h1>
+					<div class="well">
 					<div class="btn-group" data-toggle="buttons">
 					  <label class="btn btn-success active">
 					    <input id="energyCheck" type="checkbox" onchange="updateGraph()" checked> Energy
@@ -63,7 +63,8 @@
 					  </label>
 					</div>
 					
-					<div id="chart_div" style="height: 500px"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div></div>
+					
+					<div id="chart_div" style="height: 500px; margin-top: 20px"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div></div></div>
 				</div>
 			
 			</div>

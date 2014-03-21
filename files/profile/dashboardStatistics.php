@@ -16,8 +16,8 @@
 ?>
 
 <h3 class='page-header'>Overview</h3>
-
-<div class="row" style="border-bottom-style:solid; border-bottom-width: 1px; border-bottom-color: lightgrey;">
+<div class="well">
+<div class="row " style="border-bottom-style:solid; border-bottom-width: 1px; border-bottom-color: lightgrey;">
 	<div class="col-sm-4 col-sm-offset-3" style="text-align: center">
 	<h3> Last Month</h3>
 	<h1 id="carbonTotalLastMonth" style="font-size: 80px; text-align: center;"><?php echo $data['previousTotal']; ?></h1>
@@ -61,5 +61,4 @@
 		}?>"><?php echo $data['currentTransport']; ?></h4>
 	</div>
 </div>
-
-  
+</div>

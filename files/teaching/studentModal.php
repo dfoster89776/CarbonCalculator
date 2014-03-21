@@ -3,6 +3,9 @@
 	require_once("../carbon.php");
 	$carbon = new Carbon();
 	require_once("../secure/check_login.php");
+	
+	$data = $carbon->getUsersFullActivity($_POST['username']);
+	
 ?>	
 
 <div class="modal-header">
@@ -10,9 +13,35 @@
 	<h4 class="modal-title" id="myModalLabel" ><?php echo($_POST['username']); ?></h4>
 </div>
 <div class="modal-body">
-...
+
+
+	<?php
+		
+		foreach ($data as $activity){
+			
+			
+			if($activity['activity_type'] == "login"){
+				
+				echo("<h4> Logged in </h4>".$activity['timestamp']);
+				
+			}
+			elseif($activity['activity_type'] == "carbon_activity"){
+				
+				echo("<h4> Posted Carbon Activity </h4>".$activity['timestamp']);
+				
+			}
+			else{
+				var_dump($activity);	
+			}
+			
+			echo("<hr/>");
+			
+			
+		}
+		
+	?>
+
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-success">Save changes</button>
+	<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
 </div>

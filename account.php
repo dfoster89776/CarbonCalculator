@@ -40,7 +40,7 @@
 					  <div class="col-md-12" style="margin-top: 20px;">				  
 						  <ul class="nav nav-pills nav-stacked">
 							  <li id="nav_overview" <?php if(!$connected){echo("class='active'");}?>><a onclick="displayOverview()">Overview</a></li>
-							  <li id="nav_personal"><a onclick="displayPersonal()">Personal Details</a></li>
+							  <!--<li id="nav_personal"><a onclick="displayPersonal()">Personal Details</a></li>-->
 							  <li id="nav_connected"><a onclick="displayConnected()">Connected Accounts</a></li>
 							  <li id="nav_class"><a onclick="displayClass()">Modules</a></li>
 						  </ul>

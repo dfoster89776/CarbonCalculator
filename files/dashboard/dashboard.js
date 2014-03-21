@@ -310,7 +310,6 @@ function submitMeter(){
 	data.newReading = document.getElementById("meterInputReading").value;
 	data.occupants = document.getElementById("occupants").value;
 
-	if (data.newReading > previousReading){
 
 		var json = "json=" + JSON.stringify(data);
 			
@@ -339,7 +338,7 @@ function submitMeter(){
 		xmlhttp.send(json);
 		document.getElementById("meter_body").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 		document.getElementById("meter_submit_button").style.display = "none";
-	}
+	
 }
 
 function updateMeterModal(){
@@ -497,6 +496,7 @@ function updateGraph(){
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
 	    
+	    	alert(xmlhttp.responseText);
 	    	returnData = JSON.parse(xmlhttp.responseText);
 	    
 	    	var data = google.visualization.arrayToDataTable(returnData);

@@ -60,5 +60,5 @@ echo date('d-m-Y'); ?>'>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" onclick="submitJourney()" id="journey_submit_button">Submit</button>
+    <button type="button" class="btn btn-success" onclick="submitJourney()" id="journey_submit_button">Submit</button>
   </div>

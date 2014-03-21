@@ -44,7 +44,7 @@
 					if(date('Ymd') != date('Ymd', strtotime($data['electricity_date']))){
 				?>
 				
-				  <label class="btn btn-primary" onclick="chooseElectric()">
+				  <label class="btn btn-success" onclick="chooseElectric()">
 				    <input type="radio" name="options" id="electricity"> Electricity
 				  </label>
 				  
@@ -52,7 +52,7 @@
 				 	}
 				 	if (date('Ymd') != date('Ymd', strtotime($data['gas_date']))){
 				 ?>
-				  <label class="btn btn-primary" onclick="chooseGas()">
+				  <label class="btn btn-success" style="margin-left: 5px;" onclick="chooseGas()">
 				    <input type="radio" name="options" id="gas"> Gas
 				  </label>
 				  
@@ -100,7 +100,7 @@
  </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-<button type="button" class="btn btn-primary" onclick="submitMeter()" id="meter_submit_button">Submit</button>
+<button type="button" class="btn btn-success" onclick="submitMeter()" id="meter_submit_button">Submit</button>
 </div>
 
 <?php } ?>
