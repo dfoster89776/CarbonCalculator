@@ -39,13 +39,19 @@ echo date('d-m-Y'); ?>'>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label for='journeyDistance' class='col-md-offset-1 col-md-3 control-label'>Distance (km)</label>
-		<div class='col-md-6'>
+		<label for='journeyDistance' class='col-md-offset-1 col-md-3 control-label'>Distance</label>
+		<div class='col-md-3'>
 			<input type='number' class='form-control' id='journeyDistance' placeholder='0' onchange="updateCarbon()">
+		</div>
+		<div class='col-md-3'>
+			<select class="form-control" id="distanceUnits" onchange="updateCarbon()">
+			  <option value="km">km</option>
+			  <option value="miles">Miles</option>
+			</select>
 		</div>
 	</div>
 	<div class='form-group'>
-		<label for='journeyConversionRate' class='col-md-offset-1 col-md-3 control-label'>Conversion Rate</label>
+		<label for='journeyConversionRate' class='col-md-offset-1 col-md-3 control-label'>Conversion Rate (per km)</label>
 		<div class='col-md-6'>
 			<p class='form-control-static' id='journeyConversionRate'> 0.0 </p>
 		</div>

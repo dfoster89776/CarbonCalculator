@@ -8,7 +8,6 @@ updateData();
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(updateGraph);
      
-
 function initialise(){
 	updateStatistics();
 	updateActivity();
@@ -37,8 +36,6 @@ function updateData(){
 	xmlhttp.send();	
 }
 
-
-
 function updateActivity(){
 	var xmlhttp;
 	if (window.XMLHttpRequest)
@@ -61,8 +58,6 @@ function updateActivity(){
 	xmlhttp.send();
 	
 }
-
-
 
 function openMeterModal(){
 	
@@ -251,6 +246,12 @@ function updateCarbon(){
 	var carbon = "-";
 	
 	var distance = document.getElementById("journeyDistance").value;
+	
+	var units = document.getElementById("distanceUnits").value;
+	
+	if(units == "miles"){
+		distance = distance * 1.609344;
+	}
 	
 	if (distance != ""){
 		
@@ -495,8 +496,6 @@ function updateGraph(){
 	  {
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
-	    
-	    	//alert(xmlhttp.responseText);
 	    	returnData = JSON.parse(xmlhttp.responseText);
 	    
 	    	var data = google.visualization.arrayToDataTable(returnData);

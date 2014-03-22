@@ -9,6 +9,7 @@
 body{
 	margin-top:50px;
 	overflow-x: hidden;
+	margin-bottom: 65px;
 }
 
 div.activity_item{
@@ -80,11 +81,11 @@ div.activity_item:hover{
 }
 
 .navigation_bar_secure .nav > li > a:hover {
-    color: white;
+    color: #168012;
 }
 
 .navigation_bar_secure .nav > li > a:active {
-    color: white;
+    color: #168012;
 }
 
 

@@ -39,7 +39,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetClassModal()" id="class_modal_cancel">Close</button>
-        <button type="button" class="btn btn-primary" onclick="joinClass()" id="class_modal_submit">Submit</button>
+        <button type="button" class="btn btn-success" onclick="joinClass()" id="class_modal_submit">Submit</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

@@ -8,6 +8,8 @@
 		session_start();
 	}
 	
+	$profile = $_SESSION['profile'];
+	
 	require_once("../carbon.php");
 	$carbon = new Carbon();	
 	
@@ -77,7 +79,7 @@
 	//Get energy date
 	if($energy == "true"){
 		if($period == "7days"){
-			$results = $carbon->getUsersEnergyLastWeek(null);
+			$results = $carbon->getUsersEnergyLastWeek($profile);
 						
 			for ($i = 1; $i <= 7; $i++) {
 				$value;
@@ -93,7 +95,8 @@
 		}
 		elseif($period == "5weeks"){
 			
-			$results = $carbon->getUsersEnergyLastMonth(null);
+			$results = $carbon->getUsersEnergyLastMonth($profile);
+			
 			for ($i = 1; $i <= 5; $i++) {
 				$value;
 				if($results[$i-1]['carbon_total']){
@@ -106,7 +109,7 @@
 			
 		}
 		elseif($period == "6months"){
-			$results = $carbon->getUsersEnergyLastYear(null);
+			$results = $carbon->getUsersEnergyLastYear($profile);
 			
 			for ($i = 1; $i <= 6; $i++) {
 				$value;
@@ -122,7 +125,7 @@
 	
 	if($transport == "true"){
 		if($period == "7days"){
-			$results = $carbon->getUsersJourneysLastWeek(null);
+			$results = $carbon->getUsersJourneysLastWeek($profile);
 			for ($i = 1; $i <= 7; $i++) {
 				$value;
 				if($results[$i-1]['carbon_total']){
@@ -135,7 +138,7 @@
 		}
 		elseif($period == "5weeks"){
 			
-			$results = $carbon->getUsersJourneysLastMonth(null);
+			$results = $carbon->getUsersJourneysLastMonth($profile);
 			
 			for ($i = 1; $i <= 5; $i++) {
 				$value;
@@ -149,7 +152,7 @@
 			
 		}
 		elseif($period == "6months"){
-			$results = $carbon->getUsersJourneysLastYear(null);
+			$results = $carbon->getUsersJourneysLastYear($profile);
 			
 			for ($i = 1; $i <= 6; $i++) {
 				$value;

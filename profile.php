@@ -15,8 +15,9 @@
 	<head>
 		<title> Profile </title>
 		<?php 	require_once("files/standard/standard_includes.php"); ?>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="files/dashboard/dashboard.js"></script>
 		<script src="files/profile/profile.js"></script>
-
 	</head>
 	
 	<body onload="initialise()" style="padding-top: 30px;">

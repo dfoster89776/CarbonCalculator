@@ -110,7 +110,7 @@
 			}
 			
 			$count++;
-			if($count > 5){ break; }
+			if($count > 8){ break; }
 	   	}
 	   	echo("</ul>");
 	}else{
