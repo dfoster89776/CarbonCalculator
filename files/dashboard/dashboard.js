@@ -2,6 +2,7 @@ var conversion_rate = 0.0;
 var previousReading = null;
 var selected;
 var data;
+var stage = 1;
 
 updateData();
 
@@ -105,6 +106,30 @@ function openJourneyModal(){
 	    }
 	  }
 	xmlhttp.open("GET","files/dashboard/journey_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+}
+
+function openDailyLifestyleModal(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    stage = 1;
+	    document.getElementById("addDailyLifestyleModal").innerHTML=xmlhttp.responseText;
+	    $('#addDailyLifestyle').modal('show');
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/dailylifestyle_modal.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send();
 }
@@ -274,6 +299,12 @@ function submitJourney(){
 	data.notes = document.getElementById("journeyNotes").value;
 	data.distance = document.getElementById("journeyDistance").value;
 
+	var units = document.getElementById("distanceUnits").value;
+
+	if(units == "miles"){
+		data.distance = data.distance * 1.609344;
+	}
+
 	var json = "json=" + JSON.stringify(data);
 		
 	var xmlhttp;
@@ -293,7 +324,7 @@ function submitJourney(){
 	    document.getElementById("journey_body").innerHTML=xmlhttp.responseText;
 	    updateData();
 	    updateStatistics();
-
+		updateGraph();
 	  	}
 	  }
 	xmlhttp.open("POST","files/dashboard/submit_journey.php",true);
@@ -331,7 +362,7 @@ function submitMeter(){
 		    document.getElementById("meter_body").innerHTML=xmlhttp.responseText;
 		    updateData();
 		    updateStatistics();
-
+			updateGraph();
 		  	}
 		  }
 		xmlhttp.open("POST","files/dashboard/submit_meter.php",true);
@@ -512,5 +543,27 @@ function updateGraph(){
 	xmlhttp.open("POST","files/dashboard/graphData.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(param);
+	
+}
+
+function nextStage(){
+	
+	current = "stage" + stage;
+	stage = stage+1;
+	next = "stage" + stage;
+	
+	if(stage <8){
+		document.getElementById(current).style.display = "none";
+		document.getElementById(next).style.display = "block";
+	}
+	else if(stage == 8){
+		
+		document.getElementById(current).style.display = "none";
+		document.getElementById(next).style.display = "block";
+		
+		document.getElementById("lifestyle_next_stage").style.display = "none";
+		document.getElementById("lifestyle_submit_button").style.display = "inline";
+		
+	}
 	
 }

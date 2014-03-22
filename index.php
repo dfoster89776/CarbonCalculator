@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <?php
 	session_start();
-	require_once("files/carbon.php");
-	$carbon = new Carbon();
 	require_once("files/secure/checkLoginState.php");
-	require_once("files/standard/standard_includes.php")
-	
 ?>
 
 <html>
@@ -15,19 +11,21 @@
 		<script src="files/index/index.js"></script>
 	</head>
 	
-	<body>
+	<body style="margin-bottom: 0px;">
 	
+		<!-- NAVIGATION BAR INCLUDE -->
 		<?php require_once("files/navigation/unsecure_nav.php"); ?>
 	
+		
+		<!--HEADING CONTAINER -->
 		<div class="index_container" >
-		
-			  <h1 class="index_header" id="index_heading">St Andrews <br/> Carbon Calculator</h1>
-		
+			<h1 class="index_header" id="index_heading">St Andrews <br/> Carbon Calculator</h1>
 		</div>
 		
-		<div class="row hidden-xs front" style="margin: 0px;">
 		
-			<div class="col-sm-2 index_section_tab"></div>
+		<!--FEATURE OPTION BAR-->
+		<div class="row hidden-xs front" style="margin: 0px;">
+					<div class="col-sm-2 index_section_tab"></div>
 			<div class="col-sm-2 index_section_tab index_section_tab_hover border-white-right"  onclick="openSect(1)">
 				<h3> Keep track of both journeys and energy use </h3>
 			</div>
@@ -44,6 +42,7 @@
 		</div>
 		
 		
+		<!--FEATURE INFO CONTAINERS-->
 		<div class="index_cont front" id="sect_1">
 			<div class=" row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
@@ -55,6 +54,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="index_cont front visible-xs" id="sect_2">
 			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
@@ -66,6 +66,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="index_cont front visible-xs" id="sect_3">
 			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
@@ -76,6 +77,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="index_cont front visible-xs" id="sect_4">
 			<div class="row" style="margin: 0px;">
 				<div class="col-sm-4 col-sm-offset-2">
@@ -88,7 +90,7 @@
 			</div>
 		</div>
 		
-		
+		<!--REGISTRATION CONTAINER-->
 		<div class="green_container front">
 			<div class="container white">
 				<div class="row" style="margin: 0px;">
@@ -134,6 +136,8 @@
 				</div>
 			</div>
 		</div>
+		
+		<!--PAGE FOOTER -->
 		<div class="dark_green_container front">
 			<p>Designed by David Foster, University of St. Andrews</p>
 			<p>This website is the deliverable code implementation of a Senior's Honours Project, Module CS3099. </p>

@@ -33,6 +33,9 @@
 					<p><button class="btn btn-success btn-lg" data-toggle="modal" onclick="openMeterModal()" style="width: 100%;">
 					  Add Meter Reading
 					</button></p>
+					<p><button class="btn btn-success btn-lg" data-toggle="modal" onclick="openDailyLifestyleModal()" style="width: 100%;">
+					  Add Daily Lifestyle
+					</button></p>
 					<div id="activity_container"><div style="text-align: center; padding-top: 100px;"><img src='files/images/loading.gif' id='loading-indicator'/></div>
 					</div>
 				</div>
@@ -85,6 +88,15 @@
 		<div class="modal fade" id="addMeterReading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content" id="addMeterModal">
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		
+		
+	<!-- DAILY LIFESTYLE MODAL -->
+		<div class="modal fade" id="addDailyLifestyle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content" id="addDailyLifestyleModal">
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->	

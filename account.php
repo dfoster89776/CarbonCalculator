@@ -49,7 +49,12 @@
 			  </div>
 			  <div class="col-md-8 col-md-offset-1" id="container">
 				 
-				  		<?php if($connected){include_once("files/account/connected_accounts.php");}else{include_once("files/account/overview.php");}?>
+				  		<?php //If connected, then display connected accounts page, otherwise display overview page
+				  			if($connected){
+				  			include_once("files/account/connected_accounts.php");
+				  			}else{
+				  			include_once("files/account/overview.php");
+				  			}?>
 				  
 			  </div>
 			</div>

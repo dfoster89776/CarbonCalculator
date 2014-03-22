@@ -488,7 +488,6 @@ class Carbon{
 	}
 
 
-	
 //ACCOUNT FUNCTIONS
 	function removeFacebook(){
 		$myusername = $this->username;
@@ -581,6 +580,7 @@ class Carbon{
 			return false;
 		}
 	}
+
 	 
 //SETUP FUNCTIONS
 	function getTransportData(){
@@ -676,6 +676,7 @@ class Carbon{
 		 return true;
 		 
 	 }
+
 
 //DATA ACCESS FUNCTIONS		
 	
@@ -786,8 +787,7 @@ class Carbon{
 		}
 		return null;
 	}
-	
-		
+			
 	function getFriendsActivity($start){
 	
 		$myusername = $this->username;
@@ -859,7 +859,6 @@ class Carbon{
 		
 	}
 
-
 	function getUsersEnergyLastWeek($myusername){
 		
 		if($myusername == null){
@@ -896,7 +895,6 @@ class Carbon{
 		
 	}
 
-
 	function getUsersJourneysLastMonth($myusername){
 		
 		if($myusername == null){
@@ -932,8 +930,7 @@ class Carbon{
 		return null;
 		
 	}
-	
-	
+		
 	function getUsersEnergyLastMonth($myusername){
 		
 		if($myusername == null){
@@ -969,8 +966,7 @@ class Carbon{
 		return null;
 		
 	}
-	
-	
+		
 	function getUsersJourneysLastYear($myusername){
 		
 		if($myusername == null){
@@ -1043,8 +1039,7 @@ class Carbon{
 		
 	}
 
-	
-	
+		
 //DASHBOARD FUNCTIONS
 
 	function transportCarbonThisMonth(){
@@ -1100,6 +1095,7 @@ class Carbon{
 			return 0;
 		}
 	}
+
 
 //POST CARBON ACTIVITY FUNCTIONS
 
@@ -1268,6 +1264,7 @@ class Carbon{
 		
 	}
 	
+	
 //TEACHER FUNCTIONS
 	function getClassesTaught(){
 		
@@ -1414,4 +1411,9 @@ function randomString($length){
 	    }
 	    return $randomString;
 	}
+
+function convertResultToAssocArray($result){
+	
+	
+}
 ?>
