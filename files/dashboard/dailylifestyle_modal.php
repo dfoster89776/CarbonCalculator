@@ -2,7 +2,7 @@
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 <h4 class="modal-title" id="myModalLabel">Add Daily Lifestyle</h4>
 </div>
-<div class="modal-body" id="journey_body" style="margin-top: -40px;">
+<div class="modal-body" id="lifestyleModalBody" style="margin-top: -40px;">
 	<div id="stage1">
 		<div class="page-header">
 		  <h1> Date </h1>
@@ -11,7 +11,7 @@
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Date</label>
 		    <div class="col-sm-3">
-		      <input type="date" class="form-control" id="inputEmail3" value="<?php echo Date("d/m/Y") ?>">
+		      <input type="date" class="form-control" id="lifestyleDate" value="<?php echo Date("d/m/Y") ?>" onchange="updateDate()">
 		    </div>
 		  </div>
 		</div>
@@ -318,124 +318,142 @@
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Vegetarian meals ("lacto" includes dairy)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0">
+		      <input type="number" class="form-control" id="foodVegetarian" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodVegetarianCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		   <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Vegan meals</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0">
+		      <input type="number" class="form-control" id="foodVegan" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodVeganCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Red-meat based meals</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0">
+		      <input type="number" class="form-control" id="foodRedMeat" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodRedMeatCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Poultry based meals</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodPoultry" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodPoultryCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Fish (sustainable fishing/farming method)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodFishSus" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodFishSusCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Fish (Non-sustainable fishing/farming method)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodFishUnsus" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodFishUnsusCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Cheese based meals</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodCheese" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodCheeseCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Egg based meals</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodEgg" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodEggCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Dairy products (milk, yogurt)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodDairy" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodDairyCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Bread/cake based meals</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodBread" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodBreadCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Beer (pints)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodBeer" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodBeerCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Bottles of Wine</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateMeals()">
+		      <input type="number" class="form-control" id="foodWine" value="0" onchange="updateMeals()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='foodWineCarbon'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Packaging factor: Number of  supermarket(packaged) meals 50g plastic</label>
+		    <div class="col-sm-3">
+		      <input type="number" class="form-control" id="foodPackaging" value="0" onchange="updateMeals()">
+		    </div>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='foodPackagingCarbon'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Transport factor: number of local/garden/farmers market meals (food miles)</label>
+		    <div class="col-sm-3">
+		      <input type="number" class="form-control" id="foodTransport" value="0" onchange="updateMeals()">
+		    </div>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='foodTransportCarbon'> 0.00 kge CO2</p>
 		    </div>
 		  </div>
 		</div>
-		<h4 id="hwwTotalCarbon" class="pull-right"> Total Carbon Output: 0.00 kge CO2 </h4>
+		<h4 id="foodTotalCarbon" class="pull-right"> Total Carbon Output: 0.00 kge CO2 </h4>
 	</div>
 	<div id="stage6" style="display: none">
 		<div class="page-header">
@@ -463,122 +481,176 @@
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">No of Aluminum cans bought and recycled (15g)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recAluminiumRecycled" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recAluminiumRecycledCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		   <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">No of Aluminum cans bought but NOT  recycled (15g)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recAluminiumNotRecycled" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recAluminiumNotRecycledCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">No of Steel cans recycled (baked beans tin, 20g)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recSteelCans" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recSteelCansCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Glass bottles recycled (wine, 0.5 kg)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recGlassBottles" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recGlassBottlesCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">kg of paper recycled</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recPaper" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recPaperCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">kg of clothes BOUGHT NEW AND recycled (not necessarily  same items)(Note 6)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recClothes" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recClothesCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">No of Polythene or PET Plastic bottles recycled(25g)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recPETBottles" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recPETBottlesCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">No of Plastic bags 5g, BOUGHT per week  (NOT RECYCLABLE)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recPlasticBags" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recPlasticBagsCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">kg  worth of food WASTED/NOT EATEN/LEFTOVERS WHICH IS  composted (Note6)</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recFoodWaste" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recFoodWasteCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Recycled electronic waste kg</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recElectronicWaste" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recElectronicWasteCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">kg  landfill  waste per week (NOT RECYCLED) </label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateRecycling()">
+		      <input type="number" class="form-control" id="recLandfillWaste" value="0" onchange="updateRecycling()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='recLandfillWasteCarbon'> 0.00 kge CO2</p>
 		    </div>
 		  </div>
 		</div>
-		<h4 id="hwwTotalCarbon" class="pull-right"> Total Carbon Output: 0.00 kge CO2 </h4>
+		<h4 id="recTotalCarbon" class="pull-right"> Total Carbon Output: 0.00 kge CO2 </h4>
 	</div>
 	<div id="stage8" style="display: none">
-		<h1> Summary </h1>
+		<div class="page-header">
+		  <h1>Summary</h1>
+		</div>
+		  <div class="form-horizontal">
+			<div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Date</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryDate'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Hot Water Washing</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryHotWaterWashing'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Gas and Electric Appliances</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryGasAndElectricAppliances'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Cold and Bottled Water</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryColdAndBottledWater'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Food</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryFood'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Shopping</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryShopping'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Recycling</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryRecycling'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		  <hr/>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-6 control-label">Lifestyle Total</label>
+		    <div class="col-sm-3">
+		      <p class='form-control-static' id='summaryLifestyleTotal'> 0.00 kge CO2</p>
+		    </div>
+		  </div>
+		</div>
 	</div>
 	
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+<button type="button" class="btn btn-success" style="display: none;" onclick="previousStage()" id="lifestyle_previous_stage">Previous</button>
 <button type="button" class="btn btn-success" onclick="nextStage()" id="lifestyle_next_stage">Next</button>
-<button type="button" class="btn btn-success" style="display: none;" onclick="submitJourney()" id="lifestyle_submit_button">Submit</button>
+<button type="button" class="btn btn-success" style="display: none;" onclick="submitLifestyle()" id="lifestyle_submit_button">Submit</button>
 </div>

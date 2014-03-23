@@ -11,6 +11,8 @@ updateData();
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(updateGraph);
      
+document.onkeydown = checkKey;
+    
 function initialise(){
 	updateStatistics();
 	updateActivity();
@@ -154,6 +156,14 @@ function openDailyLifestyleModal(){
 	    stage = 1;
 	    document.getElementById("addDailyLifestyleModal").innerHTML=xmlhttp.responseText;
 	    $('#addDailyLifestyle').modal('show');
+	    updateDate();
+	    updateHotWaterWashing();
+	    updateGasElectricAppliances();
+	    updateColdWaterAndBottledWater();
+	    updateMeals();
+	    updateShopping();
+	    updateRecycling();
+	    updateSummary();
 	    }
 	  }
 	xmlhttp.open("GET","files/dashboard/dailylifestyle_modal.php",true);
@@ -582,12 +592,14 @@ function nextStage(){
 	if(stage <8){
 		document.getElementById(current).style.display = "none";
 		document.getElementById(next).style.display = "block";
+		document.getElementById("lifestyle_previous_stage").style.display = "inline";
+
 	}
 	else if(stage == 8){
-		
+		updateSummary();
+		document.getElementById("lifestyle_previous_stage").style.display = "inline";
 		document.getElementById(current).style.display = "none";
 		document.getElementById(next).style.display = "block";
-		
 		document.getElementById("lifestyle_next_stage").style.display = "none";
 		document.getElementById("lifestyle_submit_button").style.display = "inline";
 		
@@ -595,6 +607,30 @@ function nextStage(){
 	
 }
 
+function previousStage(){
+	
+	current = "stage" + stage;
+	stage = stage-1;
+	next = "stage" + stage;
+
+	if(stage > 1){
+		document.getElementById(current).style.display = "none";
+		document.getElementById(next).style.display = "block";
+		document.getElementById("lifestyle_next_stage").style.display = "inline";
+		document.getElementById("lifestyle_submit_button").style.display = "none";
+	}else{
+		document.getElementById(current).style.display = "none";
+		document.getElementById(next).style.display = "block";
+		document.getElementById("lifestyle_previous_stage").style.display = "none";
+		document.getElementById("lifestyle_submit_button").style.display = "none";
+	}
+}
+
+function updateDate(){
+	
+	lifeStyleResults.date = document.getElementById("lifestyleDate").value;
+	
+}
 
 function updateHotWaterWashing(){
 
@@ -671,7 +707,7 @@ function updateGasElectricAppliances(){
 	document.getElementById("geaElectricBlanketCarbon").innerHTML = lifeStyleResults.electricBlanket.toFixed(2) + " kge CO2";	
 	
 	//Refrigerator
-	lifeStyleResults.fridge = document.getElementById("geaFridge").value * 200 * 0.5246;
+	lifeStyleResults.fridge = document.getElementById("geaFridge").value * 200 * 0.5246 / 365;
 	document.getElementById("geaFridgeCarbon").innerHTML = lifeStyleResults.fridge.toFixed(2) + " kge CO2";	
 	
 	//Energy Efficient Lightbulbs
@@ -699,8 +735,9 @@ function updateGasElectricAppliances(){
 	document.getElementById("geaDishwasherCarbon").innerHTML = lifeStyleResults.dishwasher.toFixed(2) + " kge CO2";
 	
 	//TOTAL	
-	
-	
+	lifeStyleResults.geaTotal = lifeStyleResults.gasCooker + lifeStyleResults.electricCooker + lifeStyleResults.kettle + lifeStyleResults.laptop + lifeStyleResults.desktop + lifeStyleResults.chargers + lifeStyleResults.tv + lifeStyleResults.electricFire + lifeStyleResults.electricBlanket + lifeStyleResults.fridge + lifeStyleResults.energyEfficientLight + lifeStyleResults.traditionalLight + lifeStyleResults.washingMachine + lifeStyleResults.tumbleDryer + lifeStyleResults.handWashDishes + lifeStyleResults.dishwasher;
+	document.getElementById("geaTotalCarbon").innerHTML = "Total Carbon Output: " + lifeStyleResults.geaTotal.toFixed(2) + " kge CO2";
+
 }
 
 function updateColdWaterAndBottledWater(){
@@ -741,6 +778,81 @@ function updateColdWaterAndBottledWater(){
 
 function updateMeals(){
 	
+	var foodSize = 0.5
+	
+	//Vegetarian Meals
+	lifeStyleResults.vegetarian = document.getElementById("foodVegetarian").value * foodSize * 1;
+	document.getElementById("foodVegetarianCarbon").innerHTML = lifeStyleResults.vegetarian.toFixed(2) + " kge CO2";
+
+	
+	//Vegan Meals
+	lifeStyleResults.vegan = document.getElementById("foodVegan").value * foodSize * 0.5;
+	document.getElementById("foodVeganCarbon").innerHTML = lifeStyleResults.vegan.toFixed(2) + " kge CO2";
+
+	
+	//Red-Meat based
+	lifeStyleResults.redMeat = document.getElementById("foodRedMeat").value * foodSize * 14;
+	document.getElementById("foodRedMeatCarbon").innerHTML = lifeStyleResults.redMeat.toFixed(2) + " kge CO2";
+
+	
+	//Poultry based
+	lifeStyleResults.poultry = document.getElementById("foodPoultry").value * foodSize * 3.5;
+	document.getElementById("foodPoultryCarbon").innerHTML = lifeStyleResults.poultry.toFixed(2) + " kge CO2";
+
+	
+	//Fish (sustainable)
+	lifeStyleResults.fishSus = document.getElementById("foodFishSus").value * foodSize * 0.5;
+	document.getElementById("foodFishSusCarbon").innerHTML = lifeStyleResults.fishSus.toFixed(2) + " kge CO2";
+
+	
+	//Fish (unsustainable)
+	lifeStyleResults.fishUnsus = document.getElementById("foodFishUnsus").value * foodSize * 5;
+	document.getElementById("foodFishUnsusCarbon").innerHTML = lifeStyleResults.fishUnsus.toFixed(2) + " kge CO2";
+
+	
+	//Cheese based
+	lifeStyleResults.cheese = document.getElementById("foodCheese").value * foodSize * 9;
+	document.getElementById("foodCheeseCarbon").innerHTML = lifeStyleResults.cheese.toFixed(2) + " kge CO2";
+
+	
+	//Egg based
+	lifeStyleResults.egg = document.getElementById("foodEgg").value * foodSize * 2;
+	document.getElementById("foodEggCarbon").innerHTML = lifeStyleResults.egg.toFixed(2) + " kge CO2";
+
+	
+	//Dairy products
+	lifeStyleResults.dairy = document.getElementById("foodDairy").value * foodSize * 1.1;
+	document.getElementById("foodDairyCarbon").innerHTML = lifeStyleResults.dairy.toFixed(2) + " kge CO2";
+
+	
+	//Bread/Caked Based meals
+	lifeStyleResults.bread = document.getElementById("foodBread").value * foodSize * 5;
+	document.getElementById("foodBreadCarbon").innerHTML = lifeStyleResults.bread.toFixed(2) + " kge CO2";
+
+	
+	//Beer
+	lifeStyleResults.beer = document.getElementById("foodBeer").value * 0.9;
+	document.getElementById("foodBeerCarbon").innerHTML = lifeStyleResults.beer.toFixed(2) + " kge CO2";
+
+	
+	//Bottles of Wine
+	lifeStyleResults.wine = document.getElementById("foodWine").value * 1.2;
+	document.getElementById("foodWineCarbon").innerHTML = lifeStyleResults.wine.toFixed(2) + " kge CO2";
+
+	//Packaging Factor
+	lifeStyleResults.packaging = document.getElementById("foodPackaging").value * 2 * 0.05;
+	document.getElementById("foodPackagingCarbon").innerHTML = lifeStyleResults.packaging.toFixed(2) + " kge CO2";
+	
+	//Transport Factor
+	lifeStyleResults.transport = document.getElementById("foodTransport").value * -1.3;
+	document.getElementById("foodTransportCarbon").innerHTML = lifeStyleResults.transport.toFixed(2) + " kge CO2";
+	
+	//TOTAL
+	lifeStyleResults.foodTotal = lifeStyleResults.vegetarian + lifeStyleResults.vegan + lifeStyleResults.redMeat + lifeStyleResults.poultry + lifeStyleResults.fishSus + lifeStyleResults.fishUnsus + lifeStyleResults.cheese + lifeStyleResults.egg + lifeStyleResults.dairy + lifeStyleResults.bread + lifeStyleResults.beer + lifeStyleResults.wine + lifeStyleResults.packaging + lifeStyleResults.transport;
+	
+	document.getElementById("foodTotalCarbon").innerHTML = "Total Carbon Output: " + lifeStyleResults.foodTotal.toFixed(2) + " kge CO2";
+
+	
 }
 
 function updateShopping(){
@@ -755,4 +867,112 @@ function updateShopping(){
 
 function updateRecycling(){
 	
+	//Aluminium Cans Bought and Recycled
+	lifeStyleResults.aluminiumCansRecycled = document.getElementById("recAluminiumRecycled").value * 0.015 * 3;
+	document.getElementById("recAluminiumRecycledCarbon").innerHTML = lifeStyleResults.aluminiumCansRecycled.toFixed(2) + " kge CO2";
+	
+	//Aluminium Cans Bought and not Recycled
+	lifeStyleResults.aluminiumCansNotRecycled = document.getElementById("recAluminiumNotRecycled").value * 0.015 * 3;
+	document.getElementById("recAluminiumNotRecycledCarbon").innerHTML = lifeStyleResults.aluminiumCansNotRecycled.toFixed(2) + " kge CO2";
+	
+	//No of Steel Cans recycled
+	lifeStyleResults.steelCansRecycled = document.getElementById("recSteelCans").value * 0.02 * 0.5;
+	document.getElementById("recSteelCansCarbon").innerHTML = lifeStyleResults.steelCansRecycled.toFixed(2) + " kge CO2";
+	
+	//Glass Bottles Recycled
+	lifeStyleResults.glassBottlesRecycled = document.getElementById("recGlassBottles").value * 0.5 * 0.5;
+	document.getElementById("recGlassBottlesCarbon").innerHTML = lifeStyleResults.glassBottlesRecycled.toFixed(2) + " kge CO2";
+	
+	//Paper recycled
+	lifeStyleResults.paperRecycled = document.getElementById("recPaper").value * 0.5;
+	document.getElementById("recPaperCarbon").innerHTML = lifeStyleResults.paperRecycled.toFixed(2) + " kge CO2";
+	
+	//Clothes bought new and recycled
+	lifeStyleResults.clothesRecycled = document.getElementById("recClothes").value * (-1);
+	document.getElementById("recClothesCarbon").innerHTML = lifeStyleResults.clothesRecycled.toFixed(2) + " kge CO2";
+	
+	//Polythene or PET Plastic bottles recycled
+	lifeStyleResults.plasticBottlesRecycled = document.getElementById("recPETBottles").value * 0.025 * 1;
+	document.getElementById("recPETBottlesCarbon").innerHTML = lifeStyleResults.plasticBottlesRecycled.toFixed(2) + " kge CO2";
+	
+	//Plastic Bags - Not recyclable
+	lifeStyleResults.plasticBagsNotRecycled = document.getElementById("recPlasticBags").value * 0.005 * 2;
+	document.getElementById("recPlasticBagsCarbon").innerHTML = lifeStyleResults.plasticBagsNotRecycled.toFixed(2) + " kge CO2";
+	
+	//kg worth of food WASTED/NOT EATEN/LEFTOVERS WHICH IS composted
+	lifeStyleResults.foodWaste = document.getElementById("recFoodWaste").value * (-1);
+	document.getElementById("recFoodWasteCarbon").innerHTML = lifeStyleResults.foodWaste.toFixed(2) + " kge CO2";
+	
+	//Recycled electronic waste kg
+	lifeStyleResults.electronicWaste = document.getElementById("recElectronicWaste").value * 1;
+	document.getElementById("recElectronicWasteCarbon").innerHTML = lifeStyleResults.electronicWaste.toFixed(2) + " kge CO2";
+
+
+	//kg landfill waste per week (NOT RECYCLED)
+	lifeStyleResults.landfillWaste = document.getElementById("recLandfillWaste").value * 1;
+	document.getElementById("recLandfillWasteCarbon").innerHTML = lifeStyleResults.landfillWaste.toFixed(2) + " kge CO2";
+
+
+	//TOTAL
+	lifeStyleResults.recyclingTotal = lifeStyleResults.aluminiumCansRecycled + lifeStyleResults.aluminiumCansNotRecycled + lifeStyleResults.steelCansRecycled + lifeStyleResults.glassBottlesRecycled + lifeStyleResults.paperRecycled + lifeStyleResults.clothesRecycled + lifeStyleResults.plasticBottlesRecycled + lifeStyleResults.plasticBagsNotRecycled + lifeStyleResults.foodWaste + lifeStyleResults.electronicWaste + lifeStyleResults.landfillWaste;
+
+	document.getElementById("recTotalCarbon").innerHTML = "Total Carbon Output: "+ lifeStyleResults.recyclingTotal +" kge CO2";
+}
+
+function updateSummary(){
+	
+	//Date
+	document.getElementById("summaryDate").innerHTML = lifeStyleResults.date;
+	
+	//Hot Water Washing
+	document.getElementById("summaryHotWaterWashing").innerHTML = lifeStyleResults.wwhTotal + " kge CO2";
+	
+	//Gas and Electric Appliances
+	document.getElementById("summaryGasAndElectricAppliances").innerHTML = lifeStyleResults.geaTotal + " kge CO2";
+	
+	//Cold and Bottled Water
+	document.getElementById("summaryColdAndBottledWater").innerHTML = lifeStyleResults.cwbwTotal + " kge CO2";
+	
+	//Food
+	document.getElementById("summaryFood").innerHTML = lifeStyleResults.foodTotal + " kge CO2";
+	
+	//Shopping
+	document.getElementById("summaryShopping").innerHTML = lifeStyleResults.consumerGoods + " kge CO2";
+	
+	//Recycling
+	document.getElementById("summaryRecycling").innerHTML = lifeStyleResults.recyclingTotal + " kge CO2";
+	
+	//TOTAL
+	lifeStyleResults.lifestyleTotal = lifeStyleResults.wwhTotal + lifeStyleResults.geaTotal + lifeStyleResults.cwbwTotal + lifeStyleResults.foodTotal + lifeStyleResults.consumerGoods + lifeStyleResults.recyclingTotal;
+	document.getElementById("summaryLifestyleTotal").innerHTML = lifeStyleResults.lifestyleTotal + " kge CO2";
+	
+}
+
+function submitLifestyle(){
+	
+	var json = "json=" + JSON.stringify(lifeStyleResults);
+		
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("addDailyLifestyleModal").innerHTML=xmlhttp.responseText;
+	  	}
+	  }
+	xmlhttp.open("POST","files/dashboard/submit_lifestyle.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(json);
+	document.getElementById("lifestyleModalBody").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
+		document.getElementById("lifestyle_previous_stage").style.display = "none";
+		document.getElementById("lifestyle_next_stage").style.display = "none";
+		document.getElementById("lifestyle_submit_button").style.display = "none";
 }
