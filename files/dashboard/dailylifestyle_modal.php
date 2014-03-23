@@ -439,21 +439,21 @@
 	</div>
 	<div id="stage6" style="display: none">
 		<div class="page-header">
-		  <h1>Food</h1>
+		  <h1>Shopping</h1>
 		</div>
 		<div class="form-horizontal">
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Pounds spent on NEW clothes, electronic goods, books/CDs, consumer goods</label>
 		    <div class="col-sm-3">
-		      <input type="number" class="form-control" id="inputEmail3" value="0" onchange="updateShopping()">
+		      <input type="number" class="form-control" id="sPSOG" value="0" onchange="updateShopping()">
 		    </div>
 		    <div class="col-sm-3">
-		      <p class='form-control-static' id='geaGasCookerCarbon'> 0.00 kge CO2</p>
+		      <p class='form-control-static' id='sPSOGCarbon'> 0.00 kge CO2</p>
 		    </div>
 
 		  </div>
 		</div>
-		<h4 id="hwwTotalCarbon" class="pull-right"> Total Carbon Output: 0.00 kge CO2 </h4>
+		<h4 id="shoppingTotalCarbon" class="pull-right"> Total Carbon Output: 0.00 kge CO2 </h4>
 	</div>
 	<div id="stage7" style="display: none">
 		<div class="page-header">
