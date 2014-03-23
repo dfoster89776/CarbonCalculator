@@ -3,6 +3,8 @@ var previousReading = null;
 var selected;
 var data;
 var stage = 1;
+var lifestyleData;
+var lifeStyleResults = new Object();
 
 updateData();
 
@@ -12,6 +14,7 @@ google.setOnLoadCallback(updateGraph);
 function initialise(){
 	updateStatistics();
 	updateActivity();
+	downloadLifestyleData();
 	updateCategory();
 }
 
@@ -35,6 +38,30 @@ function updateData(){
 	xmlhttp.open("GET","files/dashboard/dashboardData.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send();	
+}
+
+function downloadLifestyleData(){
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    lifestyleData = JSON.parse(xmlhttp.responseText);
+	    }
+	  }
+	xmlhttp.open("GET","files/dashboard/lifestyleData.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();	
+	
 }
 
 function updateActivity(){
@@ -565,5 +592,127 @@ function nextStage(){
 		document.getElementById("lifestyle_submit_button").style.display = "inline";
 		
 	}
+	
+}
+
+
+function updateHotWaterWashing(){
+
+	//Bath
+	lifeStyleResults.bath = document.getElementById("hwwBath").value  * 0.06 * 0.1836 * 80;
+	document.getElementById("hwwBathCarbon").innerHTML = lifeStyleResults.bath.toFixed(2) + " kge CO2";	
+	
+	//Electric Showers (Normal or Eco-Power)
+	lifeStyleResults.esnep = document.getElementById("hwwESN").value  * 0.06 * 0.5246 * 10;
+	document.getElementById("hwwESNCarbon").innerHTML = lifeStyleResults.esnep.toFixed(2) + " kge CO2";	
+	
+	//Electric Showers (POWER)
+	lifeStyleResults.esp = document.getElementById("hwwESP").value  * 0.06 * 0.5246 * 15;
+	document.getElementById("hwwESPCarbon").innerHTML = lifeStyleResults.esp.toFixed(2) + " kge CO2";	
+	
+	//Showers (Normal or Eco-Power)
+	lifeStyleResults.snep = document.getElementById("hwwSN").value  * 0.06 * 0.1836 * 10;
+	document.getElementById("hwwSNCarbon").innerHTML = lifeStyleResults.snep.toFixed(2) + " kge CO2";	
+	
+	//Showers (POWER)
+	lifeStyleResults.sp = document.getElementById("hwwSP").value  * 0.06 * 0.1836 * 15;
+	document.getElementById("hwwSPCarbon").innerHTML = lifeStyleResults.sp.toFixed(2) + " kge CO2";	
+	
+	//Wash Hands and Face
+	lifeStyleResults.whaf = document.getElementById("hwwWHF").value  * 0.06 * 0.1836 * 1;
+	document.getElementById("hwwWHFCarbon").innerHTML = lifeStyleResults.whaf.toFixed(2) + " kge CO2";	
+	
+	//Wash Clothes by Hand
+	lifeStyleResults.wch = document.getElementById("hwwWCH").value  * 0.06 * 0.1836 * 5;
+	document.getElementById("hwwWCHCarbon").innerHTML = lifeStyleResults.wch.toFixed(2) + " kge CO2";	
+	
+	//Total
+	lifeStyleResults.wwhTotal = lifeStyleResults.bath + lifeStyleResults.esnep + lifeStyleResults.esp + lifeStyleResults.snep + lifeStyleResults.sp + lifeStyleResults.whaf + lifeStyleResults.wch;
+	document.getElementById("hwwTotalCarbon").innerHTML = "Total Carbon Output: " + lifeStyleResults.wwhTotal.toFixed(2) + " kge CO2";
+	
+}
+
+function updateGasElectricAppliances(){
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	//
+	
+	
+}
+
+function updateColdWaterAndBottledWater(){
+	
+	//Toilet
+	lifeStyleResults.toilet = document.getElementById("cwbwToilet").value * 0.0003 * 7;
+	document.getElementById("cwbwToiletCarbon").innerHTML = lifeStyleResults.toilet.toFixed(2) + " kge CO2";
+	
+	//Mugs
+	lifeStyleResults.kettle = document.getElementById("cwbwKettle").value * 0.0003 * 0.3;
+	document.getElementById("cwbwKettleCarbon").innerHTML = lifeStyleResults.kettle.toFixed(2) + " kge CO2";
+	
+	//GlassofWater
+	lifeStyleResults.glassofwater = document.getElementById("cwbwGlassOfWater").value * 0.0003 * 0.3;
+	document.getElementById("cwbwGlassOfWaterCarbon").innerHTML = lifeStyleResults.glassofwater.toFixed(2) + " kge CO2";
+	
+	//BottleofWater
+	lifeStyleResults.bottledwater = document.getElementById("cwbwSmallBottledWater").value * 0.0003 * 0.5;
+	document.getElementById("cwbwSmallBottledWaterCarbon").innerHTML = lifeStyleResults.bottledwater.toFixed(2) + " kge CO2";
+	
+	//Brushing Teeth - Tap Running
+	lifeStyleResults.brushTeethTapOn = document.getElementById("cwbwBrushTeethRunning").value * 0.0003 * 30;
+	document.getElementById("cwbwBrushTeethRunningCarbon").innerHTML = lifeStyleResults.brushTeethTapOn.toFixed(2) + " kge CO2";
+	
+	//Brushing Teeth - Tap Off
+	lifeStyleResults.brushTeethTapOff = document.getElementById("cwbwBrushTeethNotRunning").value * 0.02 * 5;
+	document.getElementById("cwbwBrushTeethNotRunningCarbon").innerHTML = lifeStyleResults.brushTeethTapOff.toFixed(2) + " kge CO2";
+	
+	//Rinse Clothes by Hand Cold Water
+	lifeStyleResults.rinseClothes = document.getElementById("cwbwRinceClothes").value * 0.0003 * 25;
+	document.getElementById("cwbwRinceClothesCarbon").innerHTML = lifeStyleResults.rinseClothes.toFixed(2) + " kge CO2";
+	
+	//Total
+	lifeStyleResults.cwbwTotal = lifeStyleResults.toilet + lifeStyleResults.kettle + lifeStyleResults.glassofwater + lifeStyleResults.bottledwater + lifeStyleResults.brushTeethTapOn + lifeStyleResults.brushTeethTapOff + lifeStyleResults.rinseClothes;
+	document.getElementById("cwbwTotalCarbon").innerHTML = "Total Carbon Output: " + lifeStyleResults.cwbwTotal.toFixed(2) + " kge CO2";
+	
+}
+
+function updateMeals(){
+	
+}
+
+function updateShopping(){
+	
+}
+
+function updateRecycling(){
 	
 }
