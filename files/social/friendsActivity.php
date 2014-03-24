@@ -113,6 +113,25 @@
 					</div>
 				</div>");
 			}
+			if ($value['type'] == "lifestyle"){
+				date_default_timezone_set('UTC'); 
+				$oDate = new DateTime($value['date_added']);
+				$sDate = $oDate->format("d/m/Y");
+				
+				echo("
+					<div class='col-xs-2'>
+					");
+					echo("<img src='".$carbon->getOtherFacebookUserImageFromUserId($carbon->getFacebookId($value['username']))."' width='70%'>");
+									
+				/**echo("
+					<div class='col-sm-1'>
+						<image src='files/images/icon/icon-meter.png' width='100%'/>");*/
+				echo("</div><div class='col-sm-9'>
+						<h4 class='media-heading'>Lifestyle</h4>
+					      <h5>Carbon: ".round($value['carbon_total'], 2)." <small>kge CO2</small></h5>
+					</div>
+				</div>");
+			}
 			
 	   	}
 	   	echo("</ul>");

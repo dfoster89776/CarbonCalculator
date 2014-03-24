@@ -14,6 +14,9 @@
 				if($data['carbon']['type'] == "meter_reading"){
 					echo("<image src='files/images/icon/icon-meter.png' width='100%'/>");
 				}
+				elseif($data['carbon']['type'] == "lifestyle"){
+					echo("<image src='files/images/icon/icon-meter.png' width='100%'/>");
+				}
 				elseif ($data['journey']['main_category'] == "car"){
 					echo("<image src='files/images/icon/icon-car.png' width='100%'/>");
 				}
@@ -47,6 +50,9 @@
 					elseif($data['meter_reading']['meter_type'] == "electricity"){
 						echo("Electricity Meter Reading");
 					}
+				}
+				elseif($data['carbon']['type'] == "lifestyle"){
+					echo("Daily Lifestyle");
 				}
 				elseif ($data['journey']['main_category'] == "car"){
 					echo("Car Trip");
@@ -162,8 +168,12 @@
 				    </div>
 				</div>
 		<?php		
-			}
+			}elseif($data['carbon']['type'] == "lifestyle"){
 		?>  
+	
+		<?php
+			}
+		?>
 	
 	</form>
 

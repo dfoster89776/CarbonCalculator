@@ -679,8 +679,8 @@ function updateGasElectricAppliances(){
 	document.getElementById("geaElectricCookerCarbon").innerHTML = lifeStyleResults.electricCooker.toFixed(2) + " kge CO2";	
 	
 	//Mugs
-	lifeStyleResults.kettle = document.getElementById("geaKettle").value * 0.03 * 0.5246;
-	document.getElementById("geaKettleCarbon").innerHTML = lifeStyleResults.kettle.toFixed(2) + " kge CO2";	
+	lifeStyleResults.kettle1 = document.getElementById("geaKettle").value * 0.03 * 0.5246;
+	document.getElementById("geaKettleCarbon").innerHTML = lifeStyleResults.kettle1.toFixed(2) + " kge CO2";	
 	
 	//Laptops
 	lifeStyleResults.laptop = document.getElementById("geaLaptop").value * 0.03 * 0.5246;
@@ -735,7 +735,7 @@ function updateGasElectricAppliances(){
 	document.getElementById("geaDishwasherCarbon").innerHTML = lifeStyleResults.dishwasher.toFixed(2) + " kge CO2";
 	
 	//TOTAL	
-	lifeStyleResults.geaTotal = lifeStyleResults.gasCooker + lifeStyleResults.electricCooker + lifeStyleResults.kettle + lifeStyleResults.laptop + lifeStyleResults.desktop + lifeStyleResults.chargers + lifeStyleResults.tv + lifeStyleResults.electricFire + lifeStyleResults.electricBlanket + lifeStyleResults.fridge + lifeStyleResults.energyEfficientLight + lifeStyleResults.traditionalLight + lifeStyleResults.washingMachine + lifeStyleResults.tumbleDryer + lifeStyleResults.handWashDishes + lifeStyleResults.dishwasher;
+	lifeStyleResults.geaTotal = lifeStyleResults.gasCooker + lifeStyleResults.electricCooker + lifeStyleResults.kettle1 + lifeStyleResults.laptop + lifeStyleResults.desktop + lifeStyleResults.chargers + lifeStyleResults.tv + lifeStyleResults.electricFire + lifeStyleResults.electricBlanket + lifeStyleResults.fridge + lifeStyleResults.energyEfficientLight + lifeStyleResults.traditionalLight + lifeStyleResults.washingMachine + lifeStyleResults.tumbleDryer + lifeStyleResults.handWashDishes + lifeStyleResults.dishwasher;
 	document.getElementById("geaTotalCarbon").innerHTML = "Total Carbon Output: " + lifeStyleResults.geaTotal.toFixed(2) + " kge CO2";
 
 }
@@ -747,8 +747,8 @@ function updateColdWaterAndBottledWater(){
 	document.getElementById("cwbwToiletCarbon").innerHTML = lifeStyleResults.toilet.toFixed(2) + " kge CO2";
 	
 	//Mugs
-	lifeStyleResults.kettle = document.getElementById("cwbwKettle").value * 0.0003 * 0.3;
-	document.getElementById("cwbwKettleCarbon").innerHTML = lifeStyleResults.kettle.toFixed(2) + " kge CO2";
+	lifeStyleResults.kettle2 = document.getElementById("cwbwKettle").value * 0.0003 * 0.3;
+	document.getElementById("cwbwKettleCarbon").innerHTML = lifeStyleResults.kettle2.toFixed(2) + " kge CO2";
 	
 	//GlassofWater
 	lifeStyleResults.glassofwater = document.getElementById("cwbwGlassOfWater").value * 0.0003 * 0.3;
@@ -771,7 +771,7 @@ function updateColdWaterAndBottledWater(){
 	document.getElementById("cwbwRinceClothesCarbon").innerHTML = lifeStyleResults.rinseClothes.toFixed(2) + " kge CO2";
 	
 	//Total
-	lifeStyleResults.cwbwTotal = lifeStyleResults.toilet + lifeStyleResults.kettle + lifeStyleResults.glassofwater + lifeStyleResults.bottledwater + lifeStyleResults.brushTeethTapOn + lifeStyleResults.brushTeethTapOff + lifeStyleResults.rinseClothes;
+	lifeStyleResults.cwbwTotal = lifeStyleResults.toilet + lifeStyleResults.kettle2 + lifeStyleResults.glassofwater + lifeStyleResults.bottledwater + lifeStyleResults.brushTeethTapOn + lifeStyleResults.brushTeethTapOff + lifeStyleResults.rinseClothes;
 	document.getElementById("cwbwTotalCarbon").innerHTML = "Total Carbon Output: " + lifeStyleResults.cwbwTotal.toFixed(2) + " kge CO2";
 	
 }

@@ -486,6 +486,60 @@ class Carbon{
 			return 0;
 		}
 	}
+		
+	function friendsLifestyleCarbonThisMonth($profile){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW())AND MONTH(daily_lifestyle.date) = MONTH(NOW()) AND username = '$profile';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function friendsLifestyleCarbonLastMonth($profile){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(daily_lifestyle.date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username = '$profile';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+		
+	}
+	
+	function friendsLifestyleCarbonOffsetThisMonth($profile){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleOffset) as offset FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW())AND MONTH(daily_lifestyle.date) = MONTH(NOW()) AND username = '$profile';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['offset']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function friendsLifestyleCarbonOffsetLastMonth($profile){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleOffset) as offset FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(daily_lifestyle.date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username = '$profile';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['offset']);
+		}else{
+			return 0;
+		}
+		
+	}
 
 
 //ACCOUNT FUNCTIONS
@@ -1095,6 +1149,60 @@ class Carbon{
 			return 0;
 		}
 	}
+	
+	function lifestyleCarbonThisMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW())AND MONTH(daily_lifestyle.date) = MONTH(NOW()) AND username = '$myusername';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function lifestyleCarbonLastMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(daily_lifestyle.date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username = '$myusername';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+		
+	}
+	
+	function lifestyleCarbonOffsetThisMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleOffset) as offset FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW())AND MONTH(daily_lifestyle.date) = MONTH(NOW()) AND username = '$myusername';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['offset']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function lifestyleCarbonOffsetLastMonth(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleOffset) as offset FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(daily_lifestyle.date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username = '$myusername';");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['offset']);
+		}else{
+			return 0;
+		}
+		
+	}
 
 
 //POST CARBON ACTIVITY FUNCTIONS
@@ -1262,6 +1370,89 @@ class Carbon{
 
 		return true;
 		
+	}
+	
+	function postLifestyle($json){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$data = json_decode($json, true);
+		
+		$lifestyleTotal = $data['lifestyleTotal'];
+		
+		$result = mysqli_query($this->mysqli, "INSERT INTO carbon_item (username, date_added, type, carbon_total) VALUES ('$myusername', NOW(), 'lifestyle', '$lifestyleTotal')");
+		
+		$id = mysqli_insert_id($this->mysqli);
+		$timestamp = strtotime($data['date']);
+		$date = date("Y-m-d", $timestamp);
+		$bath = $data['bath'];
+		$esnep = $data['esnep'];
+		$esp = $data['esp'];
+		$snep = $data['snep'];
+		$sp = $data['sp'];
+		$whaf = $data['whaf'];
+		$wch = $data['wch'];
+		$wwhTotal = $data['wwhTotal'];
+		$gasCooker = $data['gasCooker'];
+		$electricCooker = $data['electricCooker'];
+		$kettle1 = $data['kettle1'];
+		$laptop = $data['laptop'];
+		$desktop = $data['desktop'];
+		$chargers = $data['chargers'];
+		$tv = $data['tv'];
+		$electricFire = $data['electricFire'];
+		$electricBlanket = $data['electricBlanket'];
+		$fridge = $data['fridge'];
+		$energyEfficientLight = $data['energyEfficientLight'];
+		$traditionalLight = $data['traditionalLight'];
+		$washingMachine = $data['washingMachine'];
+		$tumbleDryer = $data['tumbleDryer'];
+		$handWashDishes = $data['handWashDishes'];
+		$dishwasher = $data['dishwasher'];
+		$geaTotal = $data['geaTotal'];
+		$toilet = $data['toilet'];
+		$kettle2 = $data['kettle2'];
+		$glassofwater = $data['glassofwater'];
+		$bottledwater = $data['bottledwater'];
+		$brushTeethTapOn = $data['brushTeethTapOn'];
+		$brushTeethTapOff = $data['brushTeethTapOff'];
+		$rinseClothes = $data['rinseClothes'];
+		$cwbwTotal = $data['cwbwTotal'];
+		$vegetarian = $data['vegetarian'];
+		$vegan = $data['vegan'];
+		$redMeat = $data['redMeat'];
+		$poultry = $data['poultry'];
+		$fishSus = $data['fishSus'];
+		$fishUnsus = $data['fishUnsus'];
+		$cheese = $data['cheese'];
+		$egg = $data['egg'];
+		$dairy = $data['dairy'];
+		$bread = $data['bread'];
+		$beer = $data['beer'];
+		$wine = $data['wine'];
+		$packaging = $data['packaging'];
+		$transport = $data['transport'];
+		$foodTotal = $data['foodTotal'];
+		$consumerGoods = $data['consumerGoods'];
+		$aluminiumCansRecycled = $data['aluminiumCansRecycled'];
+		$aluminiumCansNotRecycled = $data['aluminiumCansNotRecycled'];
+		$steelCansRecycled = $data['steelCansRecycled'];
+		$glassBottlesRecycled = $data['glassBottlesRecycled'];
+		$paperRecycled = $data['paperRecycled'];
+		$clothesRecycled = $data['clothesRecycled'];
+		$plasticBottlesRecycled = $data['plasticBottlesRecycled'];
+		$plasticBagsNotRecycled = $data['plasticBagsNotRecycled'];
+		$foodWaste = $data['foodWaste'];
+		$electronicWaste = $data['electronicWaste'];
+		$landfillWaste = $data['landfillWaste'];
+		$recyclingTotal = $data['recyclingTotal'];
+		$lifestyleOffset = $wwhTotal + $geaTotal;
+		
+		
+		$result = mysqli_query($this->mysqli, "INSERT INTO daily_lifestyle VALUES ('$id', '$date', '$bath', '$esnep', '$esp', '$snep', '$sp', '$whaf', '$wch', '$wwhTotal', '$gasCooker', '$electricCooker', '$kettle1', '$laptop', '$desktop', '$chargers', '$tv', '$electricFire', '$electricBlanket', '$fridge', '$energyEfficientLight', '$traditionalLight', '$washingMachine', '$tumbleDryer', '$handWashDishes', '$dishwasher', '$geaTotal', '$toilet', '$kettle2', '$glassofwater', '$bottledwater', '$brushTeethTapOn', '$brushTeethTapOff', '$rinseClothes', '$cwbwTotal', '$vegetarian', '$vegan', '$redMeat', '$poultry', '$fishSus', '$fishUnsus', '$cheese', '$egg', '$dairy', '$bread', '$beer', '$wine', '$packaging', '$transport', '$foodTotal', '$consumerGoods', '$aluminiumCansRecycled', '$aluminiumCansNotRecycled', '$steelCansRecycled', '$glassBottlesRecycled', '$paperRecycled', '$clothesRecycled', '$plasticBottlesRecycled', '$plasticBagsNotRecycled', '$foodWaste', '$electronicWaste', '$landfillWaste', '$recyclingTotal', '$lifestyleTotal', '$lifestyleOffset')");
+		
+		return true;
 	}
 	
 	

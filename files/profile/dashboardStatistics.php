@@ -7,12 +7,25 @@
 	
 	require_once("../carbon.php");
 	$carbon = new Carbon();	
+	
+	//ENERGY
 	$data['currentEnergy'] = $carbon->friendsEnergyCarbonThisMonth($profile);
 	$data['previousEnergy'] = $carbon->friendsEnergyCarbonLastMonth($profile);
+	
+	//TRANSPORT
 	$data['currentTransport'] = $carbon->friendsTransportCarbonThisMonth($profile);
 	$data['previousTransport'] = $carbon->friendsTransportCarbonLastMonth($profile);
-	$data['currentTotal'] = $data['currentEnergy'] + $data['currentTransport'];
-	$data['previousTotal'] = $data['previousEnergy'] + $data['previousTransport'];
+	
+	//LIFESTYLE STATISTICS
+	$data['currentLifestyle'] = $carbon->friendsLifestyleCarbonThisMonth($profile);
+	$data['previousLifestyle'] = $carbon->friendsLifestyleCarbonLastMonth($profile);
+	@$data['percentageLifestyle'] =  round(($data['previousLifestyle'] - $data['currentLifestyle'])/$data['previousLifestyle']*100);
+	$data['currentLifestyleOffset'] = $carbon->friendsLifestyleCarbonOffsetThisMonth($profile);
+	$data['previousLifestyleOffset'] = $carbon->friendsLifestyleCarbonOffsetLastMonth($profile);
+	
+	$data['currentTotal'] = $data['currentEnergy'] + $data['currentTransport'] + $data['currentLifestyle'] - $data['currentLifestyleOffset'];
+	$data['previousTotal'] = $data['previousEnergy'] + $data['previousTransport'] + $data['previousLifestyle'] - $data['previousLifestyleOffset'];
+	@$data['percentageTotal'] = round(($data['previousTransport'] - $data['currentTransport'])/$data['previousTransport']*100);
 ?>
 
 <h3 class='page-header'>Overview</h3>
@@ -59,6 +72,21 @@
 		}else{
 			echo("color: green;");
 		}?>"><?php echo $data['currentTransport']; ?></h4>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-3">
+		<h4> Lifestyle <small>kge CO2</small> </h4>
+	</div>
+	<div class="col-sm-4" style="text-align: center">
+		<h4 style="font-weight: normal;"><?php echo $data['previousLifestyle']; ?></h4>
+	</div>
+	<div class="col-sm-4" style="text-align: center">
+		<h4 style="font-weight: normal;<?php if($data['currentLifestyle'] > $data['previousLifestyle']){
+			echo("color: red;");	
+		}else{
+			echo("color: green;");
+		}?>"><?php echo $data['currentLifestyle']; ?></h4>
 	</div>
 </div>
 </div>

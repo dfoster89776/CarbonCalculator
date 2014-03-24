@@ -18,7 +18,7 @@ function initialise(){
 }
 
 function loadProfileDashboard(){
-	document.getElementById("content").innerHTML = "<div class='row'><div class='col-sm-8'><div class='row'><div id='statistics'><div style='text-align: center; padding-top: 100px;'><img src='files/images/loading.gif' id='loading-indicator'/></div></div></div><div class='row'><div id='histogram'><div style='text-align: center; padding-top: 100px;'><img src='files/images/loading.gif' id='loading-indicator'/></div></div></div></div><div class='col-sm-3 col-sm-offset-1' id='recentActivity'><div style='text-align: center; padding-top: 100px;'><img src='files/images/loading.gif' id='loading-indicator'/></div></div></div>";
+	document.getElementById("content").innerHTML = "<div class='row'><div class='col-sm-8'><div class='row'><div id='statistics'><div style='text-align: center; padding-top: 20px;'><img src='files/images/loading.gif' id='loading-indicator'/></div></div></div><div class='row'><div id='histogram'><div style='text-align: center; padding-top: 100px;'><img src='files/images/loading.gif' id='loading-indicator'/></div></div></div></div><div class='col-sm-3 col-sm-offset-1' id='recentActivity'><div style='text-align: center; padding-top: 20px;'><img src='files/images/loading.gif' id='loading-indicator'/></div></div></div>";
 	document.getElementById("overviewPill").className = "active";
 	document.getElementById("statisticsPill").className = "";
 	document.getElementById("activityPill").className = "";
