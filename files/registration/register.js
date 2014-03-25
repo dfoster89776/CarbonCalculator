@@ -7,6 +7,15 @@ carbon_values[3] = 0.29678;
 carbon_values[4] = 0.14048;
 carbon_values[5] = 0.17475;
 carbon_values[6] = 0.22941;
+var car_type = new Array();
+car_type[0] = "none";
+car_type[1] = "petrolSmall";
+car_type[2] = "petrolMedium";
+car_type[3] = "petrolLarge";
+car_type[4] = "dieselSmall";
+car_type[5] = "dieselMedium";
+car_type[6] = "dieselLarge";
+car_type[7] = "custom";
 
 function loadContent(){
 	
@@ -143,9 +152,12 @@ function submitSetupInfo(){
 
 function submitSetupOne(){
 
+	var index = document.getElementById("car_type").selectedIndex;
+	type = car_type[index];
+
 	carco2 = document.getElementById('car_carbon').value;
 	
-	param = "carco2="+ carco2;
+	param = "carco2="+ carco2 + "&cartype=" + type;
 
 	var xmlhttp;
 	if (window.XMLHttpRequest)

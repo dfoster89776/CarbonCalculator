@@ -1,3 +1,20 @@
+var carbon_values = new Array();
+carbon_values[1] = 0.16192;
+carbon_values[2] = 0.2049;
+carbon_values[3] = 0.29678;
+carbon_values[4] = 0.14048;
+carbon_values[5] = 0.17475;
+carbon_values[6] = 0.22941;
+var car_type = new Array();
+car_type[0] = "none";
+car_type[1] = "petrolSmall";
+car_type[2] = "petrolMedium";
+car_type[3] = "petrolLarge";
+car_type[4] = "dieselSmall";
+car_type[5] = "dieselMedium";
+car_type[6] = "dieselLarge";
+car_type[7] = "custom";
+
 function loadTransport(){
 	
 	document.getElementById("nav_energy").className = "";
@@ -85,37 +102,56 @@ function loadLifestyle(){
 }
 
 
+function changeCarType(){
+
+	var index = document.getElementById("car_type").selectedIndex;
+	if (index > 0 && index < 7){
+		document.getElementById("car_carbon").value = carbon_values[index];
+		document.getElementById("car_carbon").readOnly = true;
+	}
+	else if(index == 0){
+		document.getElementById("car_carbon").value = "";
+		document.getElementById("car_carbon").readOnly = true;
+	}
+	else if(index == 7){
+		document.getElementById("car_carbon").value = "";
+		document.getElementById("car_carbon").readOnly = false;
+	}
+		
+}
+
+function setCustom(){
+	document.getElementById("car_type").selectedIndex = 7;
+}
+
 function updateTransport(){
 		
-	var car_co2 = document.getElementById("kgeCO2").value;
-	
-	if (car_co2 != ""){
-	
-		param = "car_co2=" + car_co2;
+	var index = document.getElementById("car_type").selectedIndex;
+	type = car_type[index];
+	var car_co2 = document.getElementById("car_carbon").value;
+
+	param = "car_co2=" + car_co2 + "&cartype=" + type;
 		
-		var xmlhttp;
-		if (window.XMLHttpRequest)
-		  {// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		  }
-		else
-		  {// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-		xmlhttp.onreadystatechange=function()
-		  {
-		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		    {
-		    document.getElementById("container").innerHTML=xmlhttp.responseText;
-		    }
-		  }
-		xmlhttp.open("POST","files/setup/updateTransport.php",true);
-		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		xmlhttp.send(param);
-		document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
-	}else{
-		alert("No changes to be saved");
-	}
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("container").innerHTML=xmlhttp.responseText;
+	    }
+	  }
+	xmlhttp.open("POST","files/setup/updateTransport.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
+	document.getElementById("container").innerHTML = "<div style='width: 100%; margin-top: 40px; text-align: center;'><img src='files/images/loading.gif' id='loading-indicator'/></div>";
 	
 }
 

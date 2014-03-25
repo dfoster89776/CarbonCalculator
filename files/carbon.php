@@ -165,10 +165,10 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP4', NOW())");
 	 }
 	 
-	 function setupTransport($carco2){
+	 function setupTransport($carco2, $carType){
 		 $myusername = $this->username;
 		 $this->connectDatabase();
-		 $result = mysqli_query($this->mysqli, "INSERT INTO basic_details (username, car_co2) VALUES ('$myusername', '$carco2')");
+		 $result = mysqli_query($this->mysqli, "INSERT INTO basic_details (username, car_co2, car_type) VALUES ('$myusername', '$carco2', '$carType')");
 		 $this->updateRegistrationStatus(5);
 		 $result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'registration', 'STEP5', NOW())");
 	 }
@@ -641,7 +641,7 @@ class Carbon{
 		
 		$myusername = $this->username;
 		$this->connectDatabase();
-		$result = mysqli_query($this->mysqli, "SELECT car_co2 FROM basic_details WHERE username='$myusername'");
+		$result = mysqli_query($this->mysqli, "SELECT car_co2, car_type FROM basic_details WHERE username='$myusername'");
 		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 		return $row;
 	} 
@@ -655,11 +655,13 @@ class Carbon{
 		return $row;
 	}
 	
-	function updateTransport($carco2){
-		 $myusername = $this->username;
-		 $this->connectDatabase();
-		 $result = mysqli_query($this->mysqli, "UPDATE basic_details SET car_co2 = '$carco2' WHERE username = '$myusername'");
-		 return $result;
+	function updateTransport($carco2, $cartype){
+		$co2 = $carco2;
+		$type = $cartype;
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "UPDATE basic_details SET car_co2 = '$co2', car_type = '$type' WHERE username = '$myusername'");
+		return $result;
 	 }
 	 
 	 function updateEnergy($json){

@@ -8,7 +8,7 @@
 	$carbon = new Carbon();	
 	
 	if(isset($_POST['car_co2'])){
-		$success = $carbon->updateTransport($_POST['car_co2']);	
+		$success = $carbon->updateTransport($_POST['car_co2'], $_POST['cartype']);	
 	}else{
 		$success = false;
 	}

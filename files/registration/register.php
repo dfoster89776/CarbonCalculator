@@ -8,7 +8,7 @@
 				</div>
 				
 				<div class='progress'>
-					<div class='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 0%;'>
+					<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 0%;'>
 						<span class='sr-only'>0% Complete</span>
 					</div>
 				</div>
@@ -53,7 +53,7 @@
 				
 				<div class='row' style='text-align: right'>
 					<div class='col-md-offset-8 col-md-2'>
-						<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='submitLoginDetails()'>Continue</button>
+						<button class='btn-success  btn btn-block' style='min-width: 100%' onclick='submitLoginDetails()'>Continue</button>
 					</div>
 				</div>
 				
@@ -70,7 +70,7 @@
 					</div>
 					
 					<div class='progress'>
-						<div class='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 20%;'>
+						<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 20%;'>
 			   			<span class='sr-only'>20% Complete</span>
 						</div>
 					</div
@@ -96,7 +96,7 @@
 					</div>
 					<div class='row' style='text-align: right'>
 						<div class='col-md-offset-2 col-md-8 col-lg-2 col-lg-offset-9'>
-							<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='submitPersonnalDetails()'>Continue</button>
+							<button class='btn-success  btn btn-block' style='min-width: 100%' onclick='submitPersonnalDetails()'>Continue</button>
 						</div>
 					</div>
 					
@@ -163,7 +163,7 @@
 					</div>
 					
 					<div class='progress'>
-						<div class='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 40%;'>
+						<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 40%;'>
 			   			<span class='sr-only'>40% Complete</span>
 						</div>
 					</div
@@ -200,7 +200,7 @@
 						
 					<div class='row' style='text-align: right'>
 						<div class='col-md-offset-2 col-md-8 col-lg-2 col-lg-offset-9'>
-							<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='submitSocialNetwork()'>Continue</button>
+							<button class='btn-success  btn btn-block' style='min-width: 100%' onclick='submitSocialNetwork()'>Continue</button>
 						</div>
 					</div>
 					
@@ -217,7 +217,7 @@
 					</div>
 					
 					<div class='progress'>
-						<div class='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 60%;'>
+						<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 60%;'>
 			   			<span class='sr-only'>60% Complete</span>
 						</div>
 					</div
@@ -233,7 +233,7 @@
 					
 					<div class='row' style='text-align: right'>
 						<div class='col-md-offset-2 col-md-8 col-lg-2 col-lg-offset-9'>
-							<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='submitSetupInfo()'>Continue</button>
+							<button class='btn-success  btn btn-block' style='min-width: 100%' onclick='submitSetupInfo()'>Continue</button>
 						</div>
 					</div>
 					
@@ -250,7 +250,7 @@
 					</div>
 					
 					<div class='progress'>
-						<div class='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 60%;'>
+						<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 60%;'>
 			   			<span class='sr-only'>60% Complete</span>
 						</div>
 					</div
@@ -295,7 +295,7 @@
 					
 					<div class='row' style='text-align: right'>
 						<div class='col-md-offset-2 col-md-8 col-lg-2 col-lg-offset-9'>
-							<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='submitSetupOne()'>Continue</button>
+							<button class='btn-success  btn btn-block' style='min-width: 100%' onclick='submitSetupOne()'>Continue</button>
 						</div>
 					</div>
 					
@@ -312,7 +312,7 @@
 					</div>
 					
 					<div class='progress'>
-						<div class='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 80%;'>
+						<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 80%;'>
 			   			<span class='sr-only'>80% Complete</span>
 						</div>
 					</div
@@ -462,7 +462,7 @@
 					
 					<div class='row' style='text-align: right'>
 						<div class='col-md-offset-2 col-md-8 col-lg-2 col-lg-offset-9'>
-							<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='submitSetupTwo()'>Continue</button>
+							<button class='btn-success  btn btn-block' style='min-width: 100%' onclick='submitSetupTwo()'>Continue</button>
 						</div>
 					</div>
 					
@@ -479,7 +479,7 @@
 					</div>
 					
 					<div class='progress'>
-						<div class='progress-bar' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 100%;'>
+						<div class='progress-bar progress-bar-success' role='progressbar' aria-valuenow='60' aria-valuemin='0' aria-valuemax='100' style='width: 100%;'>
 			   			<span class='sr-only'>100% Complete</span>
 						</div>
 					</div
@@ -499,7 +499,7 @@
 					
 					<div class='row' style='text-align: right'>
 						<div class='col-md-offset-2 col-md-8 col-lg-2 col-lg-offset-9'>
-							<button class='btn-primary  btn btn-block' style='min-width: 100%' onclick='submitSetupThree()'>Continue</button>
+							<button class='btn-success  btn btn-block' style='min-width: 100%' onclick='submitSetupThree()'>Continue</button>
 						</div>
 					</div>
 					
