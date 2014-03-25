@@ -1707,6 +1707,110 @@ class Carbon{
 		
 	}
 	
+//HISTORY FUNCTIONS
+	function getYearOptions(){
+		$myusername = $this->username;	
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT year(date) as yearoption FROM dates, users WHERE dates.date > users.join_date AND dates.date <= NOW() AND users.username = '$myusername' GROUP BY yearoption");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+	}
+	
+	function getMonthOptions($year){
+		$myusername = $this->username;	
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT month(date) as monthoption, year(date) as yearoption FROM dates, users WHERE dates.date > users.join_date AND dates.date <= NOW() AND users.username = '$myusername' AND year(date) = '$year' GROUP BY monthoption, yearoption ORDER BY dates.date");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+	}
+	
+	function getweekOptions($year, $month){
+		$myusername = $this->username;	
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT day(date) as dayoption, week(date) as weekoption, month(date) as monthoption, year(date) as yearoption FROM dates, users WHERE dates.date > users.join_date AND dates.date <= NOW() AND users.username = '$myusername' AND month(date) = '$month' AND year(date) = '$year' GROUP BY weekoption, monthoption, yearoption ORDER BY dates.date");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+	}
+	
+	function getDayOptions($year, $month, $week){
+		$myusername = $this->username;		
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT date FROM dates, users WHERE dates.date > users.join_date AND dates.date <= NOW() AND users.username = '$myusername' AND week(date) = '$week' AND month(date) = '$month' AND year(date) = '$year'");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+	}
 }
 
 function randomString($length){
