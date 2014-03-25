@@ -11,7 +11,7 @@
 		  <div class="form-group">
 		    <label for="inputEmail3" class="col-sm-6 control-label">Date</label>
 		    <div class="col-sm-3">
-		      <input type="date" class="form-control" id="lifestyleDate" value="<?php echo Date("d/m/Y") ?>" onchange="updateDate()">
+		      <input type="date" class="form-control" id="lifestyleDate" value="<?php echo Date("d-m-Y") ?>" onchange="updateDate()">
 		    </div>
 		  </div>
 		</div>
@@ -468,7 +468,6 @@
 		    <div class="col-sm-3">
 		      <p class='form-control-static' id='sPSOGCarbon'> 0.00 kge CO2</p>
 		    </div>
-
 		  </div>
 		</div>
 		<h4 id="shoppingTotalCarbon" class="pull-right"> Total Carbon Output: 0.00 kge CO2 </h4>

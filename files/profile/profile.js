@@ -225,8 +225,10 @@ function updateGraph(profile){
 	var period = document.querySelector('input[name="options"]:checked').value;	
 	var transport = document.getElementById("transportCheck").checked;
 	var energy = document.getElementById("energyCheck").checked;
-		
-	var param = "transport=" + transport + "&energy=" + energy + "&period=" + period;
+	var lifestyle = document.getElementById("lifestyleCheck").checked;
+	
+	
+	var param = "transport=" + transport + "&energy=" + energy + "&lifestyle=" + lifestyle + "&period=" + period;
 		
 	var xmlhttp;
 	if (window.XMLHttpRequest)

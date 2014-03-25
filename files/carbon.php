@@ -771,6 +771,9 @@ class Carbon{
 				} elseif ($data['carbon']['type'] == "meter_reading"){
 					$result = mysqli_query($this->mysqli, "SELECT * FROM meter_readings WHERE id = '$id'");
 					$data['meter_reading'] = mysqli_fetch_array($result, MYSQLI_ASSOC);
+				} elseif ($data['carbon']['type'] == "lifestyle"){
+					$result = mysqli_query($this->mysqli, "SELECT * FROM daily_lifestyle WHERE id = '$id'");
+					$data['lifestyle'] = mysqli_fetch_array($result, MYSQLI_ASSOC);
 				}
 				
 				return $data;		
@@ -1092,8 +1095,116 @@ class Carbon{
 		return null;
 		
 	}
-
+	
+	function getUsersLifestyleLastWeek($myusername){
 		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
+		
+		$this->connectDatabase();
+		$data;
+			
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT sum(carbon_total) AS carbon_total, daily_lifestyle.date FROM carbon_item, daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND daily_lifestyle.date > (NOW() - INTERVAL 7 DAY) AND carbon_item.username = '$myusername' GROUP BY daily_lifestyle.date) AS lifestyle_table RIGHT JOIN (SELECT * FROM dates WHERE dates.date > (NOW() - INTERVAL 7 DAY) AND dates.date < NOW()) AS newtable2 ON lifestyle_table.date = newtable2.date;");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+
+
+		return null;
+		
+	}
+	
+	function getUsersLifestyleLastMonth($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
+		
+		$this->connectDatabase();
+		$data;
+			
+		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.week FROM (SELECT sum(carbon_total) AS carbon_total, week(daily_lifestyle.date) AS week FROM carbon_item, daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND daily_lifestyle.date > (NOW() - INTERVAL 5 WEEK) AND carbon_item.username = '$myusername' GROUP BY week) AS lifestyle_table RIGHT JOIN (SELECT WEEK(dates.date) AS week FROM dates WHERE dates.date > (NOW() - INTERVAL 5 WEEK) AND dates.date < NOW() GROUP BY week) AS newtable2 ON lifestyle_table.week = newtable2.week;");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+
+
+		return null;
+		
+	}
+	
+	function getUsersLifestyleLastYear($myusername){
+		
+		if($myusername == null){
+			$myusername = $this->username;
+		}
+		
+		$this->connectDatabase();
+		$data;
+			
+		$result = mysqli_query($this->mysqli, "SELECT carbon_total, newtable2.mon, newtable2.yr FROM (SELECT sum(carbon_total) AS carbon_total, month(daily_lifestyle.date) AS mon, year(daily_lifestyle.date) as yr FROM carbon_item, daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND daily_lifestyle.date > (NOW() - INTERVAL 5 MONTH) AND carbon_item.username = '$myusername' GROUP BY mon, yr) AS lifestyle_table RIGHT JOIN (SELECT MONTH(dates.date) AS mon, YEAR(dates.date) AS yr FROM dates WHERE dates.date > (NOW() - INTERVAL 5 MONTH) AND dates.date < NOW() GROUP BY mon, yr) AS newtable2 ON lifestyle_table.mon = newtable2.mon AND lifestyle_table.yr = newtable2.yr ORDER BY yr, mon;");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+
+
+		return null;
+		
+	}
+
+	
 //DASHBOARD FUNCTIONS
 
 	function transportCarbonThisMonth(){
@@ -1451,6 +1562,8 @@ class Carbon{
 		
 		
 		$result = mysqli_query($this->mysqli, "INSERT INTO daily_lifestyle VALUES ('$id', '$date', '$bath', '$esnep', '$esp', '$snep', '$sp', '$whaf', '$wch', '$wwhTotal', '$gasCooker', '$electricCooker', '$kettle1', '$laptop', '$desktop', '$chargers', '$tv', '$electricFire', '$electricBlanket', '$fridge', '$energyEfficientLight', '$traditionalLight', '$washingMachine', '$tumbleDryer', '$handWashDishes', '$dishwasher', '$geaTotal', '$toilet', '$kettle2', '$glassofwater', '$bottledwater', '$brushTeethTapOn', '$brushTeethTapOff', '$rinseClothes', '$cwbwTotal', '$vegetarian', '$vegan', '$redMeat', '$poultry', '$fishSus', '$fishUnsus', '$cheese', '$egg', '$dairy', '$bread', '$beer', '$wine', '$packaging', '$transport', '$foodTotal', '$consumerGoods', '$aluminiumCansRecycled', '$aluminiumCansNotRecycled', '$steelCansRecycled', '$glassBottlesRecycled', '$paperRecycled', '$clothesRecycled', '$plasticBottlesRecycled', '$plasticBagsNotRecycled', '$foodWaste', '$electronicWaste', '$landfillWaste', '$recyclingTotal', '$lifestyleTotal', '$lifestyleOffset')");
+		
+		$result = mysqli_query($this->mysqli, "INSERT INTO activity_log (username, activity_type, detail, timestamp) VALUES ('$myusername', 'carbon_activity', '$id', NOW())");
 		
 		return true;
 	}

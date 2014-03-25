@@ -16,7 +16,6 @@
 <h4 class="modal-title" id="myModalLabel">Add Daily Lifestyle</h4>
 </div>
 <div class="modal-body" id="lifestyleModalBody">
-	<div class="container">
 		<?php
 		if ($success){?>
 	
@@ -36,7 +35,6 @@
 		<?php
 		};
 		?>
-	</div>
 </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -423,13 +423,13 @@ function updateMeterModal(){
 	}
 	else{
 	
-		if (newReading <= previousReading){
+		/**if (newReading <= previousReading){
 			document.getElementById("alerts").innerHTML = "<div class='alert alert-danger'>New Reading must be greater than previous reading.</div>";
 			document.getElementById("inputReadingDiv").className = "form-group has-error";
 			document.getElementById("meterCarbon").innerHTML = " - ";
 			document.getElementById("meterUsedAmount").innerHTML = " - ";
-		}
-		else{
+		}*/
+		//else{
 			document.getElementById("alerts").innerHTML = "";
 			document.getElementById("inputReadingDiv").className = "form-group"
 			document.getElementById("meterUsedAmount").innerHTML = difference;
@@ -443,7 +443,7 @@ function updateMeterModal(){
 			carbonPerson = carbon/occupants;
 			document.getElementById('meterCarbon').innerHTML = carbon.toFixed(2) + " kge CO2";
 			document.getElementById('meterCarbonPerson').innerHTML = carbonPerson.toFixed(2) + " kge CO2";
-		}
+		//}
 	}
 }
 
@@ -548,8 +548,9 @@ function updateGraph(){
 	var period = document.querySelector('input[name="options"]:checked').value;	
 	var transport = document.getElementById("transportCheck").checked;
 	var energy = document.getElementById("energyCheck").checked;
+	var lifestyle = document.getElementById("lifestyleCheck").checked;
 		
-	var param = "transport=" + transport + "&energy=" + energy + "&period=" + period;
+	var param = "transport=" + transport + "&energy=" + energy + "&lifestyle=" + lifestyle + "&period=" + period;
 		
 	var xmlhttp;
 	if (window.XMLHttpRequest)
@@ -966,6 +967,10 @@ function submitLifestyle(){
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
 	    document.getElementById("addDailyLifestyleModal").innerHTML=xmlhttp.responseText;
+	    updateActivity();
+	    updateGraph();
+	    updateData();
+	    updateStatistics();
 	  	}
 	  }
 	xmlhttp.open("POST","files/dashboard/submit_lifestyle.php",true);

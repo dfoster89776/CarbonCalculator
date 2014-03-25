@@ -7,6 +7,9 @@
 	  <label class="btn btn-success active">
 	    <input id="transportCheck" type="checkbox" onchange="updateGraph()" checked> Transport
 	  </label>
+	  <label class="btn btn-success active">
+	    <input id="lifestyleCheck" type="checkbox" onchange="updateGraph()" checked> Lifestyle
+	  </label>
 	</div>
 	
 	<div class="btn-group pull-right" data-toggle="buttons">

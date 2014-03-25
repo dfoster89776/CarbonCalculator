@@ -15,6 +15,8 @@
 	
 	$energy = $_POST['energy'];
 	$transport = $_POST['transport'];
+	$lifestyle = $_POST['lifestyle'];
+
 	$period = $_POST['period'];
 	
 	$energyArray;
@@ -51,6 +53,27 @@
 			$transportArray = 1;
 		}		
 		
+	}
+	if($lifestyle == "true"){
+		
+		if ($energy == "true"){
+			
+			if($transport == "true"){
+				$lifestyleArray = 3;
+				$data[0][3] = "Lifestyle";
+			}else{
+				$lifestyleArray = 2;
+				$data[0][2] = "Lifestyle";
+			}
+		}else{
+			if($transport == "true"){
+				$lifestyleArray = 2;
+				$data[0][2] = "Lifestyle";
+			}else{
+				$lifestyleArray = 1;
+				$data[0][1] = "Lifestyle";
+			}
+		}
 	}
 	
 	//Compute Dates
@@ -162,6 +185,49 @@
 					$value = 0;
 				}
 			    $data[$i][$transportArray] = round($value, 2);
+			}	
+		}
+	}
+	
+	if($lifestyle == "true"){
+		if($period == "7days"){
+			$results = $carbon->getUsersLifestyleLastWeek($profile);
+			for ($i = 1; $i <= 7; $i++) {
+				$value;
+				if($results[$i-1]['carbon_total']){
+					$value = $results[$i-1]['carbon_total'];
+				}else{
+					$value = 0;
+				}
+			    $data[$i][$lifestyleArray] = round($value, 2);
+			}	
+		}
+		elseif($period == "5weeks"){
+			
+			$results = $carbon->getUsersLifestyleLastMonth($profile);
+			
+			for ($i = 1; $i <= 5; $i++) {
+				$value;
+				if($results[$i-1]['carbon_total']){
+					$value = $results[$i-1]['carbon_total'];
+				}else{
+					$value = 0;
+				}
+			    $data[$i][$lifestyleArray] = round($value, 2);
+			}	
+			
+		}
+		elseif($period == "6months"){
+			$results = $carbon->getUsersLifestyleLastYear($profile);
+			
+			for ($i = 1; $i <= 6; $i++) {
+				$value;
+				if($results[$i-1]['carbon_total']){
+					$value = $results[$i-1]['carbon_total'];
+				}else{
+					$value = 0;
+				}
+			    $data[$i][$lifestyleArray] = round($value, 2);
 			}	
 		}
 	}

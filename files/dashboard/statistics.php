@@ -59,13 +59,13 @@
 			echo("color: green;");
 		}?>"><?php echo $data['currentEnergy']; ?></h4>
 	</div>
-	<div class="col-xs-1 hidden-xs hidden-sm" style="text-align: right;">
+	<!--<div class="col-xs-1 hidden-xs hidden-sm" style="text-align: right;">
 		<h4 style="font-weight: normal;<?php if($data['currentEnergy'] > $data['previousEnergy']){
 			echo("color: red;");	
 		}else{
 			echo("color: green;");
 		}?>"><?php echo $data['percentageEnergy'];?>%</h4>
-	</div>
+	</div>-->
 </div>
 <div class="row">
 	<div class="col-xs-4 col-sm-3">
@@ -81,13 +81,13 @@
 			echo("color: green;");
 		}?>"><?php echo $data['currentTransport']; ?></h4>
 	</div>
-	<div class="col-xs-1 hidden-xs hidden-sm" style="text-align: right;">
+	<!--<div class="col-xs-1 hidden-xs hidden-sm" style="text-align: right;">
 		<h4 style="font-weight: normal;<?php if($data['currentTransport'] > $data['previousTransport']){
 			echo("color: red;");	
 		}else{
 			echo("color: green;");
 		}?>"><?php echo $data['percentageTransport'] ?>%</h4>
-	</div>
+	</div>-->
 	
 </div>
 <div class="row">
@@ -104,13 +104,13 @@
 			echo("color: green;");
 		}?>"><?php echo $data['currentLifestyle']; ?></h4>
 	</div>
-	<div class="col-xs-1 hidden-xs hidden-sm" style="text-align: right;">
+	<!--<div class="col-xs-1 hidden-xs hidden-sm" style="text-align: right;">
 		<h4 style="font-weight: normal;<?php if($data['currentLifestyle'] > $data['previousLifestyle']){
 			echo("color: red;");	
 		}else{
 			echo("color: green;");
 		}?>"><?php echo $data['percentageLifestyle'] ?>%</h4>
-	</div>
+	</div>-->
 	
 </div>
 
