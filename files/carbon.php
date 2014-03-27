@@ -1811,6 +1811,253 @@ class Carbon{
 			return null;
 		}
 	}
+	
+	function getAllOverviewStatistics(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT type, sum(carbon_total) AS total FROM carbon_item WHERE username = '$myusername' GROUP BY type");
+
+		$data = array();
+
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+					if($row['type'] == "journey"){
+						$data['transport'] = $row['total'];
+					}
+					if($row['type'] == "meter_reading"){
+						$data['energy'] = $row['total'];
+					}
+					if($row['type'] == "lifestyle"){
+						$data['lifestyle'] = $row['total'];
+					}
+				}
+				
+				$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleOffset) AS offset FROM carbon_item, daily_lifestyle WHERE carbon_item.id = daily_lifestyle.id AND carbon_item.username = '$myusername'");
+				
+				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+								
+				$data['total'] = $data['transport'] + $data['lifestyle'] + $data['energy'] - $row['offset'];
+				
+				return $data;
+								
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+	}
+	
+	function getYearOverviewStatistics($year){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$data = array();
+		
+		//Energy statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE year(date) = '$year'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['energy'] = $row['total'];
+		
+		//Transport statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND year(journey_date) = '$year'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['transport'] = $row['total'];
+
+		
+		//Lifestyle statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleTotal) as total, sum(lifestyleOffset) as offset FROM carbon_item, daily_lifestyle WHERE carbon_item.id = daily_lifestyle.id AND username = '$myusername' AND year(date) = '$year'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['lifestyle'] = $row['total'];
+		
+		$data['total'] = $data['energy'] + $data['transport'] + $data['lifestyle'] - $row['offset'];
+
+		return $data;
+		
+	}
+	
+	function getMonthOverviewStatistics($year, $month){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$data = array();
+		
+		//Energy statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE year(date) = '$year' AND month(date) = '$month'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['energy'] = $row['total'];
+		
+		//Transport statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND year(journey_date) = '$year' AND month(date) = '$month'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['transport'] = $row['total'];
+		
+		//Lifestyle statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleTotal) as total, sum(lifestyleOffset) as offset FROM carbon_item, daily_lifestyle WHERE carbon_item.id = daily_lifestyle.id AND username = '$myusername' AND year(date) = '$year' AND month(date) = '$month'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['lifestyle'] = $row['total'];
+		
+		$data['total'] = $data['energy'] + $data['transport'] + $data['lifestyle'] - $row['offset'];
+
+		return $data;
+
+	}
+	
+	function getWeekOverviewStatistics($year, $month, $week){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$data = array();
+		
+		//Energy statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE year(date) = '$year' AND month(date) = '$month' AND week(date) = '$week'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['energy'] = $row['total'];
+		
+		//Transport statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND year(journey_date) = '$year' AND month(date) = '$month' AND week(date) = '$week'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['transport'] = $row['total'];
+				
+		//Lifestyle statistics
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleTotal) as total, sum(lifestyleOffset) as offset FROM carbon_item, daily_lifestyle WHERE carbon_item.id = daily_lifestyle.id AND username = '$myusername' AND year(date) = '$year' AND month(date) = '$month' AND week(date) = '$week'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['lifestyle'] = $row['total'];
+		
+		$data['total'] = $data['energy'] + $data['transport'] + $data['lifestyle'] - $row['offset'];
+
+		return $data;
+
+	}
+	
+	function getDayOverviewStatistics($day){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$data = array();
+		
+		//Energy
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE date = '$day'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['energy'] = $row['total'];
+
+		
+		//Transport
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND journey_date = '$day'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['transport'] = $row['total'];
+
+		
+		//Lifestyle
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleTotal) as total, sum(lifestyleOffset) as offset FROM carbon_item, daily_lifestyle WHERE carbon_item.id = daily_lifestyle.id AND username = '$myusername' AND date = '$day'");
+		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$data['lifestyle'] = $row['total'];
+	
+		$data['total'] = $data['energy'] + $data['transport'] + $data['lifestyle'] - $row['offset'];
+
+		return $data;
+	}
+	
+	function getAllActivity(){
+	
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT newtable.id as activity_id, type, carbon_total, conversion_rate, journey_date, main_category, sub_category, distance, details, reading, meter_type, reading_start, reading_end, carbon_per_day  FROM (SELECT carbon_item.id, carbon_item.type, carbon_item.carbon_total, carbon_item.conversion_rate, journey_date, main_category, sub_category, distance, details FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername') as newtable LEFT JOIN meter_readings ON newtable.id = meter_readings.id) as newtable2 LEFT JOIN daily_lifestyle ON daily_lifestyle.id = newtable2.activity_id ORDER BY newtable2.activity_id DESC;");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+				
+			}
+		}	
+
+		
+	}
+	
+	function getYearActivity($year){
+	
+	$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT newtable.id as activity_id, type, carbon_total, conversion_rate, journey_date, main_category, sub_category, distance, details, reading, meter_type, reading_start, reading_end, carbon_per_day  FROM (SELECT carbon_item.id, carbon_item.type, carbon_item.carbon_total, carbon_item.conversion_rate, journey_date, main_category, sub_category, distance, details FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername') as newtable LEFT JOIN meter_readings ON newtable.id = meter_readings.id) as newtable2 LEFT JOIN daily_lifestyle ON daily_lifestyle.id = newtable2.activity_id WHERE year(journey_date) = '$year' || year(date) = '$year' || year(reading_start) = '$year' || year(reading_end) = '$year' ORDER BY newtable2.activity_id DESC;");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+				
+			}
+		}	
+		
+	}
+	
+	function getMonthActivity($year, $month){
+	
+	$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT newtable.id as activity_id, type, carbon_total, conversion_rate, journey_date, main_category, sub_category, distance, details, reading, meter_type, reading_start, reading_end, carbon_per_day  FROM (SELECT carbon_item.id, carbon_item.type, carbon_item.carbon_total, carbon_item.conversion_rate, journey_date, main_category, sub_category, distance, details FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername') as newtable LEFT JOIN meter_readings ON newtable.id = meter_readings.id) as newtable2 LEFT JOIN daily_lifestyle ON daily_lifestyle.id = newtable2.activity_id WHERE (year(journey_date) = '$year' AND month(journey_date) = '$month') || (year(date) = '$year' AND month(date) = '$month') || (year(reading_start) = '$year' AND month(reading_start) = '$month') || (year(reading_end) = '$year' AND month(reading_end) = '$month') ORDER BY newtable2.activity_id DESC;");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+				
+			}
+		}	
+		
+	}
+	
+	function getWeekActivity($year, $month, $week){
+	
+	$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT newtable.id as activity_id, type, carbon_total, conversion_rate, journey_date, main_category, sub_category, distance, details, reading, meter_type, reading_start, reading_end, carbon_per_day  FROM (SELECT carbon_item.id, carbon_item.type, carbon_item.carbon_total, carbon_item.conversion_rate, journey_date, main_category, sub_category, distance, details FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername') as newtable LEFT JOIN meter_readings ON newtable.id = meter_readings.id) as newtable2 LEFT JOIN daily_lifestyle ON daily_lifestyle.id = newtable2.activity_id WHERE (year(journey_date) = '$year' AND month(journey_date) = '$month' AND week(journey_date) = '$week') || (year(date) = '$year' AND month(date) = '$month' AND week(date) = '$week') || (year(reading_start) = '$year' AND month(reading_start) = '$month' AND week(reading_start) = '$week') || (year(reading_end) = '$year' AND month(reading_end) = '$month' AND week(reading_end) = '$week') ORDER BY newtable2.activity_id DESC;");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+				
+			}
+		}	
+		
+	}
+	
+	function getDayActivity($day){
+	
+	$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT newtable.id as activity_id, type, carbon_total, conversion_rate, journey_date, main_category, sub_category, distance, details, reading, meter_type, reading_start, reading_end, carbon_per_day  FROM (SELECT carbon_item.id, carbon_item.type, carbon_item.carbon_total, carbon_item.conversion_rate, journey_date, main_category, sub_category, distance, details FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername') as newtable LEFT JOIN meter_readings ON newtable.id = meter_readings.id) as newtable2 LEFT JOIN daily_lifestyle ON daily_lifestyle.id = newtable2.activity_id WHERE journey_date = '$day' || date = '$day' || (reading_start <= '$day' && reading_end >= '$day') ORDER BY newtable2.activity_id DESC;");
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+				
+			}
+		}	
+		
+	}
 }
 
 function randomString($length){

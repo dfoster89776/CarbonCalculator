@@ -18,7 +18,7 @@
 			
 		$options = $carbon->getDayOptions($year, $month, $week);	
 		
-		echo("<option value=''></option>");
+		echo("<option value=''>Choose Day</option>");
 		
 		foreach($options as $day){
 			echo("<option value='".$day['date']."'>".$day['date']."</option>");

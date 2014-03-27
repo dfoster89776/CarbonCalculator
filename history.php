@@ -12,11 +12,11 @@
 	<head>
 		<title> Carbon Calculator History</title>
 		<?php 	require_once("files/standard/standard_includes.php"); ?>
-		<script type="text/javascript" src="files/history/history.js"></script>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="files/history/history.js"></script>
 	</head>
 	
-	<body>
+	<body onload="updateData()">
 	
 		<?php require_once("files/navigation/secure_nav.php");?>
 	
@@ -60,5 +60,16 @@
 			</div>
 		
 		</div>
+		
+		<!-- ACTIVITY MODAL -->
+		<div class="modal fade" id="activityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content" id="activityModalContent">
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->	
+
+
+
 	
 	</body>

@@ -16,7 +16,7 @@
 			
 		$options = $carbon->getMonthOptions($year);	
 		
-		echo("<option value=''></option>");
+		echo("<option value=''>Choose Month</option>");
 		
 		foreach($options as $month){
 			
