@@ -9,7 +9,7 @@
 	}
 	
 	echo("<div>");
-	echo("<a onclick='loadActivityTab()' style='color: black;'><h3 class='page-header'>Latest Activity</h3></a>");
+	echo("<a onclick='loadActivityTab()' style='color: black;'><h3 class='page-header'>Latest Activity</h3></a><div class='well'>");
 	
 
 	$activity = $carbon->getLatestUserActivity($_SESSION['profile']);
@@ -131,5 +131,5 @@
 	}else{
 		echo("<h4> No activity to display </h4>");
 	}			
-	echo("</div>");
+	echo("</div></div>");
 ?>

@@ -29,11 +29,21 @@
 			
 				<div class="col-md-8">
 					
-					<h1> Friends Latest Activity </h1>
-								
-					<div id="activity_container"></div>
-					<div style="text-align: center; padding-top: 100px;" id="loading_indicator"><img src='files/images/loading.gif'></div>
-								
+					<div class='row'  id="groups_container">
+						
+						<h1> My Groups </h1>
+						<div>
+							<div style="text-align: center; padding-top: 25px; padding-bottom: 25px;"><img src='files/images/loading.gif'></div>
+						</div>
+					</div>
+					<div class='row'>
+						
+						<h1> Friends Latest Activity </h1>
+						<div class='well'>
+							<div id="activity_container"></div>
+							<div style="text-align: center; padding-top: 100px;" id="loading_indicator"><img src='files/images/loading.gif'></div>
+						</div>
+					</div>		
 				</div>
 				
 				<div class="col-md-3 col-md-offset-1">
@@ -49,6 +59,9 @@
 					<div class="row" style="padding-top: 25px;">
 						<button class="btn btn-success btn-lg" data-toggle="modal" onclick="openFindFriendModal()" style="width: 100%;">
 							Find New Friends
+						</button>
+						<button class="btn btn-success btn-lg" data-toggle="modal" onclick="openCreateGroupModal()" style="width: 100%; margin-top: 10px;">
+							Create Group
 						</button>
 					</div>
 				</div>
@@ -69,7 +82,7 @@
 						<div style="text-align: center; padding-top: 100px; padding-bottom: 100px;"><img src='files/images/loading.gif' id='loading-indicator'></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
 					</div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -83,4 +96,12 @@
 			    </div><!-- /.modal-content -->
 			  </div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->	
+			
+		<!-- GROUP MODAL -->
+		<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content" id="addGroupModalContent">
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->	
 	</body>

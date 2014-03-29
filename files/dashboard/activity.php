@@ -10,6 +10,7 @@
 	
 	echo("<div>");
 	echo("<h3 class='page-header'>Your Latest Activity</h3>");
+	echo("<div class='well'>");
 	
 
 	$activity = $carbon->getLatestActivity();
@@ -132,5 +133,6 @@
 	}else{
 		echo("<h4> No activity to display </h4>");
 	}			
+	echo("</div>");
 	echo("</div>");
 ?>

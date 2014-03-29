@@ -1819,6 +1819,9 @@ class Carbon{
 		$result = mysqli_query($this->mysqli, "SELECT type, sum(carbon_total) AS total FROM carbon_item WHERE username = '$myusername' GROUP BY type");
 
 		$data = array();
+		$data['transport'] = 0;
+		$data['energy'] = 0;
+		$data['lifestyle'] = 0;
 
 		if ($result){
 			
@@ -1860,6 +1863,9 @@ class Carbon{
 		$this->connectDatabase();
 		
 		$data = array();
+		$data['transport'] = 0;
+		$data['energy'] = 0;
+		$data['lifestyle'] = 0;
 		
 		//Energy statistics
 		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE year(date) = '$year'");
@@ -1889,6 +1895,9 @@ class Carbon{
 		$this->connectDatabase();
 		
 		$data = array();
+		$data['transport'] = 0;
+		$data['energy'] = 0;
+		$data['lifestyle'] = 0;
 		
 		//Energy statistics
 		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE year(date) = '$year' AND month(date) = '$month'");
@@ -1896,7 +1905,7 @@ class Carbon{
 		$data['energy'] = $row['total'];
 		
 		//Transport statistics
-		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND year(journey_date) = '$year' AND month(date) = '$month'");
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND year(journey_date) = '$year' AND month(journey_date) = '$month'");
 		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 		$data['transport'] = $row['total'];
 		
@@ -1917,6 +1926,9 @@ class Carbon{
 		$this->connectDatabase();
 		
 		$data = array();
+		$data['transport'] = 0;
+		$data['energy'] = 0;
+		$data['lifestyle'] = 0;
 		
 		//Energy statistics
 		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE year(date) = '$year' AND month(date) = '$month' AND week(date) = '$week'");
@@ -1924,7 +1936,7 @@ class Carbon{
 		$data['energy'] = $row['total'];
 		
 		//Transport statistics
-		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND year(journey_date) = '$year' AND month(date) = '$month' AND week(date) = '$week'");
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_item.carbon_total) as total FROM carbon_item, journeys WHERE carbon_item.id = journeys.id AND username = '$myusername' AND year(journey_date) = '$year' AND month(journey_date) = '$month' AND week(journey_date) = '$week'");
 		@$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 		$data['transport'] = $row['total'];
 				
@@ -1945,6 +1957,9 @@ class Carbon{
 		$this->connectDatabase();
 		
 		$data = array();
+		$data['transport'] = 0;
+		$data['energy'] = 0;
+		$data['lifestyle'] = 0;
 		
 		//Energy
 		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) as total FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username = '$myusername' AND date >= reading_start AND date <= reading_end) AS energyTable WHERE date = '$day'");
@@ -2025,7 +2040,7 @@ class Carbon{
 	
 	function getWeekActivity($year, $month, $week){
 	
-	$myusername = $this->username;
+		$myusername = $this->username;
 		$this->connectDatabase();
 		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT newtable.id as activity_id, type, carbon_total, conversion_rate, journey_date, main_category, sub_category, distance, details, reading, meter_type, reading_start, reading_end, carbon_per_day  FROM (SELECT carbon_item.id, carbon_item.type, carbon_item.carbon_total, carbon_item.conversion_rate, journey_date, main_category, sub_category, distance, details FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername') as newtable LEFT JOIN meter_readings ON newtable.id = meter_readings.id) as newtable2 LEFT JOIN daily_lifestyle ON daily_lifestyle.id = newtable2.activity_id WHERE (year(journey_date) = '$year' AND month(journey_date) = '$month' AND week(journey_date) = '$week') || (year(date) = '$year' AND month(date) = '$month' AND week(date) = '$week') || (year(reading_start) = '$year' AND month(reading_start) = '$month' AND week(reading_start) = '$week') || (year(reading_end) = '$year' AND month(reading_end) = '$month' AND week(reading_end) = '$week') ORDER BY newtable2.activity_id DESC;");
 		if($result){
@@ -2043,7 +2058,7 @@ class Carbon{
 	
 	function getDayActivity($day){
 	
-	$myusername = $this->username;
+		$myusername = $this->username;
 		$this->connectDatabase();
 		$result = mysqli_query($this->mysqli, "SELECT * FROM (SELECT newtable.id as activity_id, type, carbon_total, conversion_rate, journey_date, main_category, sub_category, distance, details, reading, meter_type, reading_start, reading_end, carbon_per_day  FROM (SELECT carbon_item.id, carbon_item.type, carbon_item.carbon_total, carbon_item.conversion_rate, journey_date, main_category, sub_category, distance, details FROM carbon_item LEFT JOIN journeys ON carbon_item.id = journeys.id WHERE username = '$myusername') as newtable LEFT JOIN meter_readings ON newtable.id = meter_readings.id) as newtable2 LEFT JOIN daily_lifestyle ON daily_lifestyle.id = newtable2.activity_id WHERE journey_date = '$day' || date = '$day' || (reading_start <= '$day' && reading_end >= '$day') ORDER BY newtable2.activity_id DESC;");
 		if($result){
@@ -2056,6 +2071,229 @@ class Carbon{
 				
 			}
 		}	
+		
+	}
+	
+	//GROUP FUNCTIONS
+	function getUsersGroups(){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		
+		$result = mysqli_query($this->mysqli, "SELECT groupNo, groupName, members FROM (SELECT * FROM drf8_db.groups, user_group WHERE groups.groupNo = user_group.group_id AND username = '$myusername') AS groups LEFT JOIN (SELECT group_id, count(username) as members FROM user_group GROUP BY group_id) AS members ON groups.group_id = members.group_id;");
+		
+		if ($result){
+			
+			$count = mysqli_num_rows($result);
+			if ($count){
+				
+				while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+				
+				$rows[] = $row;
+				}
+				
+				return $rows;
+			
+				
+			}else{
+				return null;
+			}	
+		}else{
+			return null;
+		}
+	}
+	
+	function addNewGroup($groupName){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+
+		$result = mysqli_query($this->mysqli, "INSERT INTO groups (groupName, groupFounded) VALUES ('$groupName', NOW())");
+		
+		if($result){
+			
+			$id = mysqli_insert_id($this->mysqli); 
+			
+			mysqli_query($this->mysqli, "INSERT INTO user_group VALUES ('$myusername', '$id')");
+			
+			return $id;
+			
+		}else{
+			return "fail";
+		}
+	}
+	
+	function leaveGroup($groupNo){
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "DELETE FROM user_group WHERE username = '$myusername' AND group_id = '$groupNo'");
+		return true;
+	}
+	
+	function friendsNotInGroup($id){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT friend_username, firstname, surname, userid FROM friends, users, facebook WHERE friends.username = '$myusername' AND users.username = friends.friend_username AND friends.friend_username = facebook.username AND friends.friend_username NOT IN (SELECT username FROM user_group WHERE group_id = '$id');");
+		
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+			}
+		}	
+	}
+	
+	function addFriendToGroup($friend, $group){
+	
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "INSERT INTO user_group VALUES ('$friend', '$group')");	
+		
+		if($result){
+			return "true";
+		}else{
+			return "false";
+		}
+	}
+	
+	function getGroupMembers($groupNo){
+
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT users.username, firstname, surname, userid FROM users, user_group, facebook WHERE user_group.username = users.username AND users.username = facebook.username AND user_group.group_id = '$groupNo';");
+		
+		if($result){
+			if(mysqli_num_rows($result)){
+				
+				while($row = $result->fetch_array(MYSQL_ASSOC)) {
+					$myArray[] = $row;
+				}
+				return $myArray;
+			}
+		}	
+	}
+	
+	function getGroupName($groupNo){
+		
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT groupName FROM groups WHERE groupNo = '$groupNo'");
+		
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return $row['groupName'];
+		}else{
+			return null;
+		}
+		
+	}
+	
+	function groupTransportCarbonThisMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW())AND MONTH(journey_date) = MONTH(NOW()) AND username IN(SELECT username FROM user_group WHERE group_id = '$groupNo');");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+		
+	}
+	
+	function groupTransportCarbonLastMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.journeys WHERE type = 'journey' AND carbon_item.id = journeys.id AND YEAR(journey_date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(journey_date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username IN(SELECT username FROM user_group WHERE group_id = '$groupNo');");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+		
+	}
+	
+	function groupEnergyCarbonThisMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username  IN(SELECT username FROM user_group WHERE group_id = '$groupNo') AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW())AND MONTH(date) = MONTH(NOW())");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function groupEnergyCarbonLastMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon) AS carbon FROM (SELECT date, carbon_per_day AS carbon FROM carbon_item, meter_readings, dates WHERE carbon_item.id = meter_readings.id AND username  IN(SELECT username FROM user_group WHERE group_id = '$groupNo') AND date >= reading_start AND date <= reading_end) as daily_energy WHERE YEAR(date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(date) = MONTH(NOW() - INTERVAL 1 MONTH)");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function groupLifestyleCarbonThisMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW())AND MONTH(daily_lifestyle.date) = MONTH(NOW()) AND username  IN(SELECT username FROM user_group WHERE group_id = '$groupNo');");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function groupLifestyleCarbonLastMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(carbon_total) AS carbon_total FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(daily_lifestyle.date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username  IN(SELECT username FROM user_group WHERE group_id = '$groupNo');");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['carbon_total']);
+		}else{
+			return 0;
+		}
+		
+	}
+	
+	function groupLifestyleCarbonOffsetThisMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleOffset) as offset FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW())AND MONTH(daily_lifestyle.date) = MONTH(NOW()) AND username  IN(SELECT username FROM user_group WHERE group_id = '$groupNo');");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['offset']);
+		}else{
+			return 0;
+		}
+	}
+	
+	function groupLifestyleCarbonOffsetLastMonth($groupNo){
+		
+		$myusername = $this->username;
+		$this->connectDatabase();
+		$result = mysqli_query($this->mysqli, "SELECT sum(lifestyleOffset) as offset FROM drf8_db.carbon_item, drf8_db.daily_lifestyle WHERE type = 'lifestyle' AND carbon_item.id = daily_lifestyle.id AND YEAR(daily_lifestyle.date) = YEAR(NOW() - INTERVAL 1 MONTH)AND MONTH(daily_lifestyle.date) = MONTH(NOW() - INTERVAL 1 MONTH) AND username  IN(SELECT username FROM user_group WHERE group_id = '$groupNo');");
+		if($result){
+			$row = $result->fetch_array(MYSQL_ASSOC);
+			return round($row['offset']);
+		}else{
+			return 0;
+		}
 		
 	}
 }

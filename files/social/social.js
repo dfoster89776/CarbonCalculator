@@ -14,6 +14,7 @@ function initialise(){
 	loadFriendsActivity();
 	loadOutstandingRequests();
 	loadFriendsList();
+	loadGroupsList();
 }
 
 function loadActivityCount(){
@@ -262,6 +263,29 @@ function loadFriendsList(){
 	xmlhttp.send();
 }
 
+function loadGroupsList(){
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	document.getElementById("groups_container").innerHTML = xmlhttp.responseText;
+	  	}
+	  }
+	xmlhttp.open("POST","files/social/groupsList.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+}
+
 function openActivityModal(id){
 	
 	var param = "id=" + id;
@@ -284,6 +308,63 @@ function openActivityModal(id){
 	    }
 	  }
 	xmlhttp.open("POST","files/profile/activity_modal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
+	
+}
+
+
+
+function openCreateGroupModal(){
+		
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    document.getElementById("addGroupModalContent").innerHTML= xmlhttp.responseText;
+	    $('#addGroupModal').modal('show');
+	    }
+	  }
+	xmlhttp.open("POST","files/social/addGroupModal.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send();
+	
+}
+
+function submitNewGroup(){
+	
+	param = "groupName=" + document.getElementById("groupName").value;
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+			if(xmlhttp.responseText == "fail"){
+				document.getElementById("newGroupBody").innerHTML = "<div class='alert alert-danger alert-dismissable' style='margin-top:30px'><strong>Error!</strong> Changes could not be saved. Please try again.</div>";
+				document.getElementById("newGroupSubmitButton").style.display = "none";
+			}else{
+				location.replace("group.php?groupNo=" + xmlhttp.responseText);
+			}
+	    }
+	  }
+	xmlhttp.open("POST","files/social/submitNewGroup.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send(param);
 	

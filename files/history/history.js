@@ -1,6 +1,4 @@
 google.load("visualization", "1", {packages:["corechart"]});
-google.setOnLoadCallback(drawChart);
-
 
 
 function updateYearOptions(){
@@ -175,6 +173,7 @@ function updateData(){
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	    {
 	    document.getElementById("overview").innerHTML=xmlhttp.responseText;
+	    
 	    drawChart();
 	    }
 	  }
@@ -208,24 +207,58 @@ function updateData(){
 
 
 function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
 
-        var options = {'width': 300,
-               'height': 300,
-               'chartArea': {'width': '95%', 'height': '95%'},
-               'legend': {'position': 'none'},
-               'backgroundColor': { 'fill':'transparent' }
-		};
+	var value = document.getElementById("mainOptions").value;
+	param = "period=" + value;
+	
+	if(value == "year" || value == "month" || value == "week" || value == "day"){
+		var year = document.getElementById("yearOptions").value;
+		param = param + "&year=" + year;
+	}
+	if(value == "month" || value == "week" || value == "day"){
+		var month = document.getElementById("monthOptions").value;
+		param = param + "&month=" + month;
+	}
+	if(value == "week" || value == "day"){
+		var week = document.getElementById("weekOptions").value;
+		param = param + "&week=" + week;
+	}
+	if(value == "day"){
+		var day = document.getElementById("dayOptions").value;
+		alert(day);
+		param = param + "&day=" + day;
+	}
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+			returnData = JSON.parse(xmlhttp.responseText);
+	    	var data = google.visualization.arrayToDataTable(returnData);
+	
+	        var options = {'width': 300,
+	               'height': 300,
+	               'chartArea': {'width': '95%', 'height': '95%'},
+	               'legend': {'position': 'none'},
+	               'backgroundColor': { 'fill':'transparent' }
+			};
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
+	        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+	        chart.draw(data, options);
+	    }
+	  }
+	xmlhttp.open("POST","files/history/piechartData.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send(param);
 }
 
 function openActivityModal(id){

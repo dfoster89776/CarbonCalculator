@@ -117,10 +117,14 @@
 					echo("<h5>New Reading: ".round($activity['reading'], 2)."</h5>");
 					echo("<h5>Reading Period: ".$activity['reading_start']." - ".$activity['reading_end']."</h5>");
 				}elseif($activity['type'] == "lifestyle"){
+					echo("<h4>Total Carbon Output: ".round($activity['carbon_total'], 2)."<small> kge CO2</small></h4>");
+					echo("<h5>Date: ".$activity['date']."</h5>");
+
 					
 				}elseif($activity['type'] == "journey"){
 					echo("<h4>Total Carbon Output: ".round($activity['carbon_total'], 2)."<small> kge CO2</small></h4>");
 					echo("<h5>Conversion Rate: ".round($activity['conversion_rate'], 2)."</h5>");
+					echo("<h5>Journey Date: ".$activity['journey_date']."</h5>");
 					echo("<h5>Distance: ".$activity['distance']."<small> km</small></h5>");
 					if($activity['details'] != null){
 						echo("<h5>Details: ".$activity['details']."</h5>");
